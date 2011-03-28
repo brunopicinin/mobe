@@ -1,12 +1,11 @@
 package br.ita.mobe.view.population;
 
-import android.view.View;
+import android.view.ViewGroup;
 
 public class ViewPopulator {
 
-	public boolean populateBeanView(Object bean, View view) {
+	public void populateBeanView(ViewGroup viewGroup, Object bean) {
 		// TODO: implement!!!
-		return false;
 
 	}
 

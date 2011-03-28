@@ -1,10 +1,11 @@
 package br.ita.mobe.view.generation;
 
-import android.view.View;
+import android.content.Context;
+import android.view.ViewGroup;
 
 public class ViewGenerator {
 
-	public View generateBeanView(Object bean) {
+	public ViewGroup generateBeanView(Context context, Object bean) {
 		// TODO: implement!!!
 		return null;
 
