@@ -10,12 +10,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import br.ita.mobe.exceptions.UnsupportedTypeException;
+import br.ita.mobe.proxy.EntityProxy;
 import br.ita.mobe.utils.ReflectionUtils;
 import br.ita.mobe.view.widget.numpicker.NumberPicker;
 
 public class FormFieldFactory {
 
-	public static ViewGroup createFormField(Context context, Field field) throws UnsupportedTypeException {
+	public static ViewGroup createFormField(Context context, Field field, EntityProxy entityProxy) throws UnsupportedTypeException, IllegalArgumentException, IllegalAccessException {
 		LinearLayout container = new LinearLayout(context);
 		container.setOrientation(LinearLayout.VERTICAL);
 		container.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -24,13 +25,17 @@ public class FormFieldFactory {
 		labelView.setText(field.getName() + ":");
 		container.addView(labelView);
 
+		Object originalObject = entityProxy.getOriginalObject();
+		Object fieldValue = field.get(originalObject);
+
 		Class<?> clazz = field.getType();
+
 		if (ReflectionUtils.isIntegerType(clazz)) {
-			insertNumberPicker(context, container, field);
+			insertNumberPicker(context, container, field, fieldValue);
 		} else if (ReflectionUtils.isBooleanType(clazz)) {
-			insertCheckbox(context, container, field);
+			insertCheckbox(context, container, field, fieldValue);
 		} else if (ReflectionUtils.isFloatType(clazz) || ReflectionUtils.isCharType(clazz) || ReflectionUtils.isStringType(clazz)) {
-			insertEditText(context, container, field);
+			insertEditText(context, container, field, fieldValue);
 		} else {
 			throw new UnsupportedTypeException();
 		}
@@ -42,33 +47,30 @@ public class FormFieldFactory {
 		return container;
 	}
 
-	private static void insertNumberPicker(Context context, LinearLayout container, Field field) {
+	private static void insertNumberPicker(Context context, LinearLayout container, Field field, Object fieldValue) {
 		NumberPicker numberPicker = new NumberPicker(context);
 		numberPicker.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-		// Object value = field.getValue();
-		// if (value != null) {
-		// numberPicker.setCurrent(ReflectionUtils.castInt(value));
-		// }
+		if (fieldValue != null) {
+			numberPicker.setCurrent(ReflectionUtils.castInt(fieldValue));
+		}
 		// numberPicker.setOnChangeListener(new NumberChangeListener(field));
 		container.addView(numberPicker);
 	}
 
-	private static void insertCheckbox(Context context, LinearLayout container, Field field) {
+	private static void insertCheckbox(Context context, LinearLayout container, Field field, Object fieldValue) {
 		CheckBox checkBox = new CheckBox(context);
-		// Object value = field.getValue();
-		// if (value != null) {
-		// checkBox.setChecked(ReflectionUtils.castBoolean(value));
-		// }
+		if (fieldValue != null) {
+			checkBox.setChecked(ReflectionUtils.castBoolean(fieldValue));
+		}
 		// checkBox.setOnCheckedChangeListener(new CheckboxChangeListener(field));
 		container.addView(checkBox);
 	}
 
-	private static void insertEditText(Context context, LinearLayout container, Field field) {
+	private static void insertEditText(Context context, LinearLayout container, Field field, Object fieldValue) {
 		EditText editText = new EditText(context);
-		// Object value = field.getValue();
-		// if (value != null) {
-		// editText.setText(ReflectionUtils.castText(value));
-		// }
+		if (fieldValue != null) {
+			editText.setText(ReflectionUtils.castText(fieldValue));
+		}
 		// editText.addTextChangedListener(new TextChangeListener(field));
 		container.addView(editText);
 	}

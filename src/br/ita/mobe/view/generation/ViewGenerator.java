@@ -21,9 +21,13 @@ public class ViewGenerator {
 		for (Field field : entityProxy.getFields()) {
 			try {
 				ViewGroup formField;
-				formField = FormFieldFactory.createFormField(context, field);
+				formField = FormFieldFactory.createFormField(context, field, entityProxy);
 				linearLayout.addView(formField);
 			} catch (UnsupportedTypeException e) {
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
 				e.printStackTrace();
 			}
 		}
