@@ -2,17 +2,16 @@ package br.ita.mobe.view.listener;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import br.ita.mobe.proxy.Field;
 
 public class TextChangeListener extends ViewChangeListener implements TextWatcher {
 
-	public TextChangeListener(Field field) {
-		this.field = field;
-	}
+	// public TextChangeListener(Field field) {
+	// this.field = field;
+	// }
 
 	@Override
 	public void afterTextChanged(Editable s) {
-		updateField(s.toString());
+		// updateField(s.toString());
 	}
 
 	@Override

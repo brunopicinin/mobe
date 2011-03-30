@@ -1,14 +1,11 @@
 package br.ita.mobe;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.LinearLayout;
-import br.ita.mobe.example.MyEntity;
-import br.ita.mobe.proxy.Field;
-import br.ita.mobe.reflection.EntityParser;
-import br.ita.mobe.view.generator.ViewGenerator;
+import android.view.ViewGroup;
+import android.widget.ScrollView;
+import br.ita.mobe.example.Bean1;
+import br.ita.mobe.view.generation.ViewGenerator;
 
 public class MobeMain extends Activity {
 
@@ -17,15 +14,13 @@ public class MobeMain extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		List<Field> fields = EntityParser.parseFields(new MyEntity());
-		// List<Field> fields = EntityParser.parseFields(new FullEntity());
+		Bean1 bean = new Bean1();
 
-		LinearLayout form = (LinearLayout) findViewById(R.id.form);
+		ViewGenerator viewGenerator = new ViewGenerator();
+		ViewGroup viewGroup = viewGenerator.generateBeanView(MobeMain.this, bean);
 
-		for (Field field : fields) {
-			LinearLayout fieldInput = ViewGenerator.generateFieldInput(MobeMain.this, field);
-			form.addView(fieldInput);
-		}
+		ScrollView scrollView = (ScrollView) findViewById(R.id.form_container);
+		scrollView.addView(viewGroup);
 	}
 
 }

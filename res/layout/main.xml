@@ -5,12 +5,13 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
 	<ScrollView
+		android:id="@+id/form_container"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content">
-		<LinearLayout
-			android:id="@+id/form"
-			android:orientation="vertical"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content" />
+<!-- 		<LinearLayout -->
+<!-- 			android:id="@+id/form_container" -->
+<!-- 			android:orientation="vertical" -->
+<!-- 			android:layout_width="fill_parent" -->
+<!-- 			android:layout_height="wrap_content" /> -->
 	</ScrollView>
 </LinearLayout>
