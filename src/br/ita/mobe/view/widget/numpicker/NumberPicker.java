@@ -34,11 +34,8 @@ import android.widget.TextView;
 import br.ita.mobe.R;
 
 /**
- * This class has been pulled from the Android platform source code, its an
- * internal widget that hasn't been made public so its included in the project
- * in this fashion for use with the preferences screen; I have made a few slight
- * modifications to the code here, I simply put a MAX and MIN default in the
- * code but these values can still be set publically by calling code.
+ * This class has been pulled from the Android platform source code, its an internal widget that hasn't been made public so its included in the project in this fashion for use with the preferences
+ * screen; I have made a few slight modifications to the code here, I simply put a MAX and MIN default in the code but these values can still be set publically by calling code.
  * 
  * @author Google
  */
@@ -57,10 +54,8 @@ public class NumberPicker extends LinearLayout implements OnClickListener, OnFoc
 	}
 
 	/*
-	 * Use a custom NumberPicker formatting callback to use two-digit minutes
-	 * strings like "01". Keeping a static formatter etc. is the most efficient
-	 * way to do this; it avoids creating temporary objects on every call to
-	 * format().
+	 * Use a custom NumberPicker formatting callback to use two-digit minutes strings like "01". Keeping a static formatter etc. is the most efficient way to do this; it avoids creating temporary
+	 * objects on every call to format().
 	 */
 	public static final NumberPicker.Formatter TWO_DIGIT_FORMATTER = new NumberPicker.Formatter() {
 		final StringBuilder mBuilder = new StringBuilder();
@@ -142,6 +137,8 @@ public class NumberPicker extends LinearLayout implements OnClickListener, OnFoc
 
 		mStart = DEFAULT_MIN;
 		mEnd = DEFAULT_MAX;
+
+		mText.addTextChangedListener(new NumberPickerTextListener(this));
 	}
 
 	@Override
@@ -161,8 +158,7 @@ public class NumberPicker extends LinearLayout implements OnClickListener, OnFoc
 	}
 
 	/**
-	 * Set the range of numbers allowed for the number picker. The current value
-	 * will be automatically set to the start.
+	 * Set the range of numbers allowed for the number picker. The current value will be automatically set to the start.
 	 * 
 	 * @param start
 	 *            the start of the range (inclusive)
@@ -177,9 +173,7 @@ public class NumberPicker extends LinearLayout implements OnClickListener, OnFoc
 	}
 
 	/**
-	 * Set the range of numbers allowed for the number picker. The current value
-	 * will be automatically set to the start. Also provide a mapping for values
-	 * used to display to the user.
+	 * Set the range of numbers allowed for the number picker. The current value will be automatically set to the start. Also provide a mapping for values used to display to the user.
 	 * 
 	 * @param start
 	 *            the start of the range (inclusive)
@@ -198,12 +192,12 @@ public class NumberPicker extends LinearLayout implements OnClickListener, OnFoc
 
 	public void setCurrent(int current) {
 		mCurrent = current;
+		notifyChange();
 		updateView();
 	}
 
 	/**
-	 * The speed (in milliseconds) at which the numbers will scroll when the the
-	 * +/- buttons are longpressed. Default is 300ms.
+	 * The speed (in milliseconds) at which the numbers will scroll when the the +/- buttons are longpressed. Default is 300ms.
 	 */
 	public void setSpeed(long speed) {
 		mSpeed = speed;
@@ -252,9 +246,7 @@ public class NumberPicker extends LinearLayout implements OnClickListener, OnFoc
 	protected void updateView() {
 
 		/*
-		 * If we don't have displayed values then use the current number else
-		 * find the correct value in the displayed values for the current
-		 * number.
+		 * If we don't have displayed values then use the current number else find the correct value in the displayed values for the current number.
 		 */
 		if (mDisplayedValues == null) {
 			mText.setText(formatNumber(mCurrent));
@@ -264,7 +256,7 @@ public class NumberPicker extends LinearLayout implements OnClickListener, OnFoc
 		mText.setSelection(mText.getText().length());
 	}
 
-	private void validateCurrentView(CharSequence str) {
+	protected void validateCurrentView(CharSequence str) {
 		int val = getSelectedPos(str.toString());
 		if ((val >= mStart) && (val <= mEnd)) {
 			if (mCurrent != val) {
@@ -274,6 +266,17 @@ public class NumberPicker extends LinearLayout implements OnClickListener, OnFoc
 			}
 		}
 		updateView();
+	}
+
+	protected void validateCurrentView2(CharSequence str) {
+		int val = getSelectedPos(str.toString());
+		if ((val >= mStart) && (val <= mEnd)) {
+			if (mCurrent != val) {
+				mPrevious = mCurrent;
+				mCurrent = val;
+				notifyChange();
+			}
+		}
 	}
 
 	@Override
@@ -301,15 +304,13 @@ public class NumberPicker extends LinearLayout implements OnClickListener, OnFoc
 	}
 
 	/**
-	 * We start the long click here but rely on the {@link NumberPickerButton}
-	 * to inform us when the long click has ended.
+	 * We start the long click here but rely on the {@link NumberPickerButton} to inform us when the long click has ended.
 	 */
 	@Override
 	public boolean onLongClick(View v) {
 
 		/*
-		 * The text view may still have focus so clear it's focus which will
-		 * trigger the on focus changed and any typed values to be pulled.
+		 * The text view may still have focus so clear it's focus which will trigger the on focus changed and any typed values to be pulled.
 		 */
 		mText.clearFocus();
 
@@ -385,9 +386,7 @@ public class NumberPicker extends LinearLayout implements OnClickListener, OnFoc
 			int val = getSelectedPos(result);
 
 			/*
-			 * Ensure the user can't type in a value greater than the max
-			 * allowed. We have to allow less than min as the user might want to
-			 * delete some numbers and then type a new number.
+			 * Ensure the user can't type in a value greater than the max allowed. We have to allow less than min as the user might want to delete some numbers and then type a new number.
 			 */
 			if (val > mEnd) {
 				return "";
@@ -411,8 +410,7 @@ public class NumberPicker extends LinearLayout implements OnClickListener, OnFoc
 			}
 
 			/*
-			 * The user might have typed in a number into the month field i.e.
-			 * 10 instead of OCT so support that too.
+			 * The user might have typed in a number into the month field i.e. 10 instead of OCT so support that too.
 			 */
 			try {
 				return Integer.parseInt(str);
