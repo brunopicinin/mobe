@@ -6,7 +6,7 @@ import android.content.Context;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
-import br.ita.mobe.exceptions.UnsupportedTypeException;
+import br.ita.mobe.exception.UnsupportedTypeException;
 import br.ita.mobe.proxy.EntityProxy;
 import br.ita.mobe.reflection.EntityParser;
 

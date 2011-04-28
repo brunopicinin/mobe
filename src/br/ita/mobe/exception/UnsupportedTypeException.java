@@ -1,4 +1,4 @@
-package br.ita.mobe.exceptions;
+package br.ita.mobe.exception;
 
 public class UnsupportedTypeException extends Exception {
 

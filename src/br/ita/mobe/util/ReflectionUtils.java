@@ -1,4 +1,4 @@
-package br.ita.mobe.utils;
+package br.ita.mobe.util;
 
 import java.lang.reflect.Method;
 
