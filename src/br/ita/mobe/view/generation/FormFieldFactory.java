@@ -19,7 +19,7 @@ import br.ita.mobe.view.widget.numpicker.NumberPicker;
 
 public class FormFieldFactory {
 
-	public static ViewGroup createFormField(Context context, Field field, EntityProxy entityProxy) throws UnsupportedTypeException, IllegalArgumentException, IllegalAccessException {
+	public static ViewGroup createFormField(Context context, Field field, EntityProxy entityProxy) {
 		LinearLayout container = new LinearLayout(context);
 		container.setOrientation(LinearLayout.VERTICAL);
 		container.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -30,14 +30,20 @@ public class FormFieldFactory {
 
 		Object originalObject = entityProxy.getOriginalObject();
 		Class<?> clazz = field.getType();
-		if (ReflectionUtils.isIntegerType(clazz)) {
-			insertNumberPicker(context, container, field, originalObject);
-		} else if (ReflectionUtils.isBooleanType(clazz)) {
-			insertCheckbox(context, container, field, originalObject);
-		} else if (ReflectionUtils.isFloatType(clazz) || ReflectionUtils.isCharType(clazz) || ReflectionUtils.isStringType(clazz)) {
-			insertEditText(context, container, field, originalObject);
-		} else {
-			throw new UnsupportedTypeException();
+		try {
+			if (ReflectionUtils.isIntegerType(clazz)) {
+				insertNumberPicker(context, container, field, originalObject);
+			} else if (ReflectionUtils.isBooleanType(clazz)) {
+				insertCheckbox(context, container, field, originalObject);
+			} else if (ReflectionUtils.isFloatType(clazz) || ReflectionUtils.isCharType(clazz) || ReflectionUtils.isStringType(clazz)) {
+				insertEditText(context, container, field, originalObject);
+			} else {
+				throw new UnsupportedTypeException();
+			}
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (UnsupportedTypeException e) {
+			e.printStackTrace();
 		}
 
 		// View ruler = new View(context);
