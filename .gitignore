@@ -7,12 +7,14 @@
 
 # Java class files
 *.class
-/bin
 
-# generated GUI files
-/gen
+# generated files
+bin/
+gen/
 
-# Eclipse project files
+# local configuration file (sdk path, etc)
+local.properties
+
+# eclipse project files
 .project
 .classpath
-
