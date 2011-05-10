@@ -1,1 +1,2 @@
-- Mudar visibilidade das classes auxiliares do NumberPicker para default.
+- Mudar juntar as classes do numpicker em Numpicker.java
+- Configurar git-submodule para agregar os testes.

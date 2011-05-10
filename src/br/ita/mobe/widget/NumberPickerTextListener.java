@@ -1,4 +1,4 @@
-package br.ita.mobe.view.widget.numpicker;
+package br.ita.mobe.widget;
 
 import android.text.Editable;
 import android.text.TextWatcher;

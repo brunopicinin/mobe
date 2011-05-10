@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package br.ita.mobe.view.widget.numpicker;
+package br.ita.mobe.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
