@@ -13,12 +13,13 @@
 			android:name="MobeMain"
 			android:label="@string/app_name">
 			<intent-filter>
-				<action
-					android:name="android.intent.action.MAIN" />
-				<category
-					android:name="android.intent.category.LAUNCHER" />
+				<action	android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-
+		
+		<!-- Necessary for the framework =( -->
+<!-- 		<activity android:name="FormActivity" /> -->
+		
 	</application>
 </manifest>
