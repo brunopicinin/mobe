@@ -9,17 +9,6 @@ public class MobeMain extends FormActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		// LayoutParams defaultParams = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-		// LinearLayout container = new LinearLayout(this);
-		// container.setOrientation(LinearLayout.VERTICAL);
-		// container.setLayoutParams(defaultParams);
-		//
-		// NumberPicker numberPicker = new NumberPicker(this);
-		// container.addView(numberPicker);
-		//
-		// setContentView(container);
-
 		setBean(new Bean1());
 	}
 }

@@ -1,29 +1,36 @@
 package br.ita.mobe.widget;
 
+import static android.view.ViewGroup.LayoutParams.FILL_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+import static android.widget.LinearLayout.VERTICAL;
+
 import java.lang.reflect.Field;
 
 import android.content.Context;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class FormWidget {
+public abstract class FormWidget {
 
-	private String label;
-	private View view;
+	protected LinearLayout container;
 
 	public FormWidget(Context context, Field field) {
-		label = field.getName();
-		TextView textView = new TextView(context);
-		textView.setText(label);
-		view = textView;
-	}
+		// context is treated in subclass
 
-	public String getLabel() {
-		return label;
+		container = new LinearLayout(context);
+		container.setOrientation(VERTICAL);
+		container.setLayoutParams(new LayoutParams(FILL_PARENT, WRAP_CONTENT));
+
+		TextView label = new TextView(context);
+		label.setText(field.getName());
+
+		container.addView(label);
 	}
 
 	public View getView() {
-		return view;
+		return container;
 	}
 
 }
