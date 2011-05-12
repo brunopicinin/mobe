@@ -1,3 +1,7 @@
+# global
+*~
+*.DS_Store
+
 # built application files
 *.apk
 *.ap_
@@ -9,12 +13,12 @@
 *.class
 
 # generated files
-bin/
-gen/
-
-# local configuration file (sdk path, etc)
-local.properties
+mobe/bin/
+mobe/gen/
+mobe-test/bin/
+mobe-test/gen/
 
 # eclipse project files
-.project
-.classpath
+*.classpath
+*.project
+
