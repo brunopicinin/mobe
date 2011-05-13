@@ -39,6 +39,10 @@ public class FormActivity extends Activity {
 	// Binded java bean
 	private Object bean;
 
+	public LinearLayout getContainer() {
+		return container;
+	}
+
 	public Object getBean() {
 		return bean;
 	}
