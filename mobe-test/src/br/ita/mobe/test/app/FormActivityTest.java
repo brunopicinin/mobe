@@ -41,7 +41,7 @@ public class FormActivityTest extends ActivityInstrumentationTestCase2<FormActiv
 
 	/**
 	 * Get the editable views from a ViewGroup recursively.
-	 * 
+	 *
 	 * @param viewGroup
 	 *            - The Views container.
 	 * @return A list of editable views.
@@ -66,9 +66,9 @@ public class FormActivityTest extends ActivityInstrumentationTestCase2<FormActiv
 	 * Test view generation for a Bean without the View annotation.
 	 */
 	@UiThreadTest
-	public void testSetBean_NoAnn() {
-		formActivity.setBean(bean3);
-		List<View> editableViews = getEditableViews(formActivity.getContainer());
+	public void testSetFormBean_NoAnn() {
+		formActivity.setFormBean(bean3);
+		List<View> editableViews = getEditableViews(formActivity.getFormView());
 		assertEquals(editableViews.size(), 0);
 	}
 
@@ -76,9 +76,9 @@ public class FormActivityTest extends ActivityInstrumentationTestCase2<FormActiv
 	 * Test view generation for a Bean with class annotation.
 	 */
 	@UiThreadTest
-	public void testSetBean_ClassAnn() {
-		formActivity.setBean(bean1);
-		List<View> editableViews = getEditableViews(formActivity.getContainer());
+	public void testSetFormBean_ClassAnn() {
+		formActivity.setFormBean(bean1);
+		List<View> editableViews = getEditableViews(formActivity.getFormView());
 
 		assertEquals(4, editableViews.size());
 
@@ -122,9 +122,9 @@ public class FormActivityTest extends ActivityInstrumentationTestCase2<FormActiv
 	 * Test view generation for a Bean with field annotations.
 	 */
 	@UiThreadTest
-	public void testSetBean_FieldAnn() {
-		formActivity.setBean(bean2);
-		List<View> editableViews = getEditableViews(formActivity.getContainer());
+	public void testSetFormBean_FieldAnn() {
+		formActivity.setFormBean(bean2);
+		List<View> editableViews = getEditableViews(formActivity.getFormView());
 
 		assertEquals(2, editableViews.size());
 
