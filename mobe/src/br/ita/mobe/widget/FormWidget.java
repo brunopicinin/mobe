@@ -24,6 +24,7 @@ public abstract class FormWidget {
 		container.setLayoutParams(new LayoutParams(FILL_PARENT, WRAP_CONTENT));
 
 		TextView label = new TextView(context);
+		label.setLayoutParams(new LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
 		label.setText(field.getName());
 
 		container.addView(label);
