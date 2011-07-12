@@ -17,8 +17,11 @@ mobe/bin/
 mobe/gen/
 mobe-test/bin/
 mobe-test/gen/
+mobe-test-java/bin/
+mobe-test-java/gen/
 
 # eclipse project files
 *.classpath
 *.project
+*.settings
 
