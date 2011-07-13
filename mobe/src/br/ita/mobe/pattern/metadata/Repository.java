@@ -3,6 +3,9 @@ package br.ita.mobe.pattern.metadata;
 import java.util.HashMap;
 import java.util.Map;
 
+import br.ita.mobe.pattern.logic.LogicProcessor;
+import br.ita.mobe.pattern.logic.ViewProcessor;
+
 public class Repository {
 
 	private static Repository instance;
@@ -15,6 +18,7 @@ public class Repository {
 	}
 
 	private Map<Class<?>, BeanMetadata> cache;
+	private LogicProcessor processor;
 
 	private Repository() {
 		cache = new HashMap<Class<?>, BeanMetadata>();
@@ -29,6 +33,18 @@ public class Repository {
 			// return metadata;
 			return null;
 		}
+	}
+
+	public LogicProcessor getProcessor() {
+		if (processor == null) {
+			// default logic processor
+			processor = new ViewProcessor();
+		}
+		return processor;
+	}
+
+	public void setProcessor(LogicProcessor processor) {
+		this.processor = processor;
 	}
 
 }
