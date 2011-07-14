@@ -14,9 +14,9 @@ public class Repository {
 		return instance;
 	}
 
-	private Map<Class<?>, BeanMetadata> cache;
+	protected Map<Class<?>, BeanMetadata> cache;
 
-	private Repository() {
+	protected Repository() {
 		cache = new HashMap<Class<?>, BeanMetadata>();
 	}
 

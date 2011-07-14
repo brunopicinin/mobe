@@ -1,5 +1,6 @@
 package br.ita.mobe.pattern.metadata;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
 import org.junit.Before;
@@ -23,6 +24,8 @@ public class BeanMetadataTest {
 	public void testAddProperty() {
 		PropertyDescriptor property = new PropertyDescriptor("name", String.class);
 		metadata.addProperty(property);
+		assertEquals(1, metadata.getProperties().size());
+		assertEquals(property, metadata.getProperties().get(0));
 	}
 
 }
