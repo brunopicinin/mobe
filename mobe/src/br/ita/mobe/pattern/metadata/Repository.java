@@ -3,6 +3,9 @@ package br.ita.mobe.pattern.metadata;
 import java.util.HashMap;
 import java.util.Map;
 
+import br.ita.mobe.pattern.reader.MetadataReader;
+import br.ita.mobe.pattern.reader.MetadataReaderProvider;
+
 public class Repository {
 
 	private static Repository instance;
@@ -24,10 +27,10 @@ public class Repository {
 		if (cache.containsKey(clazz)) {
 			return cache.get(clazz);
 		} else {
-			// BeanMetadata metadata = reader.createMetadata(clazz);
-			// cache.put(clazz, metadata);
-			// return metadata;
-			return null;
+			MetadataReader reader = MetadataReaderProvider.getInstance().getReader();
+			BeanMetadata metadata = reader.createMetadata(clazz);
+			cache.put(clazz, metadata);
+			return metadata;
 		}
 	}
 
