@@ -1,13 +1,13 @@
 package br.ita.mobe;
 
-import br.ita.mobe.annotation.View;
+import br.ita.mobe.annotation.Property;
 
 /**
  * Application Class.
  * 
  * Class with the simple purpose of testing the framework. Not deployed.
  */
-@View
+@Property
 public class Bean1 {
 
 	private String firstName = "Bruno";

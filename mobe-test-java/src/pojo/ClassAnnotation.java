@@ -1,8 +1,8 @@
 package pojo;
 
-import br.ita.mobe.annotation.View;
+import br.ita.mobe.annotation.Property;
 
-@View
+@Property
 public class ClassAnnotation {
 
 	private String firstName = "Bruno";

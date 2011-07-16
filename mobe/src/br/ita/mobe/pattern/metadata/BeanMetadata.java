@@ -3,13 +3,13 @@ package br.ita.mobe.pattern.metadata;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.ita.mobe.pattern.logic.LogicProcessor;
 import br.ita.mobe.pattern.logic.ViewProcessor;
+import br.ita.mobe.pattern.logic.ConcreteViewProcessor;
 
 public class BeanMetadata {
 
 	private List<PropertyDescriptor> properties;
-	private LogicProcessor processor;
+	private ViewProcessor processor;
 
 	public BeanMetadata() {
 		properties = new ArrayList<PropertyDescriptor>();
@@ -27,15 +27,15 @@ public class BeanMetadata {
 		properties.add(propertyDescriptor);
 	}
 
-	public LogicProcessor getProcessor() {
+	public ViewProcessor getProcessor() {
 		if (processor == null) {
 			// default logic processor
-			processor = new ViewProcessor();
+			processor = new ConcreteViewProcessor();
 		}
 		return processor;
 	}
 
-	public void setProcessor(LogicProcessor processor) {
+	public void setProcessor(ViewProcessor processor) {
 		this.processor = processor;
 	}
 

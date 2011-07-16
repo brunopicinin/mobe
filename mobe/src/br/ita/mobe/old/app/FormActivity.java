@@ -1,4 +1,4 @@
-package br.ita.mobe.app;
+package br.ita.mobe.old.app;
 
 import static android.view.ViewGroup.LayoutParams.FILL_PARENT;
 import android.app.Activity;
@@ -7,6 +7,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.ScrollView;
 import br.ita.mobe.widget.FormView;
 
+@Deprecated
 public class FormActivity extends Activity {
 
 	private ScrollView viewport;

@@ -11,7 +11,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.LinearLayout;
-import br.ita.mobe.annotation.View;
+import br.ita.mobe.annotation.Property;
 import br.ita.mobe.exception.UnsupportedTypeException;
 
 public class FormView extends LinearLayout {
@@ -63,9 +63,9 @@ public class FormView extends LinearLayout {
 	private void generateForm() {
 		widgets = new ArrayList<FormWidget>();
 		Class<?> clazz = formBean.getClass();
-		boolean viewClass = clazz.isAnnotationPresent(View.class);
+		boolean viewClass = clazz.isAnnotationPresent(Property.class);
 		for (Field field : clazz.getDeclaredFields()) {
-			if (viewClass || field.isAnnotationPresent(View.class)) {
+			if (viewClass || field.isAnnotationPresent(Property.class)) {
 				field.setAccessible(true);
 				try {
 					FormWidget wg = createWidget(getContext(), field);

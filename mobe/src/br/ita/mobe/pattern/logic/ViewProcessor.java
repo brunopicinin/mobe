@@ -1,11 +1,10 @@
 package br.ita.mobe.pattern.logic;
 
-public class ViewProcessor implements LogicProcessor {
+import android.content.Context;
+import br.ita.mobe.widget.FormView;
 
-	@Override
-	public void process() {
-		// TODO Auto-generated method stub
+public interface ViewProcessor {
 
-	}
+	public FormView generateForm(Context context);
 
 }
