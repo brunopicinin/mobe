@@ -16,7 +16,7 @@ public class MobeMain extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		MobeController controller = new MobeController();
-		FormView form = controller.generateForm(new Bean1(), this);
+		FormView form = controller.generateForm(this, new Bean1());
 		this.setContentView(form);
 	}
 }

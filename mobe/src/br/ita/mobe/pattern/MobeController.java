@@ -8,7 +8,7 @@ import br.ita.mobe.view.FormView;
 
 public class MobeController {
 
-	public FormView generateForm(Object bean, Context context) {
+	public FormView generateForm(Context context, Object bean) {
 		BeanMetadata metadata = Repository.getInstance().getMetadata(bean.getClass());
 		ViewProcessor processor = metadata.getProcessor();
 		return processor.generateForm(context, metadata);

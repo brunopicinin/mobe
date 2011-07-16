@@ -37,6 +37,7 @@ public class ConcreteViewProcessorTest extends InstrumentationTestCase {
 		ViewProcessor processor = metadata.getProcessor();
 		FormView form = processor.generateForm(context, metadata);
 		assertNotNull(form);
+		assertTrue(form instanceof FormView);
 		int childCount = form.getChildCount();
 		assertEquals(4, childCount);
 
@@ -47,7 +48,6 @@ public class ConcreteViewProcessorTest extends InstrumentationTestCase {
 		fields.put("alive", boolean.class);
 		Set<String> keys = fields.keySet();
 
-		// TODO: rever este teste
 		for (int i = 0; i < childCount; i++) {
 			View child = form.getChildAt(i);
 			assertTrue(child instanceof FormWidget);
