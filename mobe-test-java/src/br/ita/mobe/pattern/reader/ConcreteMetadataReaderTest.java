@@ -65,11 +65,11 @@ public class ConcreteMetadataReaderTest {
 		fields.put("surname", String.class);
 		fields.put("myAge", int.class);
 		fields.put("alive", boolean.class);
+		Set<String> keys = fields.keySet();
 
 		for (PropertyDescriptor property : properties) {
 			String name = property.getName();
 			Class<?> type = property.getType();
-			Set<String> keys = fields.keySet();
 			assertTrue(keys.contains(name));
 			assertEquals(fields.get(name), type);
 		}
