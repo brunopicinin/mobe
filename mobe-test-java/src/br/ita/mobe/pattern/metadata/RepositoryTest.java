@@ -4,7 +4,8 @@ import static junit.framework.Assert.assertEquals;
 
 import org.junit.Test;
 
-import pojo.BeanPojo;
+import pojo.ClassAnnotation;
+import pojo.MethodAnnotation;
 
 public class RepositoryTest extends Repository {
 
@@ -12,11 +13,11 @@ public class RepositoryTest extends Repository {
 	public void testMetadataCache() {
 		assertEquals(0, cache.size()); // initial condition
 
-		Object bean1 = BeanPojo.classAnn();
+		Object bean1 = new ClassAnnotation();
 		BeanMetadata mData1 = getMetadata(bean1.getClass());
 		assertEquals(1, cache.size());
 
-		Object bean2 = BeanPojo.methodAnn();
+		Object bean2 = new MethodAnnotation();
 		getMetadata(bean2.getClass());
 		assertEquals(2, cache.size());
 

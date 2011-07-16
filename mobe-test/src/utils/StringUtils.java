@@ -1,4 +1,4 @@
-package br.ita.mobe.test.utils;
+package utils;
 
 public class StringUtils {
 

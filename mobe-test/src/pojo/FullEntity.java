@@ -1,4 +1,4 @@
-package br.ita.mobe.test.example;
+package pojo;
 
 public class FullEntity {
 

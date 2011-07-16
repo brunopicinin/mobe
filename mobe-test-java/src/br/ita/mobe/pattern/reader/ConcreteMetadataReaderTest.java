@@ -11,7 +11,10 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import pojo.BeanPojo;
+import pojo.ClassAnnotation;
+import pojo.FieldAnnotation;
+import pojo.MethodAnnotation;
+import pojo.NoAnnotation;
 import br.ita.mobe.pattern.metadata.BeanMetadata;
 import br.ita.mobe.pattern.metadata.PropertyDescriptor;
 
@@ -26,7 +29,7 @@ public class ConcreteMetadataReaderTest {
 
 	@Test
 	public void createMetadataNoAnn() {
-		Object noAnn = BeanPojo.noAnn();
+		Object noAnn = new NoAnnotation();
 		BeanMetadata metadata = reader.createMetadata(noAnn.getClass());
 		List<PropertyDescriptor> properties = metadata.getProperties();
 		assertEquals(0, properties.size());
@@ -34,8 +37,22 @@ public class ConcreteMetadataReaderTest {
 
 	@Test
 	public void createMetadataFieldAnn() {
-		Object fieldAnn = BeanPojo.fieldAnn();
+		Object fieldAnn = new FieldAnnotation();
 		BeanMetadata metadata = reader.createMetadata(fieldAnn.getClass());
+		assertCorrectMetadata(metadata);
+	}
+
+	@Test
+	public void createMetadataMethodAnn() {
+		Object methodAnn = new MethodAnnotation();
+		BeanMetadata metadata = reader.createMetadata(methodAnn.getClass());
+		assertCorrectMetadata(metadata);
+	}
+
+	@Test
+	public void createMetadataClassAnn() {
+		Object classAnn = new ClassAnnotation();
+		BeanMetadata metadata = reader.createMetadata(classAnn.getClass());
 		assertCorrectMetadata(metadata);
 	}
 
@@ -56,20 +73,6 @@ public class ConcreteMetadataReaderTest {
 			assertTrue(keys.contains(name));
 			assertEquals(fields.get(name), type);
 		}
-	}
-
-	@Test
-	public void createMetadataMethodAnn() {
-		Object methodAnn = BeanPojo.methodAnn();
-		BeanMetadata metadata = reader.createMetadata(methodAnn.getClass());
-		assertCorrectMetadata(metadata);
-	}
-
-	@Test
-	public void createMetadataClassAnn() {
-		Object classAnn = BeanPojo.classAnn();
-		BeanMetadata metadata = reader.createMetadata(classAnn.getClass());
-		assertCorrectMetadata(metadata);
 	}
 
 }
