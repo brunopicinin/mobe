@@ -9,7 +9,7 @@ import pojo.BeanPojo;
 public class RepositoryTest extends Repository {
 
 	@Test
-	public void testGetMetadata() {
+	public void testMetadataCache() {
 		assertEquals(0, cache.size()); // initial condition
 
 		Object bean1 = BeanPojo.classAnn();
