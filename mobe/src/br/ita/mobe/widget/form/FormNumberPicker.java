@@ -1,19 +1,16 @@
-package br.ita.mobe.widget;
+package br.ita.mobe.widget.form;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-
-import java.lang.reflect.Field;
-
 import android.content.Context;
-import android.view.ViewGroup.LayoutParams;
+import br.ita.mobe.widget.NumberPicker;
 
 public class FormNumberPicker extends FormWidget {
 
-	public FormNumberPicker(Context context, Field field) {
-		super(context, field);
+	public FormNumberPicker(Context context, String name) {
+		super(context, name);
 		NumberPicker numberPicker = new NumberPicker(context);
 		numberPicker.setLayoutParams(new LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-		container.addView(numberPicker);
+		addView(numberPicker);
 	}
 
 }

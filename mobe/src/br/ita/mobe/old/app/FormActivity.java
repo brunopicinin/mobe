@@ -5,7 +5,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ScrollView;
-import br.ita.mobe.widget.FormView;
+import br.ita.mobe.view.FormView;
 
 @Deprecated
 public class FormActivity extends Activity {
@@ -30,12 +30,12 @@ public class FormActivity extends Activity {
 		return formView;
 	}
 
-	public Object getFormBean() {
-		return formView.getFormBean();
-	}
-
-	public void setFormBean(Object formBean) {
-		formView.setFormBean(formBean);
-	}
+	// public Object getFormBean() {
+	// return formView.getFormBean();
+	// }
+	//
+	// public void setFormBean(Object formBean) {
+	// formView.setFormBean(formBean);
+	// }
 
 }

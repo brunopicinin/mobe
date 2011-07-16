@@ -1,17 +1,17 @@
 package br.ita.mobe.pattern;
 
 import android.content.Context;
-import android.view.View;
 import br.ita.mobe.pattern.logic.ViewProcessor;
 import br.ita.mobe.pattern.metadata.BeanMetadata;
 import br.ita.mobe.pattern.metadata.Repository;
+import br.ita.mobe.view.FormView;
 
 public class MobeController {
 
-	public View generateForm(Object bean, Context context) {
+	public FormView generateForm(Object bean, Context context) {
 		BeanMetadata metadata = Repository.getInstance().getMetadata(bean.getClass());
 		ViewProcessor processor = metadata.getProcessor();
-		return processor.generateForm(context);
+		return processor.generateForm(context, metadata);
 	}
 
 }
