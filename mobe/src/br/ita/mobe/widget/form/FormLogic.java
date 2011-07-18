@@ -8,10 +8,17 @@ public class FormLogic extends FormWidget {
 
 	public FormLogic(Context context, String name) {
 		super(context, name);
+
+		// Remove TextView. Text will be placed in CheckBox
+		removeViewAt(0);
+
 		CheckBox checkBox = new CheckBox(context);
+		checkBox.setText(name);
+
 		setOrientation(HORIZONTAL);
 		setGravity(Gravity.CENTER_VERTICAL);
-		addView(checkBox, 0);
+
+		addView(checkBox);
 	}
 
 }
