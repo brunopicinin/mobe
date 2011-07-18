@@ -1,5 +1,8 @@
 package br.ita.mobe;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import br.ita.mobe.annotation.Property;
 
 @Property
@@ -8,12 +11,15 @@ public class FullBean {
 	// int
 	private int myInt;
 	private Integer myInteger2;
+
 	// byte
 	private byte myByte;
 	private Byte myByte2;
+
 	// short
 	private short myShort;
 	private Short myShort2;
+
 	// long
 	private long myLong;
 	private Long myLong2;
@@ -21,6 +27,7 @@ public class FullBean {
 	// float
 	private float myFloat;
 	private Float myFloat2;
+
 	// double
 	private double myDouble;
 	private Double myDouble2;
@@ -35,6 +42,12 @@ public class FullBean {
 
 	// string
 	private String myString;
+
+	// calendar
+	private Calendar myCalendar;
+
+	// date
+	private Date myDate;
 
 	public int getMyInt() {
 		return myInt;
@@ -170,6 +183,22 @@ public class FullBean {
 
 	public void setMyString(String myString) {
 		this.myString = myString;
+	}
+
+	public Calendar getMyCalendar() {
+		return myCalendar;
+	}
+
+	public void setMyCalendar(Calendar myCalendar) {
+		this.myCalendar = myCalendar;
+	}
+
+	public Date getMyDate() {
+		return myDate;
+	}
+
+	public void setMyDate(Date myDate) {
+		this.myDate = myDate;
 	}
 
 }

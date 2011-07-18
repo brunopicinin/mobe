@@ -1,5 +1,7 @@
 package br.ita.mobe.pattern.logic;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import android.content.Context;
@@ -8,9 +10,11 @@ import br.ita.mobe.exception.UnsupportedTypeException;
 import br.ita.mobe.pattern.metadata.BeanMetadata;
 import br.ita.mobe.pattern.metadata.PropertyDescriptor;
 import br.ita.mobe.view.FormView;
-import br.ita.mobe.widget.form.FormCheckBox;
-import br.ita.mobe.widget.form.FormEditText;
-import br.ita.mobe.widget.form.FormNumberPicker;
+import br.ita.mobe.widget.form.FormDate;
+import br.ita.mobe.widget.form.FormDecimal;
+import br.ita.mobe.widget.form.FormLogic;
+import br.ita.mobe.widget.form.FormNumber;
+import br.ita.mobe.widget.form.FormText;
 import br.ita.mobe.widget.form.FormWidget;
 
 public class ConcreteViewProcessor implements ViewProcessor {
@@ -18,11 +22,12 @@ public class ConcreteViewProcessor implements ViewProcessor {
 	private static final String TAG = "ConcreteViewProcessor";
 
 	// Field data types
-	private static final Class<?>[] INT_TYPES = { int.class, Integer.class, short.class, Short.class, long.class, Long.class, byte.class, Byte.class };
-	private static final Class<?>[] FLOAT_TYPES = { float.class, Float.class, double.class, Double.class };
 	private static final Class<?>[] LOGIC_TYPES = { boolean.class, Boolean.class };
+	private static final Class<?>[] INT_TYPES = { byte.class, Byte.class, short.class, Short.class, int.class, Integer.class, long.class, Long.class };
+	private static final Class<?>[] DECIMAL_TYPES = { float.class, Float.class, double.class, Double.class };
 	private static final Class<?>[] CHAR_TYPES = { char.class, Character.class };
 	private static final Class<?>[] STRING_TYPES = { String.class };
+	private static final Class<?>[] DATE_TYPES = { Calendar.class, Date.class };
 
 	@Override
 	public FormView generateForm(Context context, BeanMetadata metadata) {
@@ -41,16 +46,18 @@ public class ConcreteViewProcessor implements ViewProcessor {
 	}
 
 	private FormWidget createWidget(Context context, Class<?> clazz, String name) throws UnsupportedTypeException {
-		if (typeof(clazz, INT_TYPES)) { // NumberPicker
-			return new FormNumberPicker(context, name);
-		} else if (typeof(clazz, FLOAT_TYPES)) { // EditText
-			return new FormEditText(context, name);
-		} else if (typeof(clazz, LOGIC_TYPES)) { // CheckBox
-			return new FormCheckBox(context, name);
-		} else if (typeof(clazz, CHAR_TYPES)) { // EditText
-			return new FormEditText(context, name);
-		} else if (typeof(clazz, STRING_TYPES)) { // EditText
-			return new FormEditText(context, name);
+		if (typeof(clazz, LOGIC_TYPES)) {
+			return new FormLogic(context, name);
+		} else if (typeof(clazz, INT_TYPES)) {
+			return new FormNumber(context, name);
+		} else if (typeof(clazz, DECIMAL_TYPES)) {
+			return new FormDecimal(context, name);
+		} else if (typeof(clazz, CHAR_TYPES)) {
+			return new FormText(context, name);
+		} else if (typeof(clazz, STRING_TYPES)) {
+			return new FormText(context, name);
+		} else if (typeof(clazz, DATE_TYPES)) {
+			return new FormDate(context, name);
 		} else {
 			throw new UnsupportedTypeException();
 		}
