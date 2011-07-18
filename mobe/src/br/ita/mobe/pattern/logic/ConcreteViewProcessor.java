@@ -46,21 +46,36 @@ public class ConcreteViewProcessor implements ViewProcessor {
 	}
 
 	private FormWidget createWidget(Context context, Class<?> clazz, String name) throws UnsupportedTypeException {
+		String capitalizedName = capitalize(name);
 		if (typeof(clazz, LOGIC_TYPES)) {
-			return new FormLogic(context, name);
+			return new FormLogic(context, capitalizedName);
 		} else if (typeof(clazz, INT_TYPES)) {
-			return new FormNumber(context, name);
+			return new FormNumber(context, capitalizedName);
 		} else if (typeof(clazz, DECIMAL_TYPES)) {
-			return new FormDecimal(context, name);
+			return new FormDecimal(context, capitalizedName);
 		} else if (typeof(clazz, CHAR_TYPES)) {
-			return new FormText(context, name);
+			return new FormText(context, capitalizedName);
 		} else if (typeof(clazz, STRING_TYPES)) {
-			return new FormText(context, name);
+			return new FormText(context, capitalizedName);
 		} else if (typeof(clazz, DATE_TYPES)) {
-			return new FormDate(context, name);
+			return new FormDate(context, capitalizedName);
 		} else {
 			throw new UnsupportedTypeException();
 		}
+	}
+
+	private String capitalize(String name) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(Character.toUpperCase(name.charAt(0))); // first letter capitalized
+		int length = name.length();
+		for (int i = 1; i < length; i++) {
+			char c = name.charAt(i);
+			if (Character.isUpperCase(c)) {
+				sb.append(" ");
+			}
+			sb.append(c);
+		}
+		return sb.toString();
 	}
 
 	private static boolean typeof(Class<?> clazz, Class<?>[] types) {
