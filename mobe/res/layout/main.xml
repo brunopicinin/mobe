@@ -1,5 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<br.ita.mobe.widget.FormView
+<LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="fill_parent"
+	android:orientation="vertical"
 	android:layout_width="fill_parent"
-	android:layout_height="wrap_content" />
+	android:gravity="center_horizontal">
+
+	<Button
+		android:text="Generate"
+		android:id="@+id/generate"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="5dip"
+		android:layout_marginRight="5dip"
+		android:layout_marginTop="10dip"
+		android:layout_marginBottom="5dip"
+		android:width="200dip" />
+	<Button
+		android:text="Populate"
+		android:id="@+id/populate"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_margin="5dip"
+		android:width="200dip" />
+	<Button
+		android:text="Bind"
+		android:id="@+id/bind"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_margin="5dip"
+		android:width="200dip" />
+
+</LinearLayout>

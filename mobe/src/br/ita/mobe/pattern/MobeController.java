@@ -32,8 +32,6 @@ public class MobeController {
 		for (ProcessingLayer layer : layers) {
 			form = layer.processLayer(context, metadata, form);
 		}
-		// ViewProcessor processor = metadata.getProcessor();
-		// return processor.generateForm(context, metadata);
 		return form;
 	}
 

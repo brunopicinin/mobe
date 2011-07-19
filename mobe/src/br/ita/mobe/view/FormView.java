@@ -3,6 +3,7 @@ package br.ita.mobe.view;
 import static android.view.ViewGroup.LayoutParams.FILL_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import android.util.AttributeSet;
 import android.widget.LinearLayout;
 import br.ita.mobe.widget.form.FormWidget;
 
-public class FormView extends LinearLayout {
+public class FormView extends LinearLayout implements Serializable {
 
 	private List<FormWidget> widgets;
 

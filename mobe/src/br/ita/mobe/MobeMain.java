@@ -1,13 +1,11 @@
 package br.ita.mobe;
 
-import static android.view.ViewGroup.LayoutParams.FILL_PARENT;
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.ScrollView;
-import br.ita.mobe.pattern.MobeController;
-import br.ita.mobe.view.FormView;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 
 /**
  * Application Client.
@@ -19,12 +17,36 @@ public class MobeMain extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		MobeController controller = new MobeController();
-		Object bean = new Bean2();
-		FormView form = controller.generateForm(this, bean);
-		ScrollView viewport = new ScrollView(this);
-		viewport.setLayoutParams(new LayoutParams(FILL_PARENT, WRAP_CONTENT));
-		viewport.addView(form);
-		this.setContentView(viewport);
+		setContentView(R.layout.main);
+
+		Button generate = (Button) findViewById(R.id.generate);
+		generate.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MobeMain.this, MobeForm.class);
+				intent.putExtra("action", "generate");
+				startActivity(intent);
+			}
+		});
+
+		Button populate = (Button) findViewById(R.id.populate);
+		populate.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MobeMain.this, MobeForm.class);
+				intent.putExtra("action", "populate");
+				startActivity(intent);
+			}
+		});
+
+		Button bind = (Button) findViewById(R.id.bind);
+		bind.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MobeMain.this, MobeForm.class);
+				intent.putExtra("action", "bind");
+				startActivity(intent);
+			}
+		});
 	}
 }
