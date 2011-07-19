@@ -6,14 +6,19 @@ import android.widget.EditText;
 
 public class FormNumber extends FormWidget {
 
-	public FormNumber(Context context, String name) {
-		super(context, name);
-		// NumberPicker numberPicker = new NumberPicker(context);
-		// numberPicker.setLayoutParams(new LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-		EditText editText = new EditText(context);
+	private EditText editText;
+
+	public FormNumber(Context context, String name, String displayName) {
+		super(context, name, displayName);
+		editText = new EditText(context);
 		editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
 		editText.setHint("Example: -125");
 		addView(editText);
+	}
+
+	@Override
+	public void populateWg(Object value) {
+		editText.setText(value.toString());
 	}
 
 }

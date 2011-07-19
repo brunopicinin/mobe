@@ -23,12 +23,13 @@ public class Repository {
 		cache = new HashMap<Class<?>, BeanMetadata>();
 	}
 
-	public BeanMetadata getMetadata(Class<?> clazz) {
+	public BeanMetadata getMetadata(Object bean) {
+		Class<?> clazz = bean.getClass();
 		if (cache.containsKey(clazz)) {
 			return cache.get(clazz);
 		} else {
 			MetadataReader reader = MetadataReaderProvider.getInstance().getReader();
-			BeanMetadata metadata = reader.createMetadata(clazz);
+			BeanMetadata metadata = reader.createMetadata(bean);
 			cache.put(clazz, metadata);
 			return metadata;
 		}

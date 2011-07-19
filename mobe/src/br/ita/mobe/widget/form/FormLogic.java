@@ -6,19 +6,28 @@ import android.widget.CheckBox;
 
 public class FormLogic extends FormWidget {
 
-	public FormLogic(Context context, String name) {
-		super(context, name);
+	private CheckBox checkBox;
+
+	public FormLogic(Context context, String name, String displayName) {
+		super(context, name, displayName);
 
 		// Remove TextView. Text will be placed in CheckBox
 		removeViewAt(0);
 
-		CheckBox checkBox = new CheckBox(context);
-		checkBox.setText(name);
+		checkBox = new CheckBox(context);
+		checkBox.setText(displayName);
 
 		setOrientation(HORIZONTAL);
 		setGravity(Gravity.CENTER_VERTICAL);
 
 		addView(checkBox);
+	}
+
+	@Override
+	public void populateWg(Object value) {
+		if ((Boolean) value == true) {
+			checkBox.setChecked(true);
+		}
 	}
 
 }

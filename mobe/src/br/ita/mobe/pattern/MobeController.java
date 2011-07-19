@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.content.Context;
 import br.ita.mobe.pattern.logic.layer.GenerateFormLayer;
+import br.ita.mobe.pattern.logic.layer.PopulateFormLayer;
 import br.ita.mobe.pattern.logic.layer.ProcessingLayer;
 import br.ita.mobe.pattern.metadata.BeanMetadata;
 import br.ita.mobe.pattern.metadata.Repository;
@@ -22,11 +23,11 @@ public class MobeController {
 	}
 
 	public MobeController() {
-		this(new GenerateFormLayer());
+		this(new GenerateFormLayer(), new PopulateFormLayer());
 	}
 
 	public FormView generateForm(Context context, Object bean) {
-		BeanMetadata metadata = Repository.getInstance().getMetadata(bean.getClass());
+		BeanMetadata metadata = Repository.getInstance().getMetadata(bean);
 		FormView form = null;
 		for (ProcessingLayer layer : layers) {
 			form = layer.processLayer(context, metadata, form);

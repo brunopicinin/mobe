@@ -8,7 +8,7 @@ public class BeanMetadataTest {
 
 	@Test
 	public void testAddProperty() {
-		PropertyDescriptor property = new PropertyDescriptor("name", String.class);
+		PropertyDescriptor property = new PropertyDescriptor("name", String.class, null);
 		BeanMetadata metadata = new BeanMetadata();
 		metadata.addProperty(property);
 		assertEquals(1, metadata.getProperties().size());

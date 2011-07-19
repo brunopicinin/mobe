@@ -48,17 +48,17 @@ public class ConcreteViewProcessor implements ViewProcessor {
 	private FormWidget createWidget(Context context, Class<?> clazz, String name) throws UnsupportedTypeException {
 		String capitalizedName = capitalize(name);
 		if (typeof(clazz, LOGIC_TYPES)) {
-			return new FormLogic(context, capitalizedName);
+			return new FormLogic(context, name, capitalizedName);
 		} else if (typeof(clazz, INT_TYPES)) {
-			return new FormNumber(context, capitalizedName);
+			return new FormNumber(context, name, capitalizedName);
 		} else if (typeof(clazz, DECIMAL_TYPES)) {
-			return new FormDecimal(context, capitalizedName);
+			return new FormDecimal(context, name, capitalizedName);
 		} else if (typeof(clazz, CHAR_TYPES)) {
-			return new FormText(context, capitalizedName);
+			return new FormText(context, name, capitalizedName);
 		} else if (typeof(clazz, STRING_TYPES)) {
-			return new FormText(context, capitalizedName);
+			return new FormText(context, name, capitalizedName);
 		} else if (typeof(clazz, DATE_TYPES)) {
-			return new FormDate(context, capitalizedName);
+			return new FormDate(context, name, capitalizedName);
 		} else {
 			throw new UnsupportedTypeException();
 		}

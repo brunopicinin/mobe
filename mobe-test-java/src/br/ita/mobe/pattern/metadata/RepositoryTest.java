@@ -14,14 +14,14 @@ public class RepositoryTest extends Repository {
 		assertEquals(0, cache.size()); // initial condition
 
 		Object bean1 = new ClassAnnotation();
-		BeanMetadata mData1 = getMetadata(bean1.getClass());
+		BeanMetadata mData1 = getMetadata(bean1);
 		assertEquals(1, cache.size());
 
 		Object bean2 = new MethodAnnotation();
-		getMetadata(bean2.getClass());
+		getMetadata(bean2);
 		assertEquals(2, cache.size());
 
-		BeanMetadata mData2 = getMetadata(bean1.getClass());
+		BeanMetadata mData2 = getMetadata(bean1);
 		assertEquals(2, cache.size());
 		assertEquals(mData1, mData2);
 	}

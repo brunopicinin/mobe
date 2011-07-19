@@ -15,7 +15,7 @@ public class ConcreteViewProcessorTest extends InstrumentationTestCase {
 	public void testGenerateForm() {
 		Context context = this.getInstrumentation().getContext();
 		Object bean = new FieldAnnotation();
-		BeanMetadata metadata = Repository.getInstance().getMetadata(bean.getClass());
+		BeanMetadata metadata = Repository.getInstance().getMetadata(bean);
 		ViewProcessor processor = metadata.getProcessor();
 		FormView form = processor.generateForm(context, metadata);
 		assertNotNull(form);

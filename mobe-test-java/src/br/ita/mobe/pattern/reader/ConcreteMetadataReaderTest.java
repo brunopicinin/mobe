@@ -30,7 +30,7 @@ public class ConcreteMetadataReaderTest {
 	@Test
 	public void createMetadataNoAnn() {
 		Object noAnn = new NoAnnotation();
-		BeanMetadata metadata = reader.createMetadata(noAnn.getClass());
+		BeanMetadata metadata = reader.createMetadata(noAnn);
 		List<PropertyDescriptor> properties = metadata.getProperties();
 		assertEquals(0, properties.size());
 	}
@@ -38,21 +38,21 @@ public class ConcreteMetadataReaderTest {
 	@Test
 	public void createMetadataFieldAnn() {
 		Object fieldAnn = new FieldAnnotation();
-		BeanMetadata metadata = reader.createMetadata(fieldAnn.getClass());
+		BeanMetadata metadata = reader.createMetadata(fieldAnn);
 		assertCorrectMetadata(metadata);
 	}
 
 	@Test
 	public void createMetadataMethodAnn() {
 		Object methodAnn = new MethodAnnotation();
-		BeanMetadata metadata = reader.createMetadata(methodAnn.getClass());
+		BeanMetadata metadata = reader.createMetadata(methodAnn);
 		assertCorrectMetadata(metadata);
 	}
 
 	@Test
 	public void createMetadataClassAnn() {
 		Object classAnn = new ClassAnnotation();
-		BeanMetadata metadata = reader.createMetadata(classAnn.getClass());
+		BeanMetadata metadata = reader.createMetadata(classAnn);
 		assertCorrectMetadata(metadata);
 	}
 
