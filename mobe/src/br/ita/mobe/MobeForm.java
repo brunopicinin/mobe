@@ -26,8 +26,6 @@ public class MobeForm extends Activity {
 			controller = new MobeController(new GenerateFormLayer());
 		} else if (action.equals("populate")) {
 			controller = new MobeController(new GenerateFormLayer(), new PopulateFormLayer());
-		} else if (action.equals("bind")) {
-			return;
 		}
 		Object bean = new Bean2();
 		FormView form = controller.generateForm(MobeForm.this, bean);

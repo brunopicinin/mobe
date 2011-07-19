@@ -33,4 +33,5 @@ public class FormDate extends FormWidget {
 		int year = calendar.get(Calendar.YEAR);
 		editText.setText(day + "/" + month + "/" + year);
 	}
+
 }

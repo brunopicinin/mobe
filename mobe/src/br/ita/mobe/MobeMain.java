@@ -38,15 +38,6 @@ public class MobeMain extends Activity {
 				startActivity(intent);
 			}
 		});
-
-		Button bind = (Button) findViewById(R.id.bind);
-		bind.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(MobeMain.this, MobeForm.class);
-				intent.putExtra("action", "bind");
-				startActivity(intent);
-			}
-		});
 	}
+
 }
