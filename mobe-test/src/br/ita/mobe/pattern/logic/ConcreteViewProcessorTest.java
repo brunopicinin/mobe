@@ -4,6 +4,7 @@ import pojo.full.FieldAnnotation;
 import android.content.Context;
 import android.test.InstrumentationTestCase;
 import android.view.View;
+import br.ita.mobe.pattern.logic.process.ViewProcessor;
 import br.ita.mobe.pattern.metadata.BeanMetadata;
 import br.ita.mobe.pattern.metadata.Repository;
 import br.ita.mobe.view.FormView;

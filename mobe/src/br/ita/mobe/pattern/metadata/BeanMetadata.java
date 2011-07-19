@@ -3,8 +3,8 @@ package br.ita.mobe.pattern.metadata;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.ita.mobe.pattern.logic.ViewProcessor;
-import br.ita.mobe.pattern.logic.ConcreteViewProcessor;
+import br.ita.mobe.pattern.logic.process.ConcreteViewProcessor;
+import br.ita.mobe.pattern.logic.process.ViewProcessor;
 
 public class BeanMetadata {
 

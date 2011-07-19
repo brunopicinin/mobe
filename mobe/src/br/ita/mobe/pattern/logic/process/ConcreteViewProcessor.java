@@ -1,4 +1,4 @@
-package br.ita.mobe.pattern.logic;
+package br.ita.mobe.pattern.logic.process;
 
 import java.util.Calendar;
 import java.util.Date;

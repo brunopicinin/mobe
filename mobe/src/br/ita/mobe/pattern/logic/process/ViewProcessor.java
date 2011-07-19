@@ -1,4 +1,4 @@
-package br.ita.mobe.pattern.logic;
+package br.ita.mobe.pattern.logic.process;
 
 import android.content.Context;
 import br.ita.mobe.pattern.metadata.BeanMetadata;
