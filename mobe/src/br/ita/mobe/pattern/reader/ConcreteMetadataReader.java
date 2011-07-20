@@ -13,8 +13,8 @@ public class ConcreteMetadataReader implements MetadataReader {
 
 	@Override
 	public BeanMetadata createMetadata(Object bean) {
-		BeanMetadata metadata = new BeanMetadata();
 		Class<? extends Object> clazz = bean.getClass();
+		BeanMetadata metadata = new BeanMetadata(clazz);
 		boolean classAnn = clazz.isAnnotationPresent(Property.class);
 		for (Field field : clazz.getDeclaredFields()) {
 			if (classAnn || field.isAnnotationPresent(Property.class)) {

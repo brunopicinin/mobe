@@ -20,4 +20,9 @@ public class FormText extends FormWidget {
 		editText.setText(value.toString());
 	}
 
+	@Override
+	public Object getValue(Class<?> type) {
+		return editText.getText().toString();
+	}
+
 }

@@ -30,4 +30,9 @@ public class FormLogic extends FormWidget {
 		}
 	}
 
+	@Override
+	public Object getValue(Class<?> type) {
+		return checkBox.isChecked();
+	}
+
 }

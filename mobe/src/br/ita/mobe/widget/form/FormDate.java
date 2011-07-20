@@ -34,4 +34,53 @@ public class FormDate extends FormWidget {
 		editText.setText(day + "/" + month + "/" + year);
 	}
 
+	@Override
+	public Object getValue(Class<?> type) {
+		Calendar cal = Calendar.getInstance();
+		cal.clear();
+		String string = editText.getText().toString();
+
+		StringBuilder day = new StringBuilder();
+		StringBuilder month = new StringBuilder();
+		StringBuilder year = new StringBuilder();
+
+		int idx = 0;
+		char c = string.charAt(idx);
+		while (c != '.' && c != '/' && c != '-') {
+			day.append(c);
+			idx++;
+			c = string.charAt(idx);
+		}
+
+		idx++;
+		c = string.charAt(idx);
+		while (c != '.' && c != '/' && c != '-') {
+			month.append(c);
+			idx++;
+			c = string.charAt(idx);
+		}
+
+		idx++;
+		c = string.charAt(idx);
+		while (c != '.' && c != '/' && c != '-') {
+			year.append(c);
+			idx++;
+			if (idx == string.length()) {
+				break;
+			}
+			c = string.charAt(idx);
+		}
+
+		cal.set(Calendar.DAY_OF_MONTH, Integer.valueOf(day.toString()));
+		cal.set(Calendar.MONTH, Integer.valueOf(month.toString()) - 1);
+		cal.set(Calendar.YEAR, Integer.valueOf(year.toString()));
+
+		if (type.equals(Calendar.class)) {
+			return cal;
+		} else if (type.equals(Date.class)) {
+			return new Date(cal.getTimeInMillis());
+		}
+		return null;
+	}
+
 }

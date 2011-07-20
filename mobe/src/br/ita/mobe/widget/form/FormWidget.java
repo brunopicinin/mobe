@@ -36,4 +36,17 @@ public abstract class FormWidget extends LinearLayout {
 
 	protected abstract void populateWg(Object value);
 
+	public abstract Object getValue(Class<?> type);
+
+	protected static boolean isEmpty(String string) {
+		if (string == null) {
+			return true;
+		}
+		String trim = string.trim();
+		if (trim.length() == 0) {
+			return true;
+		}
+		return false;
+	}
+
 }

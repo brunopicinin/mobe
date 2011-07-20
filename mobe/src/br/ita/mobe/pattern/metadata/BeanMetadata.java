@@ -8,11 +8,21 @@ import br.ita.mobe.pattern.logic.process.ViewProcessor;
 
 public class BeanMetadata {
 
+	private Class<?> type;
 	private List<PropertyDescriptor> properties;
 	private ViewProcessor processor;
 
-	public BeanMetadata() {
+	public BeanMetadata(Class<?> type) {
+		this.type = type;
 		properties = new ArrayList<PropertyDescriptor>();
+	}
+
+	public Class<?> getType() {
+		return type;
+	}
+
+	public void setType(Class<?> type) {
+		this.type = type;
 	}
 
 	public void setProperties(List<PropertyDescriptor> properties) {

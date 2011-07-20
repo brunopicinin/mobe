@@ -21,4 +21,22 @@ public class FormNumber extends FormWidget {
 		editText.setText(value.toString());
 	}
 
+	@Override
+	public Object getValue(Class<?> type) {
+		String string = editText.getText().toString();
+		if (isEmpty(string)) {
+			string = "0";
+		}
+		if (type.equals(byte.class) || type.equals(Byte.class)) {
+			return Byte.valueOf(string);
+		} else if (type.equals(short.class) || type.equals(Short.class)) {
+			return Short.valueOf(string);
+		} else if (type.equals(int.class) || type.equals(Integer.class)) {
+			return Integer.valueOf(string);
+		} else if (type.equals(long.class) || type.equals(Long.class)) {
+			return Long.valueOf(string);
+		}
+		return null;
+	}
+
 }

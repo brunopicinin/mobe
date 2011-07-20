@@ -21,4 +21,18 @@ public class FormDecimal extends FormWidget {
 		editText.setText(value.toString());
 	}
 
+	@Override
+	public Object getValue(Class<?> type) {
+		String string = editText.getText().toString();
+		if (isEmpty(string)) {
+			string = "0";
+		}
+		if (type.equals(float.class) || type.equals(Float.class)) {
+			return Float.valueOf(string);
+		} else if (type.equals(double.class) || type.equals(Double.class)) {
+			return Double.valueOf(string);
+		}
+		return null;
+	}
+
 }

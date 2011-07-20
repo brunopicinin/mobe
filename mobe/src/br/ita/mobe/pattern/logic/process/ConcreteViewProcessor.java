@@ -31,7 +31,7 @@ public class ConcreteViewProcessor implements ViewProcessor {
 
 	@Override
 	public FormView generateForm(Context context, BeanMetadata metadata) {
-		FormView formView = new FormView(context);
+		FormView formView = new FormView(context, metadata.getType());
 		List<PropertyDescriptor> properties = metadata.getProperties();
 		for (PropertyDescriptor property : properties) {
 			try {

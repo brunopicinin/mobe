@@ -21,7 +21,6 @@ public class MobeForm extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.form);
-
 		String action = getIntent().getExtras().getString("action");
 		handleIntent(action);
 	}
@@ -43,20 +42,20 @@ public class MobeForm extends Activity {
 		container.addView(form, 0);
 
 		Button printBean = (Button) findViewById(R.id.printBean);
-		printBean.setOnClickListener(new CListener(bean));
+		printBean.setOnClickListener(new CListener(form));
 	}
 
 	class CListener implements OnClickListener {
-		private Object bean;
+		private FormView form;
 
-		public CListener(Object bean) {
-			this.bean = bean;
+		public CListener(FormView form) {
+			this.form = form;
 		}
 
 		@Override
 		public void onClick(View v) {
 			try {
-				print(bean);
+				print(form.getBean());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
