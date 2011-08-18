@@ -50,5 +50,4 @@ public class MobeMain extends Activity {
 			}
 		});
 	}
-
 }
