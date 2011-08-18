@@ -22,12 +22,12 @@ public class ConcreteViewProcessor implements ViewProcessor {
 	private static final String TAG = "ConcreteViewProcessor";
 
 	// Field data types
-	private static final Class<?>[] LOGIC_TYPES = { boolean.class, Boolean.class };
-	private static final Class<?>[] INT_TYPES = { byte.class, Byte.class, short.class, Short.class, int.class, Integer.class, long.class, Long.class };
-	private static final Class<?>[] DECIMAL_TYPES = { float.class, Float.class, double.class, Double.class };
-	private static final Class<?>[] CHAR_TYPES = { char.class, Character.class };
-	private static final Class<?>[] STRING_TYPES = { String.class };
-	private static final Class<?>[] DATE_TYPES = { Calendar.class, Date.class };
+	public static final Class<?>[] LOGIC_TYPES = { boolean.class, Boolean.class };
+	public static final Class<?>[] INT_TYPES = { byte.class, Byte.class, short.class, Short.class, int.class, Integer.class, long.class, Long.class };
+	public static final Class<?>[] DECIMAL_TYPES = { float.class, Float.class, double.class, Double.class };
+	public static final Class<?>[] CHAR_TYPES = { char.class, Character.class };
+	public static final Class<?>[] STRING_TYPES = { String.class };
+	public static final Class<?>[] DATE_TYPES = { Calendar.class, Date.class };
 
 	@Override
 	public FormView generateForm(Context context, BeanMetadata metadata) {
@@ -78,7 +78,7 @@ public class ConcreteViewProcessor implements ViewProcessor {
 		return sb.toString();
 	}
 
-	private static boolean typeof(Class<?> clazz, Class<?>[] types) {
+	public static boolean typeof(Class<?> clazz, Class<?>[] types) {
 		for (Class<?> c : types) {
 			if (c.equals(clazz)) {
 				return true;

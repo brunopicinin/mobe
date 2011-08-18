@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import br.ita.mobe.pattern.PersistenceController;
 
 /**
  * Application Client.
@@ -36,6 +37,16 @@ public class MobeMain extends Activity {
 				Intent intent = new Intent(MobeMain.this, MobeForm.class);
 				intent.putExtra("action", "populate");
 				startActivity(intent);
+			}
+		});
+
+		Button database = (Button) findViewById(R.id.database);
+		database.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				PersistenceController pController = new PersistenceController();
+				Bean1 bean = new Bean1();
+				pController.save(bean, MobeMain.this);
 			}
 		});
 	}

@@ -24,6 +24,8 @@ public class Repository {
 	}
 
 	public BeanMetadata getMetadata(Object bean) {
+		// TODO: Rever! Esta fazendo confusao de Ojbect (bean) com Class (classe do bean)
+
 		Class<?> clazz = bean.getClass();
 		if (cache.containsKey(clazz)) {
 			return cache.get(clazz);
