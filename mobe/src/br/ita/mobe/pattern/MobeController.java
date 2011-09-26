@@ -4,20 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import br.ita.mobe.pattern.logic.layer.FormProcessingLayer;
 import br.ita.mobe.pattern.logic.layer.GenerateFormLayer;
 import br.ita.mobe.pattern.logic.layer.PopulateFormLayer;
-import br.ita.mobe.pattern.logic.layer.ProcessingLayer;
-import br.ita.mobe.pattern.metadata.BeanMetadata;
+import br.ita.mobe.pattern.metadata.ClassMetadata;
 import br.ita.mobe.pattern.metadata.Repository;
 import br.ita.mobe.view.FormView;
 
 public class MobeController {
 
-	private List<ProcessingLayer> layers;
+	private List<FormProcessingLayer> layers;
 
-	public MobeController(ProcessingLayer... layers) {
-		this.layers = new ArrayList<ProcessingLayer>();
-		for (ProcessingLayer layer : layers) {
+	public MobeController(FormProcessingLayer... layers) {
+		this.layers = new ArrayList<FormProcessingLayer>();
+		for (FormProcessingLayer layer : layers) {
 			this.layers.add(layer);
 		}
 	}
@@ -27,10 +27,10 @@ public class MobeController {
 	}
 
 	public FormView generateForm(Context context, Object bean) {
-		BeanMetadata metadata = Repository.getInstance().getMetadata(bean);
+		ClassMetadata metadata = Repository.getInstance().getMetadata(bean.getClass());
 		FormView form = null;
-		for (ProcessingLayer layer : layers) {
-			form = layer.processLayer(context, metadata, form);
+		for (FormProcessingLayer layer : layers) {
+			form = layer.processLayer(context, form, metadata, bean);
 		}
 		return form;
 	}

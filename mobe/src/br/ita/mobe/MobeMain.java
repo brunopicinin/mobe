@@ -45,8 +45,7 @@ public class MobeMain extends Activity {
 			@Override
 			public void onClick(View v) {
 				PersistenceController pController = new PersistenceController();
-				Bean1 bean = new Bean1();
-				pController.save(bean, MobeMain.this);
+				pController.createTables(MobeMain.this, Bean1.class, Bean2.class);
 			}
 		});
 	}

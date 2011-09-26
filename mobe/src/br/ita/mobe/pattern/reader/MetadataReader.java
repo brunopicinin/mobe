@@ -1,9 +1,9 @@
 package br.ita.mobe.pattern.reader;
 
-import br.ita.mobe.pattern.metadata.BeanMetadata;
+import br.ita.mobe.pattern.metadata.ClassMetadata;
 
 public interface MetadataReader {
 
-	public BeanMetadata createMetadata(Object bean);
+	public ClassMetadata createMetadata(Class<?> clazz);
 
 }

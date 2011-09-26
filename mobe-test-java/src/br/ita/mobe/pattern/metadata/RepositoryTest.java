@@ -13,15 +13,13 @@ public class RepositoryTest extends Repository {
 	public void testMetadataCache() {
 		assertEquals(0, cache.size()); // initial condition
 
-		Object bean1 = new ClassAnnotation();
-		BeanMetadata mData1 = getMetadata(bean1);
+		ClassMetadata mData1 = getMetadata(ClassAnnotation.class);
 		assertEquals(1, cache.size());
 
-		Object bean2 = new MethodAnnotation();
-		getMetadata(bean2);
+		getMetadata(MethodAnnotation.class);
 		assertEquals(2, cache.size());
 
-		BeanMetadata mData2 = getMetadata(bean1);
+		ClassMetadata mData2 = getMetadata(ClassAnnotation.class);
 		assertEquals(2, cache.size());
 		assertEquals(mData1, mData2);
 	}

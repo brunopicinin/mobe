@@ -26,6 +26,8 @@ public class MobeForm extends Activity {
 	}
 
 	private void handleIntent(String action) {
+		LinearLayout container = (LinearLayout) findViewById(R.id.container);
+
 		MobeController controller = null;
 		if (action.equals("generate")) {
 			controller = new MobeController(new GenerateFormLayer());
@@ -34,8 +36,6 @@ public class MobeForm extends Activity {
 		} else {
 			return;
 		}
-
-		LinearLayout container = (LinearLayout) findViewById(R.id.container);
 
 		Object bean = new Bean2();
 		FormView form = controller.generateForm(this, bean);

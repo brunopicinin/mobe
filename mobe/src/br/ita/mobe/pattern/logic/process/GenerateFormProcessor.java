@@ -7,7 +7,7 @@ import java.util.List;
 import android.content.Context;
 import android.util.Log;
 import br.ita.mobe.exception.UnsupportedTypeException;
-import br.ita.mobe.pattern.metadata.BeanMetadata;
+import br.ita.mobe.pattern.metadata.ClassMetadata;
 import br.ita.mobe.pattern.metadata.PropertyDescriptor;
 import br.ita.mobe.view.FormView;
 import br.ita.mobe.widget.form.FormDate;
@@ -17,7 +17,7 @@ import br.ita.mobe.widget.form.FormNumber;
 import br.ita.mobe.widget.form.FormText;
 import br.ita.mobe.widget.form.FormWidget;
 
-public class ConcreteViewProcessor implements ViewProcessor {
+public class GenerateFormProcessor implements ViewProcessor {
 
 	private static final String TAG = "ConcreteViewProcessor";
 
@@ -30,8 +30,8 @@ public class ConcreteViewProcessor implements ViewProcessor {
 	public static final Class<?>[] DATE_TYPES = { Calendar.class, Date.class };
 
 	@Override
-	public FormView generateForm(Context context, BeanMetadata metadata) {
-		FormView formView = new FormView(context, metadata.getType());
+	public FormView generateForm(Context context, ClassMetadata metadata) {
+		FormView formView = new FormView(context, metadata.getTarget());
 		List<PropertyDescriptor> properties = metadata.getProperties();
 		for (PropertyDescriptor property : properties) {
 			try {

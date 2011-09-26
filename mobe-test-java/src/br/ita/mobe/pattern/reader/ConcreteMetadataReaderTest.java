@@ -15,7 +15,7 @@ import pojo.ClassAnnotation;
 import pojo.FieldAnnotation;
 import pojo.MethodAnnotation;
 import pojo.NoAnnotation;
-import br.ita.mobe.pattern.metadata.BeanMetadata;
+import br.ita.mobe.pattern.metadata.ClassMetadata;
 import br.ita.mobe.pattern.metadata.PropertyDescriptor;
 
 public class ConcreteMetadataReaderTest {
@@ -29,34 +29,30 @@ public class ConcreteMetadataReaderTest {
 
 	@Test
 	public void createMetadataNoAnn() {
-		Object noAnn = new NoAnnotation();
-		BeanMetadata metadata = reader.createMetadata(noAnn);
+		ClassMetadata metadata = reader.createMetadata(NoAnnotation.class);
 		List<PropertyDescriptor> properties = metadata.getProperties();
 		assertEquals(0, properties.size());
 	}
 
 	@Test
 	public void createMetadataFieldAnn() {
-		Object fieldAnn = new FieldAnnotation();
-		BeanMetadata metadata = reader.createMetadata(fieldAnn);
+		ClassMetadata metadata = reader.createMetadata(FieldAnnotation.class);
 		assertCorrectMetadata(metadata);
 	}
 
 	@Test
 	public void createMetadataMethodAnn() {
-		Object methodAnn = new MethodAnnotation();
-		BeanMetadata metadata = reader.createMetadata(methodAnn);
+		ClassMetadata metadata = reader.createMetadata(MethodAnnotation.class);
 		assertCorrectMetadata(metadata);
 	}
 
 	@Test
 	public void createMetadataClassAnn() {
-		Object classAnn = new ClassAnnotation();
-		BeanMetadata metadata = reader.createMetadata(classAnn);
+		ClassMetadata metadata = reader.createMetadata(ClassAnnotation.class);
 		assertCorrectMetadata(metadata);
 	}
 
-	private void assertCorrectMetadata(BeanMetadata metadata) {
+	private void assertCorrectMetadata(ClassMetadata metadata) {
 		List<PropertyDescriptor> properties = metadata.getProperties();
 		assertEquals(4, properties.size());
 

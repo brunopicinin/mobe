@@ -17,21 +17,18 @@ public class Repository {
 		return instance;
 	}
 
-	protected Map<Class<?>, BeanMetadata> cache;
+	protected Map<Class<?>, ClassMetadata> cache;
 
 	protected Repository() {
-		cache = new HashMap<Class<?>, BeanMetadata>();
+		cache = new HashMap<Class<?>, ClassMetadata>();
 	}
 
-	public BeanMetadata getMetadata(Object bean) {
-		// TODO: Rever! Esta fazendo confusao de Ojbect (bean) com Class (classe do bean)
-
-		Class<?> clazz = bean.getClass();
+	public ClassMetadata getMetadata(Class<?> clazz) {
 		if (cache.containsKey(clazz)) {
 			return cache.get(clazz);
 		} else {
 			MetadataReader reader = MetadataReaderProvider.getInstance().getReader();
-			BeanMetadata metadata = reader.createMetadata(bean);
+			ClassMetadata metadata = reader.createMetadata(clazz);
 			cache.put(clazz, metadata);
 			return metadata;
 		}

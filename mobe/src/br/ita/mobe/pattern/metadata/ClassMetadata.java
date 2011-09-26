@@ -3,26 +3,26 @@ package br.ita.mobe.pattern.metadata;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.ita.mobe.pattern.logic.process.ConcreteViewProcessor;
+import br.ita.mobe.pattern.logic.process.GenerateFormProcessor;
 import br.ita.mobe.pattern.logic.process.ViewProcessor;
 
-public class BeanMetadata {
+public class ClassMetadata {
 
-	private Class<?> type;
+	private Class<?> target;
 	private List<PropertyDescriptor> properties;
 	private ViewProcessor processor;
 
-	public BeanMetadata(Class<?> type) {
-		this.type = type;
+	public ClassMetadata(Class<?> type) {
+		this.target = type;
 		properties = new ArrayList<PropertyDescriptor>();
 	}
 
-	public Class<?> getType() {
-		return type;
+	public Class<?> getTarget() {
+		return target;
 	}
 
-	public void setType(Class<?> type) {
-		this.type = type;
+	public void setTarget(Class<?> type) {
+		this.target = type;
 	}
 
 	public void setProperties(List<PropertyDescriptor> properties) {
@@ -40,7 +40,7 @@ public class BeanMetadata {
 	public ViewProcessor getProcessor() {
 		if (processor == null) {
 			// default logic processor
-			processor = new ConcreteViewProcessor();
+			processor = new GenerateFormProcessor();
 		}
 		return processor;
 	}
