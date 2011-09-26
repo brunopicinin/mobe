@@ -2,10 +2,12 @@ package br.ita.mobe;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import br.ita.mobe.exception.UnsupportedTypeException;
 import br.ita.mobe.pattern.PersistenceController;
 
 /**
@@ -44,8 +46,14 @@ public class MobeMain extends Activity {
 		database.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				PersistenceController pController = new PersistenceController();
-				pController.createTables(MobeMain.this, Bean1.class, Bean2.class);
+				try {
+					PersistenceController pController = new PersistenceController();
+					pController.createTables(MobeMain.this, Bean1.class, Bean2.class);
+				} catch (SQLiteException e) {
+					e.printStackTrace();
+				} catch (UnsupportedTypeException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 	}

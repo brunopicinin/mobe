@@ -1,8 +1,11 @@
 package br.ita.mobe.db;
 
+import java.util.Set;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import br.ita.mobe.exception.UnsupportedTypeException;
 
 public class DatabaseAdapter {
 
@@ -21,8 +24,13 @@ public class DatabaseAdapter {
 		this.dbVersion = dbVersion;
 	}
 
-	public void createTables(Class<?>... classes) throws SQLiteException {
+	public void createTables(Set<Class<?>> classes) throws SQLiteException, UnsupportedTypeException {
+		DatabaseBuilder builder = new DatabaseBuilder();
+		for (Class<?> clazz : classes) {
+			builder.addTable(clazz);
+		}
 		dbHelper = new DatabaseHelper(context, dbName, dbVersion);
+		dbHelper.setBuilder(builder);
 		database = dbHelper.getWritableDatabase();
 	}
 
