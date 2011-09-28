@@ -10,30 +10,33 @@ import br.ita.mobe.exception.UnsupportedTypeException;
 
 public class PersistenceController {
 
-	public void createTables(Context context, Class<?>... classes) throws SQLiteException, UnsupportedTypeException {
+	private Context context;
+
+	// temp
+	private String name = "mobe.db";
+	private int version = 1;
+
+	public PersistenceController(Context context) {
+		this.context = context;
+	}
+
+	public void createTables(Class<?>... classes) throws SQLiteException, UnsupportedTypeException {
 		if (classes.length == 0) {
 			throw new IllegalArgumentException("Must have at least one table to create.");
 		}
 		Set<Class<?>> classesSet = new HashSet<Class<?>>();
 		for (Class<?> clazz : classes) {
-			// avoid repeated classes
-			classesSet.add(clazz);
+			classesSet.add(clazz); // avoid repeated classes
 		}
-		String name = "mobe.db";
-		int version = 1;
 		DatabaseAdapter dbAdapter = new DatabaseAdapter(context, name, version);
 		dbAdapter.createTables(classesSet);
 	}
 
-	/**
-	 * Not implemented yet.
-	 */
-	public void save(Object bean, Context context) {
-		// ClassMetadata metadata = Repository.getInstance().getMetadata(bean);
-		// open (create/update) database
-		// dbAdapter = DatabaseAdapterProvider.getDbAdapter(context, "mydb", 1);
-		// save bean
-
+	public void save(Object bean) throws UnsupportedTypeException {
+		// TODO Test controllers method arguments. Ex: createTables
+		DatabaseAdapter dbAdapter = new DatabaseAdapter(context, name, version);
+		dbAdapter.open();
+		dbAdapter.save(bean);
 	}
 
 }

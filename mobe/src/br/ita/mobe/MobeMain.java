@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -16,6 +17,8 @@ import br.ita.mobe.pattern.PersistenceController;
  * Class with the simple purpose of testing the framework. Not deployed.
  */
 public class MobeMain extends Activity {
+
+	protected static final String TAG = "MobeMain";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +50,27 @@ public class MobeMain extends Activity {
 			@Override
 			public void onClick(View v) {
 				try {
-					PersistenceController pController = new PersistenceController();
-					pController.createTables(MobeMain.this, Bean1.class, Bean2.class);
+					PersistenceController pController = new PersistenceController(MobeMain.this);
+					pController.createTables(Bean1.class, Bean2.class);
 				} catch (SQLiteException e) {
 					e.printStackTrace();
 				} catch (UnsupportedTypeException e) {
 					e.printStackTrace();
+				}
+			}
+		});
+
+		Button db_save = (Button) findViewById(R.id.db_save);
+		db_save.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				try {
+					PersistenceController pController = new PersistenceController(MobeMain.this);
+					Bean2 bean2 = new Bean2();
+					pController.save(bean2);
+				} catch (UnsupportedTypeException e) {
+					Log.e(TAG, "Type: " + e.getType(), e);
+					// e.printStackTrace();
 				}
 			}
 		});

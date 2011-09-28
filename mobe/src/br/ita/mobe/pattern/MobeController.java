@@ -13,20 +13,22 @@ import br.ita.mobe.view.FormView;
 
 public class MobeController {
 
+	private Context context;
 	private List<FormProcessingLayer> layers;
 
-	public MobeController(FormProcessingLayer... layers) {
+	public MobeController(Context context, FormProcessingLayer... layers) {
+		this.context = context;
 		this.layers = new ArrayList<FormProcessingLayer>();
 		for (FormProcessingLayer layer : layers) {
 			this.layers.add(layer);
 		}
 	}
 
-	public MobeController() {
-		this(new GenerateFormLayer(), new PopulateFormLayer());
+	public MobeController(Context context) {
+		this(context, new GenerateFormLayer(), new PopulateFormLayer());
 	}
 
-	public FormView generateForm(Context context, Object bean) {
+	public FormView generateForm(Object bean) {
 		ClassMetadata metadata = Repository.getInstance().getMetadata(bean.getClass());
 		FormView form = null;
 		for (FormProcessingLayer layer : layers) {

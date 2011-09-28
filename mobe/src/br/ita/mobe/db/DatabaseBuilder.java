@@ -29,36 +29,36 @@ public class DatabaseBuilder {
 	}
 
 	public void addTable(Class<?> clazz) throws UnsupportedTypeException {
-		String name = clazz.getSimpleName();
-		StringBuilder sb = new StringBuilder("create table ").append(name).append(" (");
-		sb.append("id integer primary key autoincrement, ");
-
+		String name = clazz.getSimpleName().toLowerCase();
+		StringBuilder createSql = new StringBuilder("create table ").append(name).append(" (id integer primary key autoincrement, ");
 		ClassMetadata metadata = Repository.getInstance().getMetadata(clazz);
 		List<PropertyDescriptor> properties = metadata.getProperties();
 		for (PropertyDescriptor property : properties) {
 			Class<?> type = property.getType();
 			String propName = property.getName().toLowerCase();
 			if (typeof(type, LOGIC_TYPES)) {
-				sb.append(propName).append(" boolean, ");
+				createSql.append(propName).append(" boolean, ");
 			} else if (typeof(type, INT_TYPES)) {
-				sb.append(propName).append(" integer, ");
+				createSql.append(propName).append(" integer, ");
 			} else if (typeof(type, DECIMAL_TYPES)) {
-				sb.append(propName).append(" real, ");
+				createSql.append(propName).append(" real, ");
 			} else if (typeof(type, CHAR_TYPES)) {
-				sb.append(propName).append(" text, ");
+				createSql.append(propName).append(" text, ");
 			} else if (typeof(type, STRING_TYPES)) {
-				sb.append(propName).append(" text, ");
+				createSql.append(propName).append(" text, ");
 			} else if (typeof(type, DATE_TYPES)) {
-				sb.append(propName).append(" integer, ");
+				createSql.append(propName).append(" integer, ");
 			} else {
 				throw new UnsupportedTypeException();
 			}
 		}
-		int length = sb.length();
-		sb.delete(length - 2, length);
-		sb.append(");");
-		// TODO: fazer o sql drop
-		String[] sql = { sb.toString(), "" };
+		int length = createSql.length();
+		createSql.delete(length - 2, length);
+		createSql.append(");");
+
+		StringBuilder dropSql = new StringBuilder("drop table ").append(name).append(";");
+
+		String[] sql = { createSql.toString(), dropSql.toString() };
 		tables.put(name, sql);
 	}
 

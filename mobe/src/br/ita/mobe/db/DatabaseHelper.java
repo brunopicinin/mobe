@@ -10,14 +10,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	public DatabaseHelper(Context context, String dbName, int dbVersion) {
 		super(context, dbName, null, dbVersion);
-		builder = new DatabaseBuilder();
 	}
 
-	public DatabaseBuilder getBuilder() {
-		return builder;
-	}
-
-	public void setBuilder(DatabaseBuilder builder) {
+	public DatabaseHelper(Context context, String dbName, int dbVersion, DatabaseBuilder builder) {
+		super(context, dbName, null, dbVersion);
 		this.builder = builder;
 	}
 
