@@ -12,8 +12,8 @@ public class MobeControllerTest extends InstrumentationTestCase {
 	public void testGenerateForm() {
 		Context context = getInstrumentation().getContext();
 		Object bean = new FieldAnnotation();
-		MobeController controller = new MobeController();
-		FormView form = controller.generateForm(context, bean);
+		MobeController controller = new MobeController(context);
+		FormView form = controller.generateForm(bean);
 		assertNotNull(form);
 		assertTrue(form instanceof FormView);
 
