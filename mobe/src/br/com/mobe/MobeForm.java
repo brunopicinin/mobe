@@ -10,10 +10,10 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import br.com.mobe.pattern.MobeController;
-import br.com.mobe.pattern.logic.layer.GenerateFormLayer;
-import br.com.mobe.pattern.logic.layer.PopulateFormLayer;
 import br.com.mobe.view.FormView;
+import br.com.mobe.view.ViewController;
+import br.com.mobe.view.logic.layer.GenerateFormLayer;
+import br.com.mobe.view.logic.layer.PopulateFormLayer;
 import br.ita.mobe.R;
 
 public class MobeForm extends Activity {
@@ -29,11 +29,11 @@ public class MobeForm extends Activity {
 	private void handleIntent(String action) {
 		LinearLayout container = (LinearLayout) findViewById(R.id.container);
 
-		MobeController controller = null;
+		ViewController controller = null;
 		if (action.equals("generate")) {
-			controller = new MobeController(this, new GenerateFormLayer());
+			controller = new ViewController(this, new GenerateFormLayer());
 		} else if (action.equals("populate")) {
-			controller = new MobeController(this, new GenerateFormLayer(), new PopulateFormLayer());
+			controller = new ViewController(this, new GenerateFormLayer(), new PopulateFormLayer());
 		} else {
 			return;
 		}

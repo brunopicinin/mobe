@@ -4,14 +4,14 @@ import static junit.framework.Assert.assertEquals;
 
 import org.junit.Test;
 
-import br.com.mobe.pattern.metadata.ClassMetadata;
-import br.com.mobe.pattern.metadata.PropertyDescriptor;
+import br.com.mobe.core.metadata.ClassMetadata;
+import br.com.mobe.core.metadata.Property;
 
 public class ClassMetadataTest {
 
 	@Test
 	public void testAddProperty() {
-		PropertyDescriptor property = new PropertyDescriptor("name", String.class);
+		Property property = new Property("name", String.class);
 		ClassMetadata metadata = new ClassMetadata(Object.class);
 		metadata.addProperty(property);
 		assertEquals(1, metadata.getProperties().size());

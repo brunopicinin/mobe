@@ -4,11 +4,11 @@ import pojo.full.FieldAnnotation;
 import android.content.Context;
 import android.test.InstrumentationTestCase;
 import android.view.View;
-import br.com.mobe.pattern.logic.process.ViewProcessor;
-import br.com.mobe.pattern.metadata.ClassMetadata;
-import br.com.mobe.pattern.metadata.Repository;
+import br.com.mobe.core.metadata.ClassMetadata;
+import br.com.mobe.core.metadata.Repository;
 import br.com.mobe.view.FormView;
-import br.com.mobe.widget.form.FormWidget;
+import br.com.mobe.view.logic.process.ViewProcessor;
+import br.com.mobe.view.widget.form.FormWidget;
 
 public class GenerateFormProcessorTest extends InstrumentationTestCase {
 

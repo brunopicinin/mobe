@@ -1,15 +1,15 @@
 package pojo.semi;
 
-import br.com.mobe.annotation.Property;
+import br.com.mobe.core.annotation.Mobe;
 
 public class SemiFieldAnnotation {
 
-	@Property
+	@Mobe
 	private String firstName = "Bruno";
 
 	private String surname;
 
-	@Property
+	@Mobe
 	private int myAge = 22;
 
 	private boolean alive = true;

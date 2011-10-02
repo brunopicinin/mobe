@@ -11,7 +11,7 @@ import java.util.List;
 import android.content.Context;
 import android.util.Log;
 import android.widget.LinearLayout;
-import br.com.mobe.widget.form.FormWidget;
+import br.com.mobe.view.widget.form.FormWidget;
 
 public class FormView extends LinearLayout implements Serializable {
 
@@ -19,16 +19,6 @@ public class FormView extends LinearLayout implements Serializable {
 
 	private Class<?> type;
 	private List<FormWidget> widgets;
-
-	// /**
-	// * Necessary for instantiation through XML. Change if custom attributes are added.
-	// *
-	// * @param context
-	// * @param attrs
-	// */
-	// public FormView(Context context, AttributeSet attrs) {
-	// this(context);
-	// }
 
 	public FormView(Context context, Class<?> type) {
 		super(context);

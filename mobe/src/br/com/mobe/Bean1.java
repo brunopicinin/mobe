@@ -1,13 +1,13 @@
 package br.com.mobe;
 
-import br.com.mobe.annotation.Property;
+import br.com.mobe.core.annotation.Mobe;
 
 /**
  * Application Class.
  * 
  * Class with the simple purpose of testing the framework. Not deployed.
  */
-@Property
+@Mobe
 public class Bean1 {
 
 	private String firstName = "Bruno";

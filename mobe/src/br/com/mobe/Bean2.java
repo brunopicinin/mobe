@@ -4,9 +4,9 @@ import static br.com.mobe.StringUtils.formatted;
 
 import java.util.Calendar;
 
-import br.com.mobe.annotation.Property;
+import br.com.mobe.core.annotation.Mobe;
 
-@Property
+@Mobe
 public class Bean2 {
 
 	private boolean importAlbum = true;

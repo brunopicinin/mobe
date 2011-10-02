@@ -15,10 +15,10 @@ import pojo.ClassAnnotation;
 import pojo.FieldAnnotation;
 import pojo.MethodAnnotation;
 import pojo.NoAnnotation;
-import br.com.mobe.pattern.metadata.ClassMetadata;
-import br.com.mobe.pattern.metadata.PropertyDescriptor;
-import br.com.mobe.pattern.reader.ConcreteMetadataReader;
-import br.com.mobe.pattern.reader.MetadataReader;
+import br.com.mobe.core.metadata.ClassMetadata;
+import br.com.mobe.core.metadata.Property;
+import br.com.mobe.core.reader.ConcreteMetadataReader;
+import br.com.mobe.core.reader.MetadataReader;
 
 public class ConcreteMetadataReaderTest {
 
@@ -32,7 +32,7 @@ public class ConcreteMetadataReaderTest {
 	@Test
 	public void createMetadataNoAnn() {
 		ClassMetadata metadata = reader.createMetadata(NoAnnotation.class);
-		List<PropertyDescriptor> properties = metadata.getProperties();
+		List<Property> properties = metadata.getProperties();
 		assertEquals(0, properties.size());
 	}
 
@@ -55,7 +55,7 @@ public class ConcreteMetadataReaderTest {
 	}
 
 	private void assertCorrectMetadata(ClassMetadata metadata) {
-		List<PropertyDescriptor> properties = metadata.getProperties();
+		List<Property> properties = metadata.getProperties();
 		assertEquals(4, properties.size());
 
 		Map<String, Class<?>> fields = new HashMap<String, Class<?>>();
@@ -65,7 +65,7 @@ public class ConcreteMetadataReaderTest {
 		fields.put("alive", boolean.class);
 		Set<String> keys = fields.keySet();
 
-		for (PropertyDescriptor property : properties) {
+		for (Property property : properties) {
 			String name = property.getName();
 			Class<?> type = property.getType();
 			assertTrue(keys.contains(name));

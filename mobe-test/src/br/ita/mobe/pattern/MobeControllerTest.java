@@ -4,16 +4,16 @@ import pojo.full.FieldAnnotation;
 import android.content.Context;
 import android.test.InstrumentationTestCase;
 import android.view.View;
-import br.com.mobe.pattern.MobeController;
 import br.com.mobe.view.FormView;
-import br.com.mobe.widget.form.FormWidget;
+import br.com.mobe.view.ViewController;
+import br.com.mobe.view.widget.form.FormWidget;
 
 public class MobeControllerTest extends InstrumentationTestCase {
 
 	public void testGenerateForm() {
 		Context context = getInstrumentation().getContext();
 		Object bean = new FieldAnnotation();
-		MobeController controller = new MobeController(context);
+		ViewController controller = new ViewController(context);
 		FormView form = controller.generateForm(bean);
 		assertNotNull(form);
 		assertTrue(form instanceof FormView);

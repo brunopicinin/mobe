@@ -4,8 +4,8 @@ import static junit.framework.Assert.assertEquals;
 
 import org.junit.Test;
 
-import br.com.mobe.pattern.metadata.ClassMetadata;
-import br.com.mobe.pattern.metadata.Repository;
+import br.com.mobe.core.metadata.ClassMetadata;
+import br.com.mobe.core.metadata.Repository;
 
 import pojo.ClassAnnotation;
 import pojo.MethodAnnotation;

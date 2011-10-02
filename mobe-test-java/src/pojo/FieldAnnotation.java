@@ -1,16 +1,16 @@
 package pojo;
 
-import br.com.mobe.annotation.Property;
+import br.com.mobe.core.annotation.Mobe;
 
 public class FieldAnnotation {
 
-	@Property
+	@Mobe
 	private String firstName = "Bruno";
-	@Property
+	@Mobe
 	private String surname;
-	@Property
+	@Mobe
 	private int myAge = 22;
-	@Property
+	@Mobe
 	private boolean alive = true;
 
 	public String getFirstName() {

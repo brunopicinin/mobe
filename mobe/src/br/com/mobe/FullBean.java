@@ -3,9 +3,9 @@ package br.com.mobe;
 import java.util.Calendar;
 import java.util.Date;
 
-import br.com.mobe.annotation.Property;
+import br.com.mobe.core.annotation.Mobe;
 
-@Property
+@Mobe
 public class FullBean {
 
 	// int

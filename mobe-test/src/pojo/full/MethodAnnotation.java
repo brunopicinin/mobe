@@ -1,6 +1,6 @@
 package pojo.full;
 
-import br.com.mobe.annotation.Property;
+import br.com.mobe.core.annotation.Mobe;
 
 public class MethodAnnotation {
 
@@ -9,42 +9,42 @@ public class MethodAnnotation {
 	private int myAge = 22;
 	private boolean alive = true;
 
-	@Property
+	@Mobe
 	public String getFirstName() {
 		return firstName;
 	}
 
-	@Property
+	@Mobe
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
 
-	@Property
+	@Mobe
 	public String getSurname() {
 		return surname;
 	}
 
-	@Property
+	@Mobe
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
 
-	@Property
+	@Mobe
 	public int getMyAge() {
 		return myAge;
 	}
 
-	@Property
+	@Mobe
 	public void setMyAge(int myAge) {
 		this.myAge = myAge;
 	}
 
-	@Property
+	@Mobe
 	public boolean isAlive() {
 		return alive;
 	}
 
-	@Property
+	@Mobe
 	public void setAlive(boolean alive) {
 		this.alive = alive;
 	}
