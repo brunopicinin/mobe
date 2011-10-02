@@ -1,6 +1,6 @@
 package pojo.full;
 
-import br.ita.mobe.annotation.Property;
+import br.com.mobe.annotation.Property;
 
 public class MethodAnnotation {
 

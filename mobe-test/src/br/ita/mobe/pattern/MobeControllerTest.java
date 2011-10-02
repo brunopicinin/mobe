@@ -4,8 +4,9 @@ import pojo.full.FieldAnnotation;
 import android.content.Context;
 import android.test.InstrumentationTestCase;
 import android.view.View;
-import br.ita.mobe.view.FormView;
-import br.ita.mobe.widget.form.FormWidget;
+import br.com.mobe.pattern.MobeController;
+import br.com.mobe.view.FormView;
+import br.com.mobe.widget.form.FormWidget;
 
 public class MobeControllerTest extends InstrumentationTestCase {
 

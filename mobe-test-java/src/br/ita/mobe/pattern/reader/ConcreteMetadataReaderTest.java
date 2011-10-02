@@ -15,8 +15,10 @@ import pojo.ClassAnnotation;
 import pojo.FieldAnnotation;
 import pojo.MethodAnnotation;
 import pojo.NoAnnotation;
-import br.ita.mobe.pattern.metadata.ClassMetadata;
-import br.ita.mobe.pattern.metadata.PropertyDescriptor;
+import br.com.mobe.pattern.metadata.ClassMetadata;
+import br.com.mobe.pattern.metadata.PropertyDescriptor;
+import br.com.mobe.pattern.reader.ConcreteMetadataReader;
+import br.com.mobe.pattern.reader.MetadataReader;
 
 public class ConcreteMetadataReaderTest {
 

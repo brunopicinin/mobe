@@ -1,16 +1,18 @@
-package pojo.full;
+package br.com.mobe;
 
 import br.com.mobe.annotation.Property;
 
-public class FieldAnnotation {
+/**
+ * Application Class.
+ * 
+ * Class with the simple purpose of testing the framework. Not deployed.
+ */
+@Property
+public class Bean1 {
 
-	@Property
 	private String firstName = "Bruno";
-	@Property
 	private String surname;
-	@Property
 	private int myAge = 22;
-	@Property
 	private boolean alive = true;
 
 	public String getFirstName() {
@@ -44,4 +46,5 @@ public class FieldAnnotation {
 	public void setAlive(boolean alive) {
 		this.alive = alive;
 	}
+
 }

@@ -20,7 +20,7 @@
 
 		<activity android:name=".MobeForm" />
 
-		<activity android:name=".old.app.FormActivity" />
+		<activity android:name=".old.app.FormActivityormActivityormActivity" />
 
 	</application>
 </manifest>
