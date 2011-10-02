@@ -1,6 +1,7 @@
 package br.ita.mobe.db;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.Set;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -124,5 +126,100 @@ public class DatabaseAdapter {
 			}
 		}
 		return false;
+	}
+
+	public <E> List<E> list(Class<E> cls) {
+		String table = cls.getSimpleName().toLowerCase();
+		Cursor cursor = database.query(table, null, null, null, null, null, null);
+		if (cursor == null) {
+			return null;
+		}
+		ClassMetadata metadata = Repository.getInstance().getMetadata(cls);
+		List<E> list = new ArrayList<E>();
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			try {
+				E object = cls.newInstance();
+				populate(object, cursor, metadata);
+				list.add(object);
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (InstantiationException e) {
+				e.printStackTrace();
+			}
+			cursor.moveToNext();
+		}
+		return list;
+	}
+
+	private static void populate(Object object, Cursor cursor, ClassMetadata metadata) {
+		List<PropertyDescriptor> properties = metadata.getProperties();
+		for (PropertyDescriptor property : properties) {
+			try {
+				Class<?> type = property.getType();
+
+				String name = property.getName();
+				String colName = name.toLowerCase();
+				int columnIndex = cursor.getColumnIndexOrThrow(colName);
+
+				Field field = object.getClass().getDeclaredField(name);
+				field.setAccessible(true);
+
+				// boolean types
+				if (typeof(type, boolean.class, Boolean.class)) {
+					int i = cursor.getInt(columnIndex);
+					field.set(object, i != 0);
+				}
+				// integer types
+				else if (typeof(type, byte.class, Byte.class)) {
+					byte b = (byte) cursor.getInt(columnIndex);
+					field.set(object, b);
+				} else if (typeof(type, short.class, Short.class)) {
+					short s = cursor.getShort(columnIndex);
+					field.set(object, s);
+				} else if (typeof(type, int.class, Integer.class)) {
+					int i = cursor.getInt(columnIndex);
+					field.set(object, i);
+				} else if (typeof(type, long.class, Long.class)) {
+					long l = cursor.getLong(columnIndex);
+					field.set(object, l);
+				}
+				// decimal types
+				else if (typeof(type, float.class, Float.class)) {
+					float f = cursor.getFloat(columnIndex);
+					field.set(object, f);
+				} else if (typeof(type, double.class, Double.class)) {
+					double d = cursor.getDouble(columnIndex);
+					field.set(object, d);
+				}
+				// char types
+				else if (typeof(type, char.class, Character.class)) {
+					char c = cursor.getString(columnIndex).charAt(0);
+					field.set(object, c);
+				}
+				// string type
+				else if (typeof(type, String.class)) {
+					String s = cursor.getString(columnIndex);
+					field.set(object, s);
+				}
+				// date types
+				else if (typeof(type, Calendar.class)) {
+					long l = cursor.getLong(columnIndex);
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTimeInMillis(l);
+					field.set(object, calendar);
+				} else if (typeof(type, Date.class)) {
+					long l = cursor.getLong(columnIndex);
+					Date date = new Date(l);
+					field.set(object, date);
+				}
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				e.printStackTrace();
+			} catch (NoSuchFieldException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

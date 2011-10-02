@@ -26,7 +26,7 @@
 		
 	<Button
 		android:text="Create Database"
-		android:id="@+id/database"
+		android:id="@+id/db_create"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_margin="5dip"
@@ -35,6 +35,14 @@
 	<Button
 		android:text="Save Database"
 		android:id="@+id/db_save"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_margin="5dip"
+		android:width="200dip" />
+
+	<Button
+		android:text="List Database"
+		android:id="@+id/db_list"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_margin="5dip"

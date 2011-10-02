@@ -1,6 +1,7 @@
 package br.ita.mobe.pattern;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import android.content.Context;
@@ -37,6 +38,12 @@ public class PersistenceController {
 		DatabaseAdapter dbAdapter = new DatabaseAdapter(context, name, version);
 		dbAdapter.open();
 		dbAdapter.save(bean);
+	}
+
+	public <E> List<E> list(Class<E> cls) {
+		DatabaseAdapter dbAdapter = new DatabaseAdapter(context, name, version);
+		dbAdapter.open();
+		return dbAdapter.list(cls);
 	}
 
 }

@@ -1,5 +1,7 @@
 package br.ita.mobe;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.database.sqlite.SQLiteException;
@@ -45,13 +47,13 @@ public class MobeMain extends Activity {
 			}
 		});
 
-		Button database = (Button) findViewById(R.id.database);
+		Button database = (Button) findViewById(R.id.db_create);
 		database.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				try {
-					PersistenceController pController = new PersistenceController(MobeMain.this);
-					pController.createTables(Bean1.class, Bean2.class);
+					PersistenceController controller = new PersistenceController(MobeMain.this);
+					controller.createTables(Bean1.class, Bean2.class);
 				} catch (SQLiteException e) {
 					e.printStackTrace();
 				} catch (UnsupportedTypeException e) {
@@ -65,12 +67,24 @@ public class MobeMain extends Activity {
 			@Override
 			public void onClick(View v) {
 				try {
-					PersistenceController pController = new PersistenceController(MobeMain.this);
+					PersistenceController controller = new PersistenceController(MobeMain.this);
 					Bean2 bean2 = new Bean2();
-					pController.save(bean2);
+					controller.save(bean2);
 				} catch (UnsupportedTypeException e) {
 					Log.e(TAG, "Type: " + e.getType(), e);
-					// e.printStackTrace();
+				}
+			}
+		});
+
+		Button db_list = (Button) findViewById(R.id.db_list);
+		db_list.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				PersistenceController controller = new PersistenceController(MobeMain.this);
+				List<Bean2> list = controller.list(Bean2.class);
+				Log.d(TAG, "list size = " + list.size());
+				for (Bean2 bean : list) {
+					Log.d(TAG, bean.toString());
 				}
 			}
 		});
