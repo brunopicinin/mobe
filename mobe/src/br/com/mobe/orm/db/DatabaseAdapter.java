@@ -128,18 +128,18 @@ public class DatabaseAdapter {
 		return false;
 	}
 
-	public <E> List<E> list(Class<E> cls) {
-		String table = cls.getSimpleName().toLowerCase();
+	public <E> List<E> list(Class<E> clazz) {
+		String table = clazz.getSimpleName().toLowerCase();
 		Cursor cursor = database.query(table, null, null, null, null, null, null);
 		if (cursor == null) {
 			return null;
 		}
-		ClassMetadata metadata = Repository.getInstance().getMetadata(cls);
+		ClassMetadata metadata = Repository.getInstance().getMetadata(clazz);
 		List<E> list = new ArrayList<E>();
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
 			try {
-				E object = cls.newInstance();
+				E object = clazz.newInstance();
 				populate(object, cursor, metadata);
 				list.add(object);
 			} catch (IllegalAccessException e) {

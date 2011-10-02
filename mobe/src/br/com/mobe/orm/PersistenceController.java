@@ -40,10 +40,10 @@ public class PersistenceController {
 		dbAdapter.save(bean);
 	}
 
-	public <E> List<E> list(Class<E> cls) {
+	public <E> List<E> list(Class<E> clazz) {
 		DatabaseAdapter dbAdapter = new DatabaseAdapter(context, name, version);
 		dbAdapter.open();
-		return dbAdapter.list(cls);
+		return dbAdapter.list(clazz);
 	}
 
 }
