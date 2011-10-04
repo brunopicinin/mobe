@@ -1,4 +1,4 @@
-package br.ita.mobe.pattern.metadata;
+package br.com.mobe.core.metadata;
 
 import static junit.framework.Assert.assertEquals;
 

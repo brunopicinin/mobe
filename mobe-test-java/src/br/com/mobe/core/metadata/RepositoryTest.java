@@ -1,14 +1,13 @@
-package br.ita.mobe.pattern.metadata;
+package br.com.mobe.core.metadata;
 
 import static junit.framework.Assert.assertEquals;
 
 import org.junit.Test;
 
-import br.com.mobe.core.metadata.ClassMetadata;
-import br.com.mobe.core.metadata.Repository;
-
 import pojo.ClassAnnotation;
 import pojo.MethodAnnotation;
+import br.com.mobe.core.metadata.ClassMetadata;
+import br.com.mobe.core.metadata.Repository;
 
 public class RepositoryTest extends Repository {
 

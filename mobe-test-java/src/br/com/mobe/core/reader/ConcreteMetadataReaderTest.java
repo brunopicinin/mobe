@@ -1,4 +1,4 @@
-package br.ita.mobe.pattern.reader;
+package br.com.mobe.core.reader;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
