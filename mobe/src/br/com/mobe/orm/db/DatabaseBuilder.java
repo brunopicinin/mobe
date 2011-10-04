@@ -32,34 +32,53 @@ public class DatabaseBuilder {
 
 	public void addTable(Class<?> clazz) throws UnsupportedTypeException {
 		String name = DbUtils.getTableName(clazz);
-		StringBuilder createSql = new StringBuilder("create table ").append(name).append(" (");
+		String[] sql = generateSQLs(clazz, name);
+		tables.put(name, sql);
+	}
+
+	// public method for testing purposes
+	public String[] generateSQLs(Class<?> clazz, String name) throws UnsupportedTypeException {
+		// SQL create
+		StringBuilder createSQL = new StringBuilder("CREATE TABLE ").append(name).append(" (");
 		ClassMetadata metadata = Repository.getInstance().getMetadata(clazz);
 		List<Property> properties = metadata.getProperties();
+		StringBuilder coldefSQL = new StringBuilder();
+		StringBuilder pkSQL = new StringBuilder("PRIMARY KEY(");
 		for (Property property : properties) {
 			Class<?> type = property.getType();
 			String propName = DbUtils.getColumnName(property.getName());
 			if (isBoolean(type)) {
-				createSql.append(propName).append(" boolean, "); // NUMERIC affinity (5) -- save as 0 or 1
+				coldefSQL.append(propName).append(" BOOLEAN, "); // NUMERIC affinity (5) -- save as 0 or 1
 			} else if (isByte(type) || isShort(type) || isInt(type) || isLong(type)) {
-				createSql.append(propName).append(" integer, "); // INTEGER affinity (1)
+				coldefSQL.append(propName).append(" INTEGER, "); // INTEGER affinity (1)
 			} else if (isFloat(type) || isDouble(type)) {
-				createSql.append(propName).append(" real, "); // REAL affinity (4)
+				coldefSQL.append(propName).append(" REAL, "); // REAL affinity (4)
 			} else if (isChar(type) || isString(type)) {
-				createSql.append(propName).append(" text, "); // TEXT affinity (2)
+				coldefSQL.append(propName).append(" TEXT, "); // TEXT affinity (2)
 			} else if (isCalendar(type) || isDate(type)) {
-				createSql.append(propName).append(" date, "); // NUMERIC affinity (5) -- save time in milliseconds
+				coldefSQL.append(propName).append(" DATE, "); // NUMERIC affinity (5) -- save time in milliseconds
 			} else {
 				throw new UnsupportedTypeException();
 			}
+			if (property.isPrimaryKey()) {
+				pkSQL.append(propName).append(", ");
+			}
 		}
-		int length = createSql.length();
-		createSql.delete(length - 2, length);
-		createSql.append(");");
+		if (pkSQL.length() == 12) { // no PK
+			stripEnd(coldefSQL);
+			createSQL.append(coldefSQL).append(");");
+		} else {
+			stripEnd(pkSQL);
+			createSQL.append(coldefSQL).append(pkSQL).append("));");
+		}
+		// SQL drop
+		StringBuilder dropSQL = new StringBuilder("DROP TABLE ").append(name).append(";");
+		return new String[] { createSQL.toString(), dropSQL.toString() };
+	}
 
-		StringBuilder dropSql = new StringBuilder("drop table ").append(name).append(";");
-
-		String[] sql = { createSql.toString(), dropSql.toString() };
-		tables.put(name, sql);
+	private void stripEnd(StringBuilder sb) {
+		int length = sb.length();
+		sb.delete(length - 2, length);
 	}
 
 	public Set<String> getTables() {

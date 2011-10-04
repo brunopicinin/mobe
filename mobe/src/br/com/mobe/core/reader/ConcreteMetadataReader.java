@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import br.com.mobe.core.annotation.Mobe;
 import br.com.mobe.core.metadata.ClassMetadata;
 import br.com.mobe.core.metadata.Property;
+import br.com.mobe.orm.annotation.PrimaryKey;
 
 public class ConcreteMetadataReader implements MetadataReader {
 
@@ -17,7 +18,9 @@ public class ConcreteMetadataReader implements MetadataReader {
 				field.setAccessible(true);
 				String name = field.getName();
 				Class<?> type = field.getType();
-				metadata.addProperty(new Property(name, type));
+				Property property = new Property(name, type);
+				property.setPrimaryKey(field.isAnnotationPresent(PrimaryKey.class));
+				metadata.addProperty(property);
 			}
 		}
 		return metadata;

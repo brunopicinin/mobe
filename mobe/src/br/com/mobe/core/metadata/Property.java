@@ -4,6 +4,7 @@ public class Property {
 
 	private String name;
 	private Class<?> type;
+	private boolean isPrimaryKey = false;
 
 	public Property(String name, Class<?> type) {
 		this.name = name;
@@ -24,6 +25,14 @@ public class Property {
 
 	public Class<?> getType() {
 		return type;
+	}
+
+	public boolean isPrimaryKey() {
+		return isPrimaryKey;
+	}
+
+	public void setPrimaryKey(boolean isPrimaryKey) {
+		this.isPrimaryKey = isPrimaryKey;
 	}
 
 }
