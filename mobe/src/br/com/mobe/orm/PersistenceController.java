@@ -14,8 +14,8 @@ public class PersistenceController {
 	private Context context;
 
 	// temp
-	private String name = "mobe.db";
-	private int version = 1;
+	public static final String name = "mobe.db";
+	public static final int version = 1;
 
 	public PersistenceController(Context context) {
 		this.context = context;
@@ -33,11 +33,11 @@ public class PersistenceController {
 		dbAdapter.createTables(classesSet);
 	}
 
-	public void save(Object bean) throws UnsupportedTypeException {
+	public long save(Object bean) throws UnsupportedTypeException {
 		// TODO Test controllers method arguments. Ex: createTables
 		DatabaseAdapter dbAdapter = new DatabaseAdapter(context, name, version);
 		dbAdapter.open();
-		dbAdapter.save(bean);
+		return dbAdapter.save(bean);
 	}
 
 	public <E> List<E> list(Class<E> clazz) {
