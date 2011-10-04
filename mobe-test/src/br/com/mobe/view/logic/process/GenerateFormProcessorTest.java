@@ -1,4 +1,4 @@
-package br.ita.mobe.pattern.logic.process;
+package br.com.mobe.view.logic.process;
 
 import pojo.full.FieldAnnotation;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package br.ita.mobe.pattern;
+package br.com.mobe.view;
 
 import pojo.full.FieldAnnotation;
 import android.content.Context;
