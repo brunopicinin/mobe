@@ -1,7 +1,17 @@
 package br.com.mobe.view.logic.process;
 
-import java.util.Calendar;
-import java.util.Date;
+import static br.com.mobe.core.util.ReflectionUtils.isBoolean;
+import static br.com.mobe.core.util.ReflectionUtils.isByte;
+import static br.com.mobe.core.util.ReflectionUtils.isCalendar;
+import static br.com.mobe.core.util.ReflectionUtils.isChar;
+import static br.com.mobe.core.util.ReflectionUtils.isDate;
+import static br.com.mobe.core.util.ReflectionUtils.isDouble;
+import static br.com.mobe.core.util.ReflectionUtils.isFloat;
+import static br.com.mobe.core.util.ReflectionUtils.isInt;
+import static br.com.mobe.core.util.ReflectionUtils.isLong;
+import static br.com.mobe.core.util.ReflectionUtils.isShort;
+import static br.com.mobe.core.util.ReflectionUtils.isString;
+
 import java.util.List;
 
 import android.content.Context;
@@ -21,14 +31,6 @@ public class GenerateFormProcessor implements ViewProcessor {
 
 	private static final String TAG = "ConcreteViewProcessor";
 
-	// Field data types
-	public static final Class<?>[] LOGIC_TYPES = { boolean.class, Boolean.class };
-	public static final Class<?>[] INT_TYPES = { byte.class, Byte.class, short.class, Short.class, int.class, Integer.class, long.class, Long.class };
-	public static final Class<?>[] DECIMAL_TYPES = { float.class, Float.class, double.class, Double.class };
-	public static final Class<?>[] CHAR_TYPES = { char.class, Character.class };
-	public static final Class<?>[] STRING_TYPES = { String.class };
-	public static final Class<?>[] DATE_TYPES = { Calendar.class, Date.class };
-
 	@Override
 	public FormView generateForm(Context context, ClassMetadata metadata) {
 		FormView formView = new FormView(context, metadata.getTarget());
@@ -45,19 +47,17 @@ public class GenerateFormProcessor implements ViewProcessor {
 		return formView;
 	}
 
-	private FormWidget createWidget(Context context, Class<?> clazz, String name) throws UnsupportedTypeException {
+	private FormWidget createWidget(Context context, Class<?> type, String name) throws UnsupportedTypeException {
 		String capitalizedName = capitalize(name);
-		if (typeof(clazz, LOGIC_TYPES)) {
+		if (isBoolean(type)) {
 			return new FormLogic(context, name, capitalizedName);
-		} else if (typeof(clazz, INT_TYPES)) {
+		} else if (isByte(type) || isShort(type) || isInt(type) || isLong(type)) {
 			return new FormNumber(context, name, capitalizedName);
-		} else if (typeof(clazz, DECIMAL_TYPES)) {
+		} else if (isFloat(type) || isDouble(type)) {
 			return new FormDecimal(context, name, capitalizedName);
-		} else if (typeof(clazz, CHAR_TYPES)) {
+		} else if (isChar(type) || isString(type)) {
 			return new FormText(context, name, capitalizedName);
-		} else if (typeof(clazz, STRING_TYPES)) {
-			return new FormText(context, name, capitalizedName);
-		} else if (typeof(clazz, DATE_TYPES)) {
+		} else if (isCalendar(type) || isDate(type)) {
 			return new FormDate(context, name, capitalizedName);
 		} else {
 			throw new UnsupportedTypeException();
@@ -76,15 +76,6 @@ public class GenerateFormProcessor implements ViewProcessor {
 			sb.append(c);
 		}
 		return sb.toString();
-	}
-
-	public static boolean typeof(Class<?> clazz, Class<?>[] types) {
-		for (Class<?> c : types) {
-			if (c.equals(clazz)) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 }

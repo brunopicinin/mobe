@@ -1,5 +1,17 @@
 package br.com.mobe.orm.db;
 
+import static br.com.mobe.core.util.ReflectionUtils.isBoolean;
+import static br.com.mobe.core.util.ReflectionUtils.isByte;
+import static br.com.mobe.core.util.ReflectionUtils.isCalendar;
+import static br.com.mobe.core.util.ReflectionUtils.isChar;
+import static br.com.mobe.core.util.ReflectionUtils.isDate;
+import static br.com.mobe.core.util.ReflectionUtils.isDouble;
+import static br.com.mobe.core.util.ReflectionUtils.isFloat;
+import static br.com.mobe.core.util.ReflectionUtils.isInt;
+import static br.com.mobe.core.util.ReflectionUtils.isLong;
+import static br.com.mobe.core.util.ReflectionUtils.isShort;
+import static br.com.mobe.core.util.ReflectionUtils.isString;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -67,42 +79,29 @@ public class DatabaseAdapter {
 				if (value == null) {
 					values.putNull(name);
 				} else {
-					Class<?> valueType = value.getClass();
-					// boolean types
-					if (typeof(valueType, boolean.class, Boolean.class)) {
+					Class<?> type = value.getClass();
+					if (isBoolean(type)) {
 						values.put(name, (Boolean) value);
-					}
-					// integer types
-					else if (typeof(valueType, byte.class, Byte.class)) {
+					} else if (isByte(type)) {
 						values.put(name, (Byte) value);
-					} else if (typeof(valueType, short.class, Short.class)) {
+					} else if (isShort(type)) {
 						values.put(name, (Short) value);
-					} else if (typeof(valueType, int.class, Integer.class)) {
+					} else if (isInt(type)) {
 						values.put(name, (Integer) value);
-					} else if (typeof(valueType, long.class, Long.class)) {
+					} else if (isLong(type)) {
 						values.put(name, (Long) value);
-					}
-					// decimal types
-					else if (typeof(valueType, float.class, Float.class)) {
+					} else if (isFloat(type)) {
 						values.put(name, (Float) value);
-					} else if (typeof(valueType, double.class, Double.class)) {
+					} else if (isDouble(type)) {
 						values.put(name, (Double) value);
-					}
-					// char types
-					else if (typeof(valueType, char.class, Character.class)) {
+					} else if (isChar(type) || isString(type)) {
 						values.put(name, String.valueOf(value));
-					}
-					// string type
-					else if (typeof(valueType, String.class)) {
-						values.put(name, String.valueOf(value));
-					}
-					// date types
-					else if (typeof(valueType, Calendar.class)) {
+					} else if (isCalendar(type)) {
 						values.put(name, ((Calendar) value).getTimeInMillis());
-					} else if (typeof(valueType, Date.class)) {
+					} else if (isDate(type)) {
 						values.put(name, ((Date) value).getTime());
 					} else {
-						throw new UnsupportedTypeException(valueType);
+						throw new UnsupportedTypeException(type);
 					}
 				}
 			} catch (SecurityException e) {
@@ -117,15 +116,6 @@ public class DatabaseAdapter {
 		}
 		String table = clazz.getSimpleName().toLowerCase();
 		return database.insert(table, null, values);
-	}
-
-	public static boolean typeof(Class<?> clazz, Class<?>... types) {
-		for (Class<?> c : types) {
-			if (c.isAssignableFrom(clazz)) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	public <E> List<E> list(Class<E> clazz) {
@@ -165,50 +155,39 @@ public class DatabaseAdapter {
 				Field field = object.getClass().getDeclaredField(name);
 				field.setAccessible(true);
 
-				// boolean types
-				if (typeof(type, boolean.class, Boolean.class)) {
+				if (isBoolean(type)) {
 					int i = cursor.getInt(columnIndex);
 					field.set(object, i != 0);
-				}
-				// integer types
-				else if (typeof(type, byte.class, Byte.class)) {
+				} else if (isByte(type)) {
 					byte b = (byte) cursor.getInt(columnIndex);
 					field.set(object, b);
-				} else if (typeof(type, short.class, Short.class)) {
+				} else if (isShort(type)) {
 					short s = cursor.getShort(columnIndex);
 					field.set(object, s);
-				} else if (typeof(type, int.class, Integer.class)) {
+				} else if (isInt(type)) {
 					int i = cursor.getInt(columnIndex);
 					field.set(object, i);
-				} else if (typeof(type, long.class, Long.class)) {
+				} else if (isLong(type)) {
 					long l = cursor.getLong(columnIndex);
 					field.set(object, l);
-				}
-				// decimal types
-				else if (typeof(type, float.class, Float.class)) {
+				} else if (isFloat(type)) {
 					float f = cursor.getFloat(columnIndex);
 					field.set(object, f);
-				} else if (typeof(type, double.class, Double.class)) {
+				} else if (isDouble(type)) {
 					double d = cursor.getDouble(columnIndex);
 					field.set(object, d);
-				}
-				// char types
-				else if (typeof(type, char.class, Character.class)) {
+				} else if (isChar(type)) {
 					char c = cursor.getString(columnIndex).charAt(0);
 					field.set(object, c);
-				}
-				// string type
-				else if (typeof(type, String.class)) {
+				} else if (isString(type)) {
 					String s = cursor.getString(columnIndex);
 					field.set(object, s);
-				}
-				// date types
-				else if (typeof(type, Calendar.class)) {
+				} else if (isCalendar(type)) {
 					long l = cursor.getLong(columnIndex);
 					Calendar calendar = Calendar.getInstance();
 					calendar.setTimeInMillis(l);
 					field.set(object, calendar);
-				} else if (typeof(type, Date.class)) {
+				} else if (isDate(type)) {
 					long l = cursor.getLong(columnIndex);
 					Date date = new Date(l);
 					field.set(object, date);
