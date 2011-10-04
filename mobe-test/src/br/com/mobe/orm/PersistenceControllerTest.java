@@ -42,15 +42,32 @@ public class PersistenceControllerTest extends AndroidTestCase {
 		return database;
 	}
 
-	public void testSave() throws UnsupportedTypeException {
+	public void testSave() throws UnsupportedTypeException, IllegalArgumentException, IllegalAccessException {
 		ClassAnnotation bean = new ClassAnnotation();
 		long id = controller.save(bean);
+
 		SQLiteDatabase database = getReadableDatabase();
 		String table = ClassAnnotation.class.getSimpleName().toLowerCase();
-		String[] columns = { "rowid" };
 		String[] args = { String.valueOf(id) };
-		Cursor cursor = database.query(table, columns, "rowid=?", args, null, null, null);
+		Cursor cursor = database.query(table, null, "rowid=?", args, null, null, null);
 		int count = cursor.getCount();
 		assertEquals(1, count);
+
+		cursor.moveToFirst();
+		int index = cursor.getColumnIndex("firstname");
+		String firstName = cursor.getString(index);
+		assertEquals("Bruno", firstName);
+
+		index = cursor.getColumnIndex("surname");
+		String surname = cursor.getString(index);
+		assertNull(surname);
+
+		index = cursor.getColumnIndex("myage");
+		int myAge = cursor.getInt(index);
+		assertEquals(22, myAge);
+
+		index = cursor.getColumnIndex("alive");
+		int alive = cursor.getInt(index);
+		assertEquals(1, alive);
 	}
 }
