@@ -47,7 +47,7 @@ public class DatabaseBuilder {
 			} else if (isChar(type) || isString(type)) {
 				createSql.append(propName).append(" text, "); // TEXT affinity (2)
 			} else if (isCalendar(type) || isDate(type)) {
-				createSql.append(propName).append(" date, "); // NUMERIC affinity (5) -- TODO: rever melhor maneira de persistir data
+				createSql.append(propName).append(" date, "); // NUMERIC affinity (5) -- save time in milliseconds
 			} else {
 				throw new UnsupportedTypeException();
 			}
