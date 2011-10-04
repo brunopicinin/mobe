@@ -1,5 +1,8 @@
 package br.com.mobe.orm;
 
+import java.util.Calendar;
+import java.util.List;
+
 import pojo.full.ClassAnnotation;
 import pojo.semi.DefaultBean;
 import android.content.Context;
@@ -84,4 +87,38 @@ public class PersistenceControllerTest extends AndroidTestCase {
 		long dat1 = cursor.getLong(index);
 		assertEquals(bean.getDat1().getTime(), dat1);
 	}
+
+	public void testList() throws UnsupportedTypeException {
+		DefaultBean bean1 = new DefaultBean();
+		bean1.setBol1(false);
+		bean1.getCal1().add(Calendar.YEAR, 2);
+		controller.save(bean1);
+
+		DefaultBean bean2 = new DefaultBean();
+		bean2.setInt1(-2);
+		bean2.getDat1().setYear(3000);
+		controller.save(bean2);
+
+		DefaultBean bean3 = new DefaultBean();
+		bean3.setDob1(3.14);
+		controller.save(bean3);
+
+		DefaultBean bean4 = new DefaultBean();
+		bean4.setCha1('z');
+		controller.save(bean4);
+
+		DefaultBean bean5 = new DefaultBean();
+		bean5.setStr1("good bye");
+		controller.save(bean5);
+
+		List<DefaultBean> list = controller.list(DefaultBean.class);
+		assertEquals(5, list.size());
+
+		assertTrue(list.contains(bean1));
+		assertTrue(list.contains(bean2));
+		assertTrue(list.contains(bean3));
+		assertTrue(list.contains(bean4));
+		assertTrue(list.contains(bean5));
+	}
+
 }
