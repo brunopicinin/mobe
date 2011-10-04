@@ -12,7 +12,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import br.com.mobe.core.exception.UnsupportedTypeException;
 import br.com.mobe.orm.PersistenceController;
-import br.ita.mobe.R;
 
 /**
  * Application Client.

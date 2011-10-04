@@ -14,7 +14,6 @@ import br.com.mobe.view.FormView;
 import br.com.mobe.view.ViewController;
 import br.com.mobe.view.logic.layer.GenerateFormLayer;
 import br.com.mobe.view.logic.layer.PopulateFormLayer;
-import br.ita.mobe.R;
 
 public class MobeForm extends Activity {
 

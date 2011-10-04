@@ -31,7 +31,7 @@ import android.view.View.OnLongClickListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import br.ita.mobe.R;
+import br.com.mobe.R;
 
 /**
  * This class has been pulled from the Android platform source code, its an internal widget that hasn't been made public so its included in the project in this fashion for use with the preferences

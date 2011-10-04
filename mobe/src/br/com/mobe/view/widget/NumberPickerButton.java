@@ -21,7 +21,7 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.ImageButton;
-import br.ita.mobe.R;
+import br.com.mobe.R;
 
 /**
  * This class exists purely to cancel long click events.
