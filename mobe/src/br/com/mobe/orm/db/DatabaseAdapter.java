@@ -114,12 +114,12 @@ public class DatabaseAdapter {
 				e.printStackTrace();
 			}
 		}
-		String table = clazz.getSimpleName().toLowerCase();
+		String table = DbUtils.getTableName(clazz);
 		return database.insert(table, null, values);
 	}
 
 	public <E> List<E> list(Class<E> clazz) {
-		String table = clazz.getSimpleName().toLowerCase();
+		String table = DbUtils.getTableName(clazz);
 		Cursor cursor = database.query(table, null, null, null, null, null, null);
 		if (cursor == null) {
 			return null;
@@ -148,11 +148,11 @@ public class DatabaseAdapter {
 			try {
 				Class<?> type = property.getType();
 
-				String name = property.getName();
-				String colName = name.toLowerCase();
+				String propertyName = property.getName();
+				String colName = DbUtils.getColumnName(propertyName);
 				int columnIndex = cursor.getColumnIndexOrThrow(colName);
 
-				Field field = object.getClass().getDeclaredField(name);
+				Field field = object.getClass().getDeclaredField(propertyName);
 				field.setAccessible(true);
 
 				if (isBoolean(type)) {
@@ -201,4 +201,5 @@ public class DatabaseAdapter {
 			}
 		}
 	}
+
 }

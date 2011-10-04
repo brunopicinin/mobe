@@ -24,32 +24,30 @@ import br.com.mobe.core.metadata.Repository;
 
 public class DatabaseBuilder {
 
-	private Map<String, String[]> tables; // {table name: [sql create, sql drop]}
+	private Map<String, String[]> tables; // {table name: [SQL create, SQL drop]}
 
 	public DatabaseBuilder() {
 		tables = new HashMap<String, String[]>();
 	}
 
 	public void addTable(Class<?> clazz) throws UnsupportedTypeException {
-		String name = clazz.getSimpleName().toLowerCase();
-		StringBuilder createSql = new StringBuilder("create table ").append(name).append(" (id integer primary key autoincrement, ");
+		String name = DbUtils.getTableName(clazz);
+		StringBuilder createSql = new StringBuilder("create table ").append(name).append(" (");
 		ClassMetadata metadata = Repository.getInstance().getMetadata(clazz);
 		List<Property> properties = metadata.getProperties();
 		for (Property property : properties) {
 			Class<?> type = property.getType();
-			String propName = property.getName().toLowerCase();
+			String propName = DbUtils.getColumnName(property.getName());
 			if (isBoolean(type)) {
-				createSql.append(propName).append(" boolean, ");
+				createSql.append(propName).append(" boolean, "); // NUMERIC affinity (5) -- save as 0 or 1
 			} else if (isByte(type) || isShort(type) || isInt(type) || isLong(type)) {
-				createSql.append(propName).append(" integer, ");
+				createSql.append(propName).append(" integer, "); // INTEGER affinity (1)
 			} else if (isFloat(type) || isDouble(type)) {
-				createSql.append(propName).append(" real, ");
-			} else if (isChar(type)) {
-				createSql.append(propName).append(" text, ");
-			} else if (isString(type)) {
-				createSql.append(propName).append(" text, ");
+				createSql.append(propName).append(" real, "); // REAL affinity (4)
+			} else if (isChar(type) || isString(type)) {
+				createSql.append(propName).append(" text, "); // TEXT affinity (2)
 			} else if (isCalendar(type) || isDate(type)) {
-				createSql.append(propName).append(" integer, ");
+				createSql.append(propName).append(" date, "); // NUMERIC affinity (5) -- TODO: rever melhor maneira de persistir data
 			} else {
 				throw new UnsupportedTypeException();
 			}
