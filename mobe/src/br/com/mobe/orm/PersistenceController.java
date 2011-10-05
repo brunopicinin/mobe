@@ -43,7 +43,7 @@ public class PersistenceController {
 	 * @throws UnsupportedTypeException
 	 * @throws DatabaseException
 	 */
-	public long save(Object object) throws UnsupportedTypeException, DatabaseException {
+	public long save(Object object) throws DatabaseException {
 		// TODO Test controllers method arguments. Ex: createTables
 		DatabaseAdapter dbAdapter = new DatabaseAdapter(context, name, version);
 		dbAdapter.open();

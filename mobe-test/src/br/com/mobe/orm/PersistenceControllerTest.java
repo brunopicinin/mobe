@@ -12,7 +12,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
 import br.com.mobe.PkGenerator;
-import br.com.mobe.core.exception.UnsupportedTypeException;
 import br.com.mobe.orm.db.DatabaseHelper;
 import br.com.mobe.orm.db.DbUtils;
 import br.com.mobe.orm.exception.DatabaseException;
@@ -63,14 +62,22 @@ public class PersistenceControllerTest extends AndroidTestCase {
 		return database;
 	}
 
-	public void testSave() throws UnsupportedTypeException, IllegalArgumentException, IllegalAccessException, DatabaseException {
+	private Cursor listAll(SQLiteDatabase db, String table) {
+		return db.query(table, null, null, null, null, null, null);
+	}
+
+	private Cursor find(long id, SQLiteDatabase db, String table) {
+		String[] args = { String.valueOf(id) };
+		return db.query(table, null, "rowid=?", args, null, null, null);
+	}
+
+	public void testSave() throws DatabaseException {
 		DefaultBean bean = new DefaultBean();
 		long id = controller.save(bean);
 
 		SQLiteDatabase database = getReadableDatabase();
 		String table = DbUtils.getTableName(DefaultBean.class);
-		String[] args = { String.valueOf(id) };
-		Cursor cursor = database.query(table, null, "rowid=?", args, null, null, null);
+		Cursor cursor = find(id, database, table);
 		assertEquals(1, cursor.getCount());
 		assertEquals(7, cursor.getColumnCount());
 
@@ -104,7 +111,7 @@ public class PersistenceControllerTest extends AndroidTestCase {
 		assertEquals(bean.getDat1().getTime(), dat1);
 	}
 
-	public void testSaveSimplePk() throws UnsupportedTypeException, DatabaseException {
+	public void testSaveSimplePk() throws DatabaseException {
 		SimplePkBean bean = new SimplePkBean(PkGenerator.randomLong());
 		assertTrue(controller.save(bean) > 0);
 		SimplePkBean bean2 = new SimplePkBean(PkGenerator.randomLong());
@@ -118,7 +125,7 @@ public class PersistenceControllerTest extends AndroidTestCase {
 		assertEquals(3, cursor.getCount());
 	}
 
-	public void testSaveMultiplePk() throws UnsupportedTypeException, DatabaseException {
+	public void testSaveMultiplePk() throws DatabaseException {
 		MultiplePkBean bean1 = new MultiplePkBean();
 		assertTrue(controller.save(bean1) > 0);
 		MultiplePkBean bean2 = new MultiplePkBean();
@@ -132,11 +139,7 @@ public class PersistenceControllerTest extends AndroidTestCase {
 		assertEquals(3, cursor.getCount());
 	}
 
-	private Cursor listAll(SQLiteDatabase db, String table) {
-		return db.query(table, null, null, null, null, null, null);
-	}
-
-	public void testList() throws UnsupportedTypeException, DatabaseException {
+	public void testList() throws DatabaseException {
 		DefaultBean bean1 = new DefaultBean();
 		bean1.setBol1(false);
 		bean1.getCal1().add(Calendar.YEAR, 2);
@@ -169,7 +172,7 @@ public class PersistenceControllerTest extends AndroidTestCase {
 		assertTrue(list.contains(bean5));
 	}
 
-	public void testListSimplePk() throws UnsupportedTypeException, DatabaseException {
+	public void testListSimplePk() throws DatabaseException {
 		SimplePkBean bean1 = new SimplePkBean(PkGenerator.randomLong());
 		bean1.setBol1(false);
 		controller.save(bean1);
@@ -200,7 +203,7 @@ public class PersistenceControllerTest extends AndroidTestCase {
 		assertTrue(list.contains(bean5));
 	}
 
-	public void testListMultiplePk() throws UnsupportedTypeException, DatabaseException {
+	public void testListMultiplePk() throws DatabaseException {
 		MultiplePkBean bean1 = new MultiplePkBean(PkGenerator.randomInt(), PkGenerator.randomString());
 		bean1.setBol1(false);
 		controller.save(bean1);
@@ -231,7 +234,7 @@ public class PersistenceControllerTest extends AndroidTestCase {
 		assertTrue(list.contains(bean5));
 	}
 
-	public void testDeleteSimplePk() throws UnsupportedTypeException, DatabaseException {
+	public void testDeleteSimplePk() throws DatabaseException {
 		SimplePkBean bean = new SimplePkBean(PkGenerator.randomLong());
 		controller.save(bean);
 
@@ -267,7 +270,7 @@ public class PersistenceControllerTest extends AndroidTestCase {
 		assertEquals(0, cursor.getCount());
 	}
 
-	public void testDeleteMultiplePk() throws UnsupportedTypeException, DatabaseException {
+	public void testDeleteMultiplePk() throws DatabaseException {
 		MultiplePkBean bean = new MultiplePkBean(PkGenerator.randomInt(), PkGenerator.randomString());
 		controller.save(bean);
 
@@ -301,5 +304,36 @@ public class PersistenceControllerTest extends AndroidTestCase {
 		assertTrue(controller.delete(bean4));
 		cursor = listAll(db, table);
 		assertEquals(0, cursor.getCount());
+	}
+
+	public void testUpdateSimplePk() throws DatabaseException {
+		SimplePkBean bean = new SimplePkBean();
+		long id = controller.save(bean);
+
+		SQLiteDatabase db = getReadableDatabase();
+		String table = DbUtils.getTableName(SimplePkBean.class);
+		Cursor cursor = find(id, db, table);
+		cursor.moveToFirst();
+
+		int index = cursor.getColumnIndex("bol1");
+		assertEquals(1, cursor.getInt(index));
+		index = cursor.getColumnIndex("int1");
+		assertEquals(10, cursor.getInt(index));
+		index = cursor.getColumnIndex("str1");
+		assertEquals("hello", cursor.getString(index));
+
+		bean.setBol1(false);
+		bean.setInt1(35);
+		bean.setStr1("see you");
+		controller.update(bean);
+		cursor = find(id, db, table);
+		cursor.moveToFirst();
+
+		index = cursor.getColumnIndex("bol1");
+		assertEquals(0, cursor.getInt(index));
+		index = cursor.getColumnIndex("int1");
+		assertEquals(35, cursor.getInt(index));
+		index = cursor.getColumnIndex("str1");
+		assertEquals("see you", cursor.getString(index));
 	}
 }

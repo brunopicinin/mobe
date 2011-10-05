@@ -67,10 +67,15 @@ public class DatabaseAdapter {
 		dbHelper.close();
 	}
 
-	public long save(Object object) throws UnsupportedTypeException {
-		// TODO Check if tables are already created
-		ContentValues values = new ContentValues();
+	public long save(Object object) {
+		String table = DbUtils.getTableName(object.getClass());
+		ContentValues values = getContentValues(object);
+		return database.insert(table, null, values);
+	}
+
+	private ContentValues getContentValues(Object object) {
 		Class<? extends Object> clazz = object.getClass();
+		ContentValues values = new ContentValues();
 		ClassMetadata metadata = Repository.getInstance().getMetadata(clazz);
 		List<Property> properties = metadata.getProperties();
 		for (Property property : properties) {
@@ -104,7 +109,8 @@ public class DatabaseAdapter {
 					} else if (isDate(type)) {
 						values.put(name, ((Date) value).getTime());
 					} else {
-						throw new UnsupportedTypeException(type);
+						UnsupportedTypeException ex = new UnsupportedTypeException(type);
+						Log.e(TAG, "Class changed since table was created.", ex);
 					}
 				}
 			} catch (SecurityException e) {
@@ -117,8 +123,7 @@ public class DatabaseAdapter {
 				e.printStackTrace();
 			}
 		}
-		String table = DbUtils.getTableName(clazz);
-		return database.insert(table, null, values);
+		return values;
 	}
 
 	public <E> List<E> list(Class<E> clazz) {
@@ -133,7 +138,7 @@ public class DatabaseAdapter {
 		while (!cursor.isAfterLast()) {
 			try {
 				E object = clazz.newInstance();
-				populate(object, cursor, metadata);
+				populateObject(object, cursor, metadata);
 				list.add(object);
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
@@ -145,7 +150,7 @@ public class DatabaseAdapter {
 		return list;
 	}
 
-	private static void populate(Object object, Cursor cursor, ClassMetadata metadata) {
+	private static void populateObject(Object object, Cursor cursor, ClassMetadata metadata) {
 		List<Property> properties = metadata.getProperties();
 		for (Property property : properties) {
 			try {
@@ -268,9 +273,7 @@ public class DatabaseAdapter {
 
 	public boolean update(Object object) throws DatabaseException {
 		String[][] params = getPkQueryParams(object);
-
-		// return database.update(params[0][0], values, params[1][0], params[2]);
-		return false;
-
+		ContentValues values = getContentValues(object);
+		return database.update(params[0][0], values, params[1][0], params[2]) > 0;
 	}
 }

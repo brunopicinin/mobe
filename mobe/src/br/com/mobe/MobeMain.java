@@ -56,9 +56,9 @@ public class MobeMain extends Activity {
 					PersistenceController controller = new PersistenceController(MobeMain.this);
 					controller.createTables(Bean1.class, Bean2.class);
 				} catch (SQLiteException e) {
-					e.printStackTrace();
+					Log.e(TAG, "", e);
 				} catch (UnsupportedTypeException e) {
-					e.printStackTrace();
+					Log.e(TAG, "Type: " + e.getType(), e);
 				}
 			}
 		});
@@ -71,8 +71,6 @@ public class MobeMain extends Activity {
 					PersistenceController controller = new PersistenceController(MobeMain.this);
 					Bean2 bean2 = new Bean2(PkGenerator.randomLong());
 					controller.save(bean2);
-				} catch (UnsupportedTypeException e) {
-					Log.e(TAG, "Type: " + e.getType(), e);
 				} catch (DatabaseException e) {
 					Log.e(TAG, "", e);
 				}
