@@ -8,6 +8,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteException;
 import br.com.mobe.core.exception.UnsupportedTypeException;
 import br.com.mobe.orm.db.DatabaseAdapter;
+import br.com.mobe.orm.exception.DatabaseException;
 
 public class PersistenceController {
 
@@ -33,11 +34,15 @@ public class PersistenceController {
 		dbAdapter.createTables(classesSet);
 	}
 
-	public long save(Object bean) throws UnsupportedTypeException {
+	public long save(Object bean) throws UnsupportedTypeException, DatabaseException {
 		// TODO Test controllers method arguments. Ex: createTables
 		DatabaseAdapter dbAdapter = new DatabaseAdapter(context, name, version);
 		dbAdapter.open();
-		return dbAdapter.save(bean);
+		long rowid = dbAdapter.save(bean);
+		if (rowid < 0) {
+			throw new DatabaseException("Object save error.");
+		}
+		return rowid;
 	}
 
 	public <E> List<E> list(Class<E> clazz) {

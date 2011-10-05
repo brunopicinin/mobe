@@ -25,12 +25,15 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.util.Log;
 import br.com.mobe.core.exception.UnsupportedTypeException;
 import br.com.mobe.core.metadata.ClassMetadata;
 import br.com.mobe.core.metadata.Property;
 import br.com.mobe.core.metadata.Repository;
 
 public class DatabaseAdapter {
+
+	public static final String TAG = "DatabaseAdapter";
 
 	private SQLiteDatabase database;
 	private DatabaseHelper dbHelper;
@@ -135,7 +138,7 @@ public class DatabaseAdapter {
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
 			} catch (InstantiationException e) {
-				e.printStackTrace();
+				Log.e(TAG, "Impossible to instantiate object. Unaccessible empty construtctor in class " + clazz.getName() + ".");
 			}
 			cursor.moveToNext();
 		}

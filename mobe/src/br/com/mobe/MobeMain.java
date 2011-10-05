@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import br.com.mobe.core.exception.UnsupportedTypeException;
 import br.com.mobe.orm.PersistenceController;
+import br.com.mobe.orm.exception.DatabaseException;
 
 /**
  * Application Client.
@@ -68,10 +69,12 @@ public class MobeMain extends Activity {
 			public void onClick(View v) {
 				try {
 					PersistenceController controller = new PersistenceController(MobeMain.this);
-					Bean2 bean2 = new Bean2();
+					Bean2 bean2 = new Bean2(TestUtils.generateRandomPk());
 					controller.save(bean2);
 				} catch (UnsupportedTypeException e) {
 					Log.e(TAG, "Type: " + e.getType(), e);
+				} catch (DatabaseException e) {
+					Log.e(TAG, "", e);
 				}
 			}
 		});
