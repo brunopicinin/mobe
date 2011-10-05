@@ -64,7 +64,6 @@ public class DatabaseAdapter {
 	}
 
 	public void close() {
-		// TODO Where to call this?
 		dbHelper.close();
 	}
 
@@ -207,14 +206,26 @@ public class DatabaseAdapter {
 	}
 
 	public boolean delete(Object object) throws DatabaseException {
+		String[][] params = getPkQueryParams(object);
+		return database.delete(params[0][0], params[1][0], params[2]) > 0;
+	}
+
+	/**
+	 * Get parameters to execute a query with primary key arguments.
+	 * 
+	 * @param object
+	 * @return An array in the form {{table}, {whereClause}, whereArgs}
+	 * @throws DatabaseException
+	 */
+	private String[][] getPkQueryParams(Object object) throws DatabaseException {
 		Class<?> clazz = object.getClass();
+		String table = DbUtils.getTableName(clazz); // First parameter
 		ClassMetadata metadata = Repository.getInstance().getMetadata(clazz);
 		if (!metadata.hasPrimaryKey()) {
 			throw new DatabaseException("Invalid object. No primary key.");
 		}
-		String table = DbUtils.getTableName(clazz);
-		StringBuilder pkClause = new StringBuilder();
-		List<String> pkArgs = new ArrayList<String>();
+		StringBuilder whereClause = new StringBuilder(); // Second parameter
+		List<String> whereArgs = new ArrayList<String>(); // Third parameter
 		List<Property> properties = metadata.getProperties();
 		for (Property property : properties) {
 			if (property.isPrimaryKey()) {
@@ -228,13 +239,13 @@ public class DatabaseAdapter {
 					}
 					Class<?> type = value.getClass();
 					if (isBoolean(type) || isByte(type) || isShort(type) || isInt(type) || isLong(type) || isFloat(type) || isDouble(type) || isChar(type) || isString(type)) {
-						pkArgs.add(String.valueOf(value));
+						whereArgs.add(String.valueOf(value));
 					} else if (isCalendar(type)) {
-						pkArgs.add(String.valueOf(((Calendar) value).getTimeInMillis()));
+						whereArgs.add(String.valueOf(((Calendar) value).getTimeInMillis()));
 					} else if (isDate(type)) {
-						pkArgs.add(String.valueOf(((Date) value).getTime()));
+						whereArgs.add(String.valueOf(((Date) value).getTime()));
 					}
-					pkClause.append(DbUtils.getColumnName(name)).append("=? AND ");
+					whereClause.append(DbUtils.getColumnName(name)).append("=? AND ");
 				} catch (SecurityException e) {
 					e.printStackTrace();
 				} catch (NoSuchFieldException e) {
@@ -246,8 +257,20 @@ public class DatabaseAdapter {
 				}
 			}
 		}
-		int length = pkClause.length();
-		pkClause.delete(length - 5, length);
-		return database.delete(table, pkClause.toString(), pkArgs.toArray(new String[0])) > 0;
+		int length = whereClause.length();
+		whereClause.delete(length - 5, length);
+		String[] p1 = { table };
+		String[] p2 = { whereClause.toString() };
+		String[] p3 = whereArgs.toArray(new String[0]);
+		String[][] res = { p1, p2, p3 };
+		return res;
+	}
+
+	public boolean update(Object object) throws DatabaseException {
+		String[][] params = getPkQueryParams(object);
+
+		// return database.update(params[0][0], values, params[1][0], params[2]);
+		return false;
+
 	}
 }
