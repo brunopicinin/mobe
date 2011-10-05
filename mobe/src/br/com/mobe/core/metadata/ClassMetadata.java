@@ -49,4 +49,13 @@ public class ClassMetadata {
 		this.processor = processor;
 	}
 
+	public boolean hasPrimaryKey() {
+		for (Property property : properties) {
+			if (property.isPrimaryKey()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 }

@@ -51,4 +51,10 @@ public class PersistenceController {
 		return dbAdapter.list(clazz);
 	}
 
+	public boolean delete(Object object) throws DatabaseException {
+		DatabaseAdapter dbAdapter = new DatabaseAdapter(context, name, version);
+		dbAdapter.open();
+		return dbAdapter.delete(object);
+	}
+
 }

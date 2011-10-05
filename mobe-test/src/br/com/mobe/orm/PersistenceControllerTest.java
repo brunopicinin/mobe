@@ -114,7 +114,7 @@ public class PersistenceControllerTest extends AndroidTestCase {
 
 		SQLiteDatabase db = getReadableDatabase();
 		String table = DbUtils.getTableName(SimplePkBean.class);
-		Cursor cursor = db.query(table, null, null, null, null, null, null);
+		Cursor cursor = listAll(db, table);
 		assertEquals(3, cursor.getCount());
 	}
 
@@ -128,8 +128,12 @@ public class PersistenceControllerTest extends AndroidTestCase {
 
 		SQLiteDatabase db = getReadableDatabase();
 		String table = DbUtils.getTableName(MultiplePkBean.class);
-		Cursor cursor = db.query(table, null, null, null, null, null, null);
+		Cursor cursor = listAll(db, table);
 		assertEquals(3, cursor.getCount());
+	}
+
+	private Cursor listAll(SQLiteDatabase db, String table) {
+		return db.query(table, null, null, null, null, null, null);
 	}
 
 	public void testList() throws UnsupportedTypeException, DatabaseException {
@@ -227,4 +231,75 @@ public class PersistenceControllerTest extends AndroidTestCase {
 		assertTrue(list.contains(bean5));
 	}
 
+	public void testDeleteSimplePk() throws UnsupportedTypeException, DatabaseException {
+		SimplePkBean bean = new SimplePkBean(PkGenerator.randomLong());
+		controller.save(bean);
+
+		SQLiteDatabase db = getReadableDatabase();
+		String table = DbUtils.getTableName(SimplePkBean.class);
+		Cursor cursor = listAll(db, table);
+		assertEquals(1, cursor.getCount());
+
+		controller.delete(bean);
+		cursor = listAll(db, table);
+		assertEquals(0, cursor.getCount());
+
+		SimplePkBean bean2 = new SimplePkBean(PkGenerator.randomLong());
+		controller.save(bean2);
+		SimplePkBean bean3 = new SimplePkBean(PkGenerator.randomLong());
+		controller.save(bean3);
+		SimplePkBean bean4 = new SimplePkBean(PkGenerator.randomLong());
+		controller.save(bean4);
+
+		cursor = listAll(db, table);
+		assertEquals(3, cursor.getCount());
+
+		controller.delete(bean2);
+		cursor = listAll(db, table);
+		assertEquals(2, cursor.getCount());
+
+		controller.delete(bean3);
+		cursor = listAll(db, table);
+		assertEquals(1, cursor.getCount());
+
+		controller.delete(bean4);
+		cursor = listAll(db, table);
+		assertEquals(0, cursor.getCount());
+	}
+
+	public void testDeleteMultiplePk() throws UnsupportedTypeException, DatabaseException {
+		MultiplePkBean bean = new MultiplePkBean(PkGenerator.randomInt(), PkGenerator.randomString());
+		controller.save(bean);
+
+		SQLiteDatabase db = getReadableDatabase();
+		String table = DbUtils.getTableName(MultiplePkBean.class);
+		Cursor cursor = listAll(db, table);
+		assertEquals(1, cursor.getCount());
+
+		controller.delete(bean);
+		cursor = listAll(db, table);
+		assertEquals(0, cursor.getCount());
+
+		MultiplePkBean bean2 = new MultiplePkBean(PkGenerator.randomInt(), PkGenerator.randomString());
+		controller.save(bean2);
+		MultiplePkBean bean3 = new MultiplePkBean(PkGenerator.randomInt(), PkGenerator.randomString());
+		controller.save(bean3);
+		MultiplePkBean bean4 = new MultiplePkBean(PkGenerator.randomInt(), PkGenerator.randomString());
+		controller.save(bean4);
+
+		cursor = listAll(db, table);
+		assertEquals(3, cursor.getCount());
+
+		controller.delete(bean2);
+		cursor = listAll(db, table);
+		assertEquals(2, cursor.getCount());
+
+		controller.delete(bean3);
+		cursor = listAll(db, table);
+		assertEquals(1, cursor.getCount());
+
+		controller.delete(bean4);
+		cursor = listAll(db, table);
+		assertEquals(0, cursor.getCount());
+	}
 }

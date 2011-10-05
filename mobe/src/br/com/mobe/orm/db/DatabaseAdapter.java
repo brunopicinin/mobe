@@ -30,6 +30,7 @@ import br.com.mobe.core.exception.UnsupportedTypeException;
 import br.com.mobe.core.metadata.ClassMetadata;
 import br.com.mobe.core.metadata.Property;
 import br.com.mobe.core.metadata.Repository;
+import br.com.mobe.orm.exception.DatabaseException;
 
 public class DatabaseAdapter {
 
@@ -205,4 +206,48 @@ public class DatabaseAdapter {
 		}
 	}
 
+	public boolean delete(Object object) throws DatabaseException {
+		Class<?> clazz = object.getClass();
+		ClassMetadata metadata = Repository.getInstance().getMetadata(clazz);
+		if (!metadata.hasPrimaryKey()) {
+			throw new DatabaseException("Invalid object. No primary key.");
+		}
+		String table = DbUtils.getTableName(clazz);
+		StringBuilder pkClause = new StringBuilder();
+		List<String> pkArgs = new ArrayList<String>();
+		List<Property> properties = metadata.getProperties();
+		for (Property property : properties) {
+			if (property.isPrimaryKey()) {
+				String name = property.getName();
+				try {
+					Field field = clazz.getDeclaredField(name);
+					field.setAccessible(true);
+					Object value = field.get(object);
+					if (value == null) {
+						throw new DatabaseException("Invalid object. Null primary key.");
+					}
+					Class<?> type = value.getClass();
+					if (isBoolean(type) || isByte(type) || isShort(type) || isInt(type) || isLong(type) || isFloat(type) || isDouble(type) || isChar(type) || isString(type)) {
+						pkArgs.add(String.valueOf(value));
+					} else if (isCalendar(type)) {
+						pkArgs.add(String.valueOf(((Calendar) value).getTimeInMillis()));
+					} else if (isDate(type)) {
+						pkArgs.add(String.valueOf(((Date) value).getTime()));
+					}
+					pkClause.append(DbUtils.getColumnName(name)).append("=? AND ");
+				} catch (SecurityException e) {
+					e.printStackTrace();
+				} catch (NoSuchFieldException e) {
+					e.printStackTrace();
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		int length = pkClause.length();
+		pkClause.delete(length - 5, length);
+		return database.delete(table, pkClause.toString(), pkArgs.toArray(new String[0])) > 0;
+	}
 }
