@@ -8,7 +8,7 @@ import br.com.mobe.view.FormView;
 import br.com.mobe.view.ViewController;
 import br.com.mobe.view.widget.form.FormWidget;
 
-public class MobeControllerTest extends InstrumentationTestCase {
+public class ViewControllerTest extends InstrumentationTestCase {
 
 	public void testGenerateForm() {
 		Context context = getInstrumentation().getContext();
