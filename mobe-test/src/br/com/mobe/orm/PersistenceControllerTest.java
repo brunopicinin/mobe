@@ -5,12 +5,13 @@ import java.util.List;
 
 import pojo.full.ClassAnnotation;
 import pojo.semi.DefaultBean;
+import pojo.semi.pk.MultiplePkBean;
 import pojo.semi.pk.SimplePkBean;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
-import br.com.mobe.TestUtils;
+import br.com.mobe.PkGenerator;
 import br.com.mobe.core.exception.UnsupportedTypeException;
 import br.com.mobe.orm.db.DatabaseHelper;
 import br.com.mobe.orm.db.DbUtils;
@@ -20,7 +21,7 @@ public class PersistenceControllerTest extends AndroidTestCase {
 
 	private Context context;
 	private PersistenceController controller;
-	private Class<?>[] classes = { ClassAnnotation.class, DefaultBean.class, SimplePkBean.class };
+	private Class<?>[] classes = { ClassAnnotation.class, DefaultBean.class, SimplePkBean.class, MultiplePkBean.class };
 
 	@Override
 	protected void setUp() throws Exception {
@@ -104,17 +105,31 @@ public class PersistenceControllerTest extends AndroidTestCase {
 	}
 
 	public void testSaveSimplePk() throws UnsupportedTypeException, DatabaseException {
-		SimplePkBean bean = new SimplePkBean(TestUtils.generateRandomPk());
+		SimplePkBean bean = new SimplePkBean(PkGenerator.randomLong());
 		controller.save(bean);
-		SimplePkBean bean2 = new SimplePkBean(TestUtils.generateRandomPk());
+		SimplePkBean bean2 = new SimplePkBean(PkGenerator.randomLong());
 		controller.save(bean2);
-		SimplePkBean bean3 = new SimplePkBean(TestUtils.generateRandomPk());
+		SimplePkBean bean3 = new SimplePkBean(PkGenerator.randomLong());
 		controller.save(bean3);
 
 		SQLiteDatabase db = getReadableDatabase();
 		String table = DbUtils.getTableName(SimplePkBean.class);
-		Cursor query = db.query(table, null, null, null, null, null, null);
-		assertEquals(3, query.getCount());
+		Cursor cursor = db.query(table, null, null, null, null, null, null);
+		assertEquals(3, cursor.getCount());
+	}
+
+	public void testSaveMultiplePk() throws UnsupportedTypeException, DatabaseException {
+		MultiplePkBean bean1 = new MultiplePkBean();
+		controller.save(bean1);
+		MultiplePkBean bean2 = new MultiplePkBean();
+		controller.save(bean2);
+		MultiplePkBean bean3 = new MultiplePkBean();
+		controller.save(bean3);
+
+		SQLiteDatabase db = getReadableDatabase();
+		String table = DbUtils.getTableName(MultiplePkBean.class);
+		Cursor cursor = db.query(table, null, null, null, null, null, null);
+		assertEquals(3, cursor.getCount());
 	}
 
 	public void testList() throws UnsupportedTypeException, DatabaseException {
@@ -151,22 +166,58 @@ public class PersistenceControllerTest extends AndroidTestCase {
 	}
 
 	public void testListSimplePk() throws UnsupportedTypeException, DatabaseException {
-		SimplePkBean bean1 = new SimplePkBean(TestUtils.generateRandomPk());
+		SimplePkBean bean1 = new SimplePkBean(PkGenerator.randomLong());
+		bean1.setBol1(false);
 		controller.save(bean1);
 
-		SimplePkBean bean2 = new SimplePkBean(TestUtils.generateRandomPk());
+		SimplePkBean bean2 = new SimplePkBean(PkGenerator.randomLong());
+		bean2.setInt1(-2);
 		controller.save(bean2);
 
-		SimplePkBean bean3 = new SimplePkBean(TestUtils.generateRandomPk());
+		SimplePkBean bean3 = new SimplePkBean(PkGenerator.randomLong());
+		bean3.setDob1(999.0);
 		controller.save(bean3);
 
-		SimplePkBean bean4 = new SimplePkBean(TestUtils.generateRandomPk());
+		SimplePkBean bean4 = new SimplePkBean(PkGenerator.randomLong());
+		bean4.setStr1("this is a test.");
 		controller.save(bean4);
 
-		SimplePkBean bean5 = new SimplePkBean(TestUtils.generateRandomPk());
+		SimplePkBean bean5 = new SimplePkBean(PkGenerator.randomLong());
+		bean5.getCal1().add(Calendar.MONTH, -2);
 		controller.save(bean5);
 
 		List<SimplePkBean> list = controller.list(SimplePkBean.class);
+		assertEquals(5, list.size());
+
+		assertTrue(list.contains(bean1));
+		assertTrue(list.contains(bean2));
+		assertTrue(list.contains(bean3));
+		assertTrue(list.contains(bean4));
+		assertTrue(list.contains(bean5));
+	}
+
+	public void testListMultiplePk() throws UnsupportedTypeException, DatabaseException {
+		MultiplePkBean bean1 = new MultiplePkBean(PkGenerator.randomInt(), PkGenerator.randomString());
+		bean1.setBol1(false);
+		controller.save(bean1);
+
+		MultiplePkBean bean2 = new MultiplePkBean(PkGenerator.randomInt(), PkGenerator.randomString());
+		bean2.setInt1(-2);
+		controller.save(bean2);
+
+		MultiplePkBean bean3 = new MultiplePkBean(PkGenerator.randomInt(), PkGenerator.randomString());
+		bean3.setDob1(999.0);
+		controller.save(bean3);
+
+		MultiplePkBean bean4 = new MultiplePkBean(PkGenerator.randomInt(), PkGenerator.randomString());
+		bean4.setStr1("this is a test.");
+		controller.save(bean4);
+
+		MultiplePkBean bean5 = new MultiplePkBean(PkGenerator.randomInt(), PkGenerator.randomString());
+		bean5.getCal1().add(Calendar.MONTH, -2);
+		controller.save(bean5);
+
+		List<MultiplePkBean> list = controller.list(MultiplePkBean.class);
 		assertEquals(5, list.size());
 
 		assertTrue(list.contains(bean1));

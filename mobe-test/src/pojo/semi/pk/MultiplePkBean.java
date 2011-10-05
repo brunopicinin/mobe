@@ -6,10 +6,13 @@ import br.com.mobe.core.annotation.Mobe;
 import br.com.mobe.orm.annotation.PrimaryKey;
 
 @Mobe
-public class SimplePkBean {
+public class MultiplePkBean {
 
 	@PrimaryKey
-	private long pk;
+	private int pkInt;
+
+	@PrimaryKey
+	private String pkString;
 
 	private boolean bol1 = true;
 	private int int1 = 10;
@@ -17,11 +20,12 @@ public class SimplePkBean {
 	private String str1 = "hello";
 	private Calendar cal1 = Calendar.getInstance();
 
-	public SimplePkBean() {
+	public MultiplePkBean() {
 	}
 
-	public SimplePkBean(long pk) {
-		this.pk = pk;
+	public MultiplePkBean(int pkInt, String pkString) {
+		this.pkInt = pkInt;
+		this.pkString = pkString;
 	}
 
 	public boolean isBol1() {
@@ -74,7 +78,8 @@ public class SimplePkBean {
 		temp = Double.doubleToLongBits(dob1);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + int1;
-		result = prime * result + (int) (pk ^ (pk >>> 32));
+		result = prime * result + (pkInt ^ (pkInt >>> 32));
+		result = prime * result + ((pkString == null) ? 0 : pkString.hashCode());
 		result = prime * result + ((str1 == null) ? 0 : str1.hashCode());
 		return result;
 	}
@@ -90,7 +95,7 @@ public class SimplePkBean {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		SimplePkBean other = (SimplePkBean) obj;
+		MultiplePkBean other = (MultiplePkBean) obj;
 		if (bol1 != other.bol1) {
 			return false;
 		}
@@ -107,7 +112,14 @@ public class SimplePkBean {
 		if (int1 != other.int1) {
 			return false;
 		}
-		if (pk != other.pk) {
+		if (pkInt != other.pkInt) {
+			return false;
+		}
+		if (pkString == null) {
+			if (other.pkString != null) {
+				return false;
+			}
+		} else if (!pkString.equals(other.pkString)) {
 			return false;
 		}
 		if (str1 == null) {

@@ -69,7 +69,7 @@ public class MobeMain extends Activity {
 			public void onClick(View v) {
 				try {
 					PersistenceController controller = new PersistenceController(MobeMain.this);
-					Bean2 bean2 = new Bean2(TestUtils.generateRandomPk());
+					Bean2 bean2 = new Bean2(PkGenerator.randomLong());
 					controller.save(bean2);
 				} catch (UnsupportedTypeException e) {
 					Log.e(TAG, "Type: " + e.getType(), e);
