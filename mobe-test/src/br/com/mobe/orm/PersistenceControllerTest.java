@@ -106,11 +106,11 @@ public class PersistenceControllerTest extends AndroidTestCase {
 
 	public void testSaveSimplePk() throws UnsupportedTypeException, DatabaseException {
 		SimplePkBean bean = new SimplePkBean(PkGenerator.randomLong());
-		controller.save(bean);
+		assertTrue(controller.save(bean) > 0);
 		SimplePkBean bean2 = new SimplePkBean(PkGenerator.randomLong());
-		controller.save(bean2);
+		assertTrue(controller.save(bean2) > 0);
 		SimplePkBean bean3 = new SimplePkBean(PkGenerator.randomLong());
-		controller.save(bean3);
+		assertTrue(controller.save(bean3) > 0);
 
 		SQLiteDatabase db = getReadableDatabase();
 		String table = DbUtils.getTableName(SimplePkBean.class);
@@ -120,11 +120,11 @@ public class PersistenceControllerTest extends AndroidTestCase {
 
 	public void testSaveMultiplePk() throws UnsupportedTypeException, DatabaseException {
 		MultiplePkBean bean1 = new MultiplePkBean();
-		controller.save(bean1);
+		assertTrue(controller.save(bean1) > 0);
 		MultiplePkBean bean2 = new MultiplePkBean();
-		controller.save(bean2);
+		assertTrue(controller.save(bean2) > 0);
 		MultiplePkBean bean3 = new MultiplePkBean();
-		controller.save(bean3);
+		assertTrue(controller.save(bean3) > 0);
 
 		SQLiteDatabase db = getReadableDatabase();
 		String table = DbUtils.getTableName(MultiplePkBean.class);
@@ -240,7 +240,7 @@ public class PersistenceControllerTest extends AndroidTestCase {
 		Cursor cursor = listAll(db, table);
 		assertEquals(1, cursor.getCount());
 
-		controller.delete(bean);
+		assertTrue(controller.delete(bean));
 		cursor = listAll(db, table);
 		assertEquals(0, cursor.getCount());
 
@@ -254,15 +254,15 @@ public class PersistenceControllerTest extends AndroidTestCase {
 		cursor = listAll(db, table);
 		assertEquals(3, cursor.getCount());
 
-		controller.delete(bean2);
+		assertTrue(controller.delete(bean2));
 		cursor = listAll(db, table);
 		assertEquals(2, cursor.getCount());
 
-		controller.delete(bean3);
+		assertTrue(controller.delete(bean3));
 		cursor = listAll(db, table);
 		assertEquals(1, cursor.getCount());
 
-		controller.delete(bean4);
+		assertTrue(controller.delete(bean4));
 		cursor = listAll(db, table);
 		assertEquals(0, cursor.getCount());
 	}
@@ -276,7 +276,7 @@ public class PersistenceControllerTest extends AndroidTestCase {
 		Cursor cursor = listAll(db, table);
 		assertEquals(1, cursor.getCount());
 
-		controller.delete(bean);
+		assertTrue(controller.delete(bean));
 		cursor = listAll(db, table);
 		assertEquals(0, cursor.getCount());
 
@@ -290,15 +290,15 @@ public class PersistenceControllerTest extends AndroidTestCase {
 		cursor = listAll(db, table);
 		assertEquals(3, cursor.getCount());
 
-		controller.delete(bean2);
+		assertTrue(controller.delete(bean2));
 		cursor = listAll(db, table);
 		assertEquals(2, cursor.getCount());
 
-		controller.delete(bean3);
+		assertTrue(controller.delete(bean3));
 		cursor = listAll(db, table);
 		assertEquals(1, cursor.getCount());
 
-		controller.delete(bean4);
+		assertTrue(controller.delete(bean4));
 		cursor = listAll(db, table);
 		assertEquals(0, cursor.getCount());
 	}
