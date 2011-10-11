@@ -15,7 +15,7 @@ public class MetadataReaderProvider {
 
 	private MetadataReaderProvider() {
 		// default implementation
-		reader = new ConcreteMetadataReader();
+		reader = new AnnotationMetadataReader();
 	}
 
 	public MetadataReader getReader() {

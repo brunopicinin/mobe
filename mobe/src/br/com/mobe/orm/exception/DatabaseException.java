@@ -2,6 +2,8 @@ package br.com.mobe.orm.exception;
 
 public class DatabaseException extends Exception {
 
+	// TODO substituir por exceções mais específicas
+
 	public DatabaseException() {
 		super();
 	}

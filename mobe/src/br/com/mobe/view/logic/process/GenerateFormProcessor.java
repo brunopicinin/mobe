@@ -60,7 +60,7 @@ public class GenerateFormProcessor implements ViewProcessor {
 		} else if (isCalendar(type) || isDate(type)) {
 			return new FormDate(context, name, capitalizedName);
 		} else {
-			throw new UnsupportedTypeException();
+			throw new UnsupportedTypeException(type);
 		}
 	}
 

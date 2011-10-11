@@ -24,8 +24,8 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </interface>  
-  <class id="4" corner="BOTTOM_RIGHT" language="java" name="br.com.mobe.core.reader.ConcreteMetadataReader" 
-    project="mobe" file="/mobe/src/br/com/mobe/core/reader/ConcreteMetadataReader.java" binary="false">    
+  <class id="4" corner="BOTTOM_RIGHT" language="java" name="br.com.mobe.core.reader.AnnotationMetadataReader" 
+    project="mobe" file="/mobe/src/br/com/mobe/core/reader/AnnotationMetadataReader.java" binary="false">    
     <position height="99" width="209" x="1367" y="202"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      

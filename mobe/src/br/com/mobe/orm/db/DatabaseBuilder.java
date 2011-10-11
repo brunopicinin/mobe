@@ -58,7 +58,7 @@ public class DatabaseBuilder {
 			} else if (isCalendar(type) || isDate(type)) {
 				coldefSQL.append(propName).append(" DATE, "); // NUMERIC affinity (5) -- save time in milliseconds
 			} else {
-				throw new UnsupportedTypeException();
+				throw new UnsupportedTypeException(type);
 			}
 			if (property.isPrimaryKey()) {
 				pkSQL.append(propName).append(", ");

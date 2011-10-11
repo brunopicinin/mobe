@@ -4,15 +4,12 @@ public class UnsupportedTypeException extends Exception {
 
 	private Class<?> type;
 
-	public UnsupportedTypeException() {
-		super();
-	}
-
-	public UnsupportedTypeException(String message) {
-		super(message);
-	}
-
 	public UnsupportedTypeException(Class<?> type) {
+		this.type = type;
+	}
+
+	public UnsupportedTypeException(Class<?> type, String detailMessage) {
+		super(detailMessage);
 		this.type = type;
 	}
 
