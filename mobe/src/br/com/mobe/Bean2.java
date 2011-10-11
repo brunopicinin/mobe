@@ -4,13 +4,13 @@ import static br.com.mobe.StringUtils.formatted;
 
 import java.util.Calendar;
 
-import br.com.mobe.core.annotation.Mobe;
-import br.com.mobe.orm.annotation.PrimaryKey;
+import br.com.mobe.core.annotation.Entity;
+import br.com.mobe.orm.annotation.Id;
 
-@Mobe
+@Entity
 public class Bean2 {
 
-	@PrimaryKey
+	@Id
 	private long pk;
 	private boolean importAlbum = true;
 	private int songsNumber = 10;

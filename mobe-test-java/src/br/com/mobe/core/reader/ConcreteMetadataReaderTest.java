@@ -11,10 +11,10 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import pojo.ClassAnnotation;
 import pojo.FieldAnnotation;
 import pojo.MethodAnnotation;
 import pojo.NoAnnotation;
+import pojo.core.NoFieldsBean;
 import br.com.mobe.core.metadata.ClassMetadata;
 import br.com.mobe.core.metadata.Property;
 import br.com.mobe.core.reader.ConcreteMetadataReader;
@@ -50,7 +50,7 @@ public class ConcreteMetadataReaderTest {
 
 	@Test
 	public void createMetadataClassAnn() {
-		ClassMetadata metadata = reader.createMetadata(ClassAnnotation.class);
+		ClassMetadata metadata = reader.createMetadata(NoFieldsBean.class);
 		assertCorrectMetadata(metadata);
 	}
 
