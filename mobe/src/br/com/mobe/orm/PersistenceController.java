@@ -6,6 +6,7 @@ import java.util.Set;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteException;
+import br.com.mobe.core.exception.IllegalMetadataException;
 import br.com.mobe.core.exception.UnsupportedTypeException;
 import br.com.mobe.orm.db.DatabaseAdapter;
 import br.com.mobe.orm.exception.DatabaseException;
@@ -22,7 +23,7 @@ public class PersistenceController {
 		this.context = context;
 	}
 
-	public void createTables(Class<?>... classes) throws SQLiteException, UnsupportedTypeException {
+	public void createTables(Class<?>... classes) throws SQLiteException, UnsupportedTypeException, IllegalMetadataException {
 		if (classes.length == 0) {
 			throw new IllegalArgumentException("Must have at least one table to create.");
 		}

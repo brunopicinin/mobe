@@ -26,6 +26,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
+import br.com.mobe.core.exception.IllegalMetadataException;
 import br.com.mobe.core.exception.UnsupportedTypeException;
 import br.com.mobe.core.metadata.ClassMetadata;
 import br.com.mobe.core.metadata.Property;
@@ -49,7 +50,7 @@ public class DatabaseAdapter {
 		this.dbVersion = dbVersion;
 	}
 
-	public void createTables(Set<Class<?>> classes) throws SQLiteException, UnsupportedTypeException {
+	public void createTables(Set<Class<?>> classes) throws SQLiteException, UnsupportedTypeException, IllegalMetadataException {
 		DatabaseBuilder builder = new DatabaseBuilder();
 		for (Class<?> clazz : classes) {
 			builder.addTable(clazz);

@@ -15,7 +15,6 @@ public class NotNullFieldBean {
 	private long id;
 
 	@Property
-	@NotNull
 	private boolean bol1;
 
 	@Property
@@ -25,6 +24,7 @@ public class NotNullFieldBean {
 	private double dob1;
 
 	@Property
+	@NotNull
 	private String str1;
 
 	@Property

@@ -11,7 +11,7 @@ public class ClassMetadata {
 
 	private Class<?> target;
 	private List<Property> properties;
-	private boolean hasPrimaryKey = false;
+	private Property primaryKey;
 
 	// TODO errado!
 	private ViewProcessor processor;
@@ -31,10 +31,10 @@ public class ClassMetadata {
 
 	public void addProperty(Property property) throws IllegalMetadataException {
 		if (property.isPrimaryKey()) {
-			if (hasPrimaryKey) {
-				throw new IllegalMetadataException(target, "Class has more than one id: " + target.getName());
+			if (primaryKey != null) {
+				throw new IllegalMetadataException(target, "Class has more than one id.");
 			} else {
-				hasPrimaryKey = true;
+				primaryKey = property;
 			}
 		}
 		properties.add(property);
@@ -50,15 +50,6 @@ public class ClassMetadata {
 
 	public void setProcessor(ViewProcessor processor) {
 		this.processor = processor;
-	}
-
-	public boolean hasPrimaryKey() {
-		for (Property property : properties) {
-			if (property.isPrimaryKey()) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 }

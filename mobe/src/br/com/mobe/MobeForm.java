@@ -37,7 +37,7 @@ public class MobeForm extends Activity {
 			return;
 		}
 
-		Object bean = new Bean2(1);
+		Object bean = new Bean();
 		FormView form = controller.generateForm(bean);
 		container.addView(form, 0);
 

@@ -15,10 +15,10 @@ public class UniqueFieldBean {
 	private long id;
 
 	@Property
-	@Unique
 	private boolean bol1;
 
 	@Property
+	@Unique
 	private int int1;
 
 	@Property

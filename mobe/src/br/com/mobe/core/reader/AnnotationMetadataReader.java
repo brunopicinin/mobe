@@ -15,7 +15,7 @@ public class AnnotationMetadataReader implements MetadataReader {
 	@Override
 	public ClassMetadata createMetadata(Class<?> clazz) throws IllegalMetadataException {
 		if (!clazz.isAnnotationPresent(Entity.class)) {
-			throw new IllegalMetadataException(clazz, "@Entity annotation not present in class: " + clazz.getName());
+			throw new IllegalMetadataException(clazz, "@Entity annotation not present in class.");
 		}
 		ClassMetadata metadata = new ClassMetadata(clazz);
 		for (Field field : clazz.getDeclaredFields()) {
@@ -29,8 +29,10 @@ public class AnnotationMetadataReader implements MetadataReader {
 				if (idPresent) {
 					Id annotation = field.getAnnotation(Id.class);
 					property.setAutoIncrement(annotation.autoIncrement());
+					property.setNotNull(true);
+				} else {
+					property.setNotNull(field.isAnnotationPresent(NotNull.class));
 				}
-				property.setNotNull(field.isAnnotationPresent(NotNull.class));
 				property.setUnique(field.isAnnotationPresent(Unique.class));
 				metadata.addProperty(property);
 			}

@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import br.com.mobe.core.exception.IllegalMetadataException;
 import br.com.mobe.core.exception.UnsupportedTypeException;
 import br.com.mobe.core.metadata.ClassMetadata;
 import br.com.mobe.core.metadata.Property;
@@ -30,55 +31,59 @@ public class DatabaseBuilder {
 		tables = new HashMap<String, String[]>();
 	}
 
-	public void addTable(Class<?> clazz) throws UnsupportedTypeException {
+	public void addTable(Class<?> clazz) throws UnsupportedTypeException, IllegalMetadataException {
 		String name = DbUtils.getTableName(clazz);
 		String[] sql = generateSQLs(clazz, name);
 		tables.put(name, sql);
 	}
 
-	// public method for testing purposes
-	public String[] generateSQLs(Class<?> clazz, String name) throws UnsupportedTypeException {
-		// SQL create
-		StringBuilder createSQL = new StringBuilder("CREATE TABLE ").append(name).append(" (");
+	protected String[] generateSQLs(Class<?> clazz, String name) throws UnsupportedTypeException, IllegalMetadataException {
 		ClassMetadata metadata = Repository.getInstance().getMetadata(clazz);
 		List<Property> properties = metadata.getProperties();
-		StringBuilder coldefSQL = new StringBuilder();
-		StringBuilder pkSQL = new StringBuilder("PRIMARY KEY(");
+		if (properties.size() == 0) {
+			throw new IllegalMetadataException(clazz, "Trying to create table without columns.");
+		}
+
+		// SQL create
+		StringBuilder createSQL = new StringBuilder("CREATE TABLE ").append(name).append(" (");
 		for (Property property : properties) {
 			Class<?> type = property.getType();
 			String propName = DbUtils.getColumnName(property.getName());
 			if (isBoolean(type)) {
-				coldefSQL.append(propName).append(" BOOLEAN, "); // NUMERIC affinity (5) -- save as 0 or 1
+				createSQL.append(propName).append(" BOOLEAN "); // NUMERIC affinity (5) -- save as 0 or 1
 			} else if (isByte(type) || isShort(type) || isInt(type) || isLong(type)) {
-				coldefSQL.append(propName).append(" INTEGER, "); // INTEGER affinity (1)
+				createSQL.append(propName).append(" INTEGER "); // INTEGER affinity (1)
 			} else if (isFloat(type) || isDouble(type)) {
-				coldefSQL.append(propName).append(" REAL, "); // REAL affinity (4)
+				createSQL.append(propName).append(" REAL "); // REAL affinity (4)
 			} else if (isChar(type) || isString(type)) {
-				coldefSQL.append(propName).append(" TEXT, "); // TEXT affinity (2)
+				createSQL.append(propName).append(" TEXT "); // TEXT affinity (2)
 			} else if (isCalendar(type) || isDate(type)) {
-				coldefSQL.append(propName).append(" DATE, "); // NUMERIC affinity (5) -- save time in milliseconds
+				createSQL.append(propName).append(" DATE "); // NUMERIC affinity (5) -- save time in milliseconds
 			} else {
 				throw new UnsupportedTypeException(type);
 			}
-			if (property.isPrimaryKey()) {
-				pkSQL.append(propName).append(", ");
+			if (property.isNotNull()) {
+				createSQL.append("NOT NULL ");
 			}
+			if (property.isUnique()) {
+				createSQL.append("UNIQUE ");
+			}
+			if (property.isPrimaryKey()) {
+				createSQL.append("PRIMARY KEY ");
+				if (property.isAutoIncrement()) {
+					createSQL.append("AUTOINCREMENT ");
+				}
+			}
+			createSQL.append(", ");
 		}
-		if (pkSQL.length() == 12) { // no PK
-			stripEnd(coldefSQL);
-			createSQL.append(coldefSQL).append(");");
-		} else {
-			stripEnd(pkSQL);
-			createSQL.append(coldefSQL).append(pkSQL).append("));");
-		}
+		int length = createSQL.length();
+		createSQL.delete(length - 2, length);
+		createSQL.append(");");
+
 		// SQL drop
 		StringBuilder dropSQL = new StringBuilder("DROP TABLE ").append(name).append(";");
-		return new String[] { createSQL.toString(), dropSQL.toString() };
-	}
 
-	private void stripEnd(StringBuilder sb) {
-		int length = sb.length();
-		sb.delete(length - 2, length);
+		return new String[] { createSQL.toString(), dropSQL.toString() };
 	}
 
 	public Set<String> getTables() {

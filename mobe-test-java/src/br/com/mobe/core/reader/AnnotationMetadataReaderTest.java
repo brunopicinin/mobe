@@ -107,6 +107,7 @@ public class AnnotationMetadataReaderTest {
 		ClassMetadata metadata = reader.createMetadata(LongIdBean.class);
 		BeanField id = add("id", long.class);
 		id.isPrimaryKey = true;
+		id.notNull = true;
 		add("bol1", boolean.class);
 		add("int1", int.class);
 		add("dob1", double.class);
@@ -120,6 +121,7 @@ public class AnnotationMetadataReaderTest {
 		ClassMetadata metadata = reader.createMetadata(AutoIncrementIdBean.class);
 		BeanField id = add("id", long.class);
 		id.isPrimaryKey = true;
+		id.notNull = true;
 		id.autoIncrement = true;
 		add("bol1", boolean.class);
 		add("int1", int.class);
@@ -134,6 +136,7 @@ public class AnnotationMetadataReaderTest {
 		ClassMetadata metadata = reader.createMetadata(StringIdBean.class);
 		BeanField id = add("strId", String.class);
 		id.isPrimaryKey = true;
+		id.notNull = true;
 		add("bol1", boolean.class);
 		add("int1", int.class);
 		add("dob1", double.class);
@@ -152,12 +155,13 @@ public class AnnotationMetadataReaderTest {
 		ClassMetadata metadata = reader.createMetadata(NotNullFieldBean.class);
 		BeanField id = add("id", long.class);
 		id.isPrimaryKey = true;
+		id.notNull = true;
 		id.autoIncrement = true;
-		BeanField bol1 = add("bol1", boolean.class);
-		bol1.notNull = true;
+		add("bol1", boolean.class);
 		add("int1", int.class);
 		add("dob1", double.class);
-		add("str1", String.class);
+		BeanField str1 = add("str1", String.class);
+		str1.notNull = true;
 		add("cal1", Calendar.class);
 		assertCorrectMetadata(metadata);
 	}
@@ -167,10 +171,11 @@ public class AnnotationMetadataReaderTest {
 		ClassMetadata metadata = reader.createMetadata(UniqueFieldBean.class);
 		BeanField id = add("id", long.class);
 		id.isPrimaryKey = true;
+		id.notNull = true;
 		id.autoIncrement = true;
-		BeanField bol1 = add("bol1", boolean.class);
-		bol1.unique = true;
-		add("int1", int.class);
+		add("bol1", boolean.class);
+		BeanField int1 = add("int1", int.class);
+		int1.unique = true;
 		add("dob1", double.class);
 		add("str1", String.class);
 		add("cal1", Calendar.class);

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import br.com.mobe.core.exception.IllegalMetadataException;
 import br.com.mobe.core.exception.UnsupportedTypeException;
 import br.com.mobe.orm.PersistenceController;
 import br.com.mobe.orm.exception.DatabaseException;
@@ -54,11 +55,13 @@ public class MobeMain extends Activity {
 			public void onClick(View v) {
 				try {
 					PersistenceController controller = new PersistenceController(MobeMain.this);
-					controller.createTables(Bean1.class, Bean2.class);
+					controller.createTables(Bean.class);
 				} catch (SQLiteException e) {
 					Log.e(TAG, "", e);
 				} catch (UnsupportedTypeException e) {
 					Log.e(TAG, "Type: " + e.getType(), e);
+				} catch (IllegalMetadataException e) {
+					Log.e(TAG, "Entity: " + e.getEntity(), e);
 				}
 			}
 		});
@@ -69,8 +72,8 @@ public class MobeMain extends Activity {
 			public void onClick(View v) {
 				try {
 					PersistenceController controller = new PersistenceController(MobeMain.this);
-					Bean2 bean2 = new Bean2(PkGenerator.randomLong());
-					controller.save(bean2);
+					Bean bean = new Bean();
+					controller.save(bean);
 				} catch (DatabaseException e) {
 					Log.e(TAG, "", e);
 				}
@@ -82,9 +85,9 @@ public class MobeMain extends Activity {
 			@Override
 			public void onClick(View v) {
 				PersistenceController controller = new PersistenceController(MobeMain.this);
-				List<Bean2> list = controller.list(Bean2.class);
+				List<Bean> list = controller.list(Bean.class);
 				Log.d(TAG, "list size = " + list.size());
-				for (Bean2 bean : list) {
+				for (Bean bean : list) {
 					Log.d(TAG, bean.toString());
 				}
 			}
