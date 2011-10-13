@@ -1,6 +1,6 @@
 package br.com.mobe.core.exception;
 
-public class UnsupportedTypeException extends Exception {
+public class UnsupportedTypeException extends RuntimeException {
 
 	private Class<?> type;
 

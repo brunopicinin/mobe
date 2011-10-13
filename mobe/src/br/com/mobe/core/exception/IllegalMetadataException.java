@@ -1,6 +1,6 @@
 package br.com.mobe.core.exception;
 
-public class IllegalMetadataException extends Exception {
+public class IllegalMetadataException extends RuntimeException {
 
 	Class<?> entity;
 

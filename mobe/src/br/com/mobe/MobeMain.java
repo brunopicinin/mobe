@@ -4,7 +4,6 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.widget.Button;
 import br.com.mobe.core.exception.IllegalMetadataException;
 import br.com.mobe.core.exception.UnsupportedTypeException;
 import br.com.mobe.orm.PersistenceController;
-import br.com.mobe.orm.exception.DatabaseException;
 
 /**
  * Application Client.
@@ -56,8 +54,6 @@ public class MobeMain extends Activity {
 				try {
 					PersistenceController controller = new PersistenceController(MobeMain.this);
 					controller.createTables(Bean.class);
-				} catch (SQLiteException e) {
-					Log.e(TAG, "", e);
 				} catch (UnsupportedTypeException e) {
 					Log.e(TAG, "Type: " + e.getType(), e);
 				} catch (IllegalMetadataException e) {
@@ -70,13 +66,9 @@ public class MobeMain extends Activity {
 		db_save.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				try {
-					PersistenceController controller = new PersistenceController(MobeMain.this);
-					Bean bean = new Bean();
-					controller.save(bean);
-				} catch (DatabaseException e) {
-					Log.e(TAG, "", e);
-				}
+				PersistenceController controller = new PersistenceController(MobeMain.this);
+				Bean bean = new Bean();
+				controller.save(bean);
 			}
 		});
 

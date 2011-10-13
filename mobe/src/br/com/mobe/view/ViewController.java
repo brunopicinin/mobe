@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import br.com.mobe.core.exception.IllegalMetadataException;
 import br.com.mobe.core.metadata.ClassMetadata;
 import br.com.mobe.core.metadata.Repository;
 import br.com.mobe.view.logic.layer.FormProcessingLayer;
@@ -27,7 +28,7 @@ public class ViewController {
 		this(context, new GenerateFormLayer(), new PopulateFormLayer());
 	}
 
-	public FormView generateForm(Object bean) {
+	public FormView generateForm(Object bean) throws IllegalMetadataException {
 		ClassMetadata metadata = Repository.getInstance().getMetadata(bean.getClass());
 		FormView form = null;
 		for (FormProcessingLayer layer : layers) {

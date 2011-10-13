@@ -13,7 +13,7 @@ import br.com.mobe.orm.annotation.Unique;
 public class AnnotationMetadataReader implements MetadataReader {
 
 	@Override
-	public ClassMetadata createMetadata(Class<?> clazz) throws IllegalMetadataException {
+	public ClassMetadata createMetadata(Class<?> clazz) {
 		if (!clazz.isAnnotationPresent(Entity.class)) {
 			throw new IllegalMetadataException(clazz, "@Entity annotation not present in class.");
 		}

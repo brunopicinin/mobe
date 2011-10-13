@@ -6,10 +6,7 @@ import java.util.Set;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteException;
-import br.com.mobe.core.exception.IllegalMetadataException;
-import br.com.mobe.core.exception.UnsupportedTypeException;
 import br.com.mobe.orm.db.DatabaseAdapter;
-import br.com.mobe.orm.exception.DatabaseException;
 
 public class PersistenceController {
 
@@ -23,7 +20,13 @@ public class PersistenceController {
 		this.context = context;
 	}
 
-	public void createTables(Class<?>... classes) throws SQLiteException, UnsupportedTypeException, IllegalMetadataException {
+	/**
+	 * Create tables based on annotated classes.
+	 * 
+	 * @param classes
+	 *            The models of the application.
+	 */
+	public void createTables(Class<?>... classes) {
 		if (classes.length == 0) {
 			throw new IllegalArgumentException("Must have at least one table to create.");
 		}
@@ -41,17 +44,15 @@ public class PersistenceController {
 	 * @param object
 	 *            The object to be saved.
 	 * @return The rowId of the saved object.
-	 * @throws UnsupportedTypeException
-	 * @throws DatabaseException
 	 */
-	public long save(Object object) throws DatabaseException {
+	public long save(Object object) {
 		// TODO Test controllers method arguments. Ex: createTables
 		DatabaseAdapter dbAdapter = new DatabaseAdapter(context, name, version);
 		dbAdapter.open();
 		long rowid = dbAdapter.save(object);
 		dbAdapter.close();
 		if (rowid < 0) {
-			throw new DatabaseException("Object save error.");
+			throw new SQLiteException("Object save error.");
 		}
 		return rowid;
 	}
@@ -71,36 +72,34 @@ public class PersistenceController {
 		return list;
 	}
 
-	/**
-	 * Remove an object from the database based on its primary key.
-	 * 
-	 * @param object
-	 *            The object to be removed.
-	 * @return True if the operation was successful. False otherwise.
-	 * @throws DatabaseException
-	 */
-	public boolean delete(Object object) throws DatabaseException {
-		DatabaseAdapter dbAdapter = new DatabaseAdapter(context, name, version);
-		dbAdapter.open();
-		boolean delete = dbAdapter.delete(object);
-		dbAdapter.close();
-		return delete;
-	}
-
-	/**
-	 * Update the values of a given object in the database. The primary key values must never be altered, otherwise the object won't be found.
-	 * 
-	 * @param object
-	 *            The object to be updated.
-	 * @return True if the operation was successful. False otherwise.
-	 * @throws DatabaseException
-	 */
-	public boolean update(Object object) throws DatabaseException {
-		DatabaseAdapter dbAdapter = new DatabaseAdapter(context, name, version);
-		dbAdapter.open();
-		boolean update = dbAdapter.update(object);
-		dbAdapter.close();
-		return update;
-	}
+	// /**
+	// * Remove an object from the database based on its primary key.
+	// *
+	// * @param object
+	// * The object to be removed.
+	// * @return True if the operation was successful. False otherwise.
+	// */
+	// public boolean delete(Object object) {
+	// DatabaseAdapter dbAdapter = new DatabaseAdapter(context, name, version);
+	// dbAdapter.open();
+	// boolean delete = dbAdapter.delete(object);
+	// dbAdapter.close();
+	// return delete;
+	// }
+	//
+	// /**
+	// * Update the values of a given object in the database. The primary key values must never be altered, otherwise the object won't be found.
+	// *
+	// * @param object
+	// * The object to be updated.
+	// * @return True if the operation was successful. False otherwise.
+	// */
+	// public boolean update(Object object) {
+	// DatabaseAdapter dbAdapter = new DatabaseAdapter(context, name, version);
+	// dbAdapter.open();
+	// boolean update = dbAdapter.update(object);
+	// dbAdapter.close();
+	// return update;
+	// }
 
 }

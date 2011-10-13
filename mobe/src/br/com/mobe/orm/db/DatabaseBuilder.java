@@ -31,13 +31,13 @@ public class DatabaseBuilder {
 		tables = new HashMap<String, String[]>();
 	}
 
-	public void addTable(Class<?> clazz) throws UnsupportedTypeException, IllegalMetadataException {
+	public void addTable(Class<?> clazz) {
 		String name = DbUtils.getTableName(clazz);
 		String[] sql = generateSQLs(clazz, name);
 		tables.put(name, sql);
 	}
 
-	protected String[] generateSQLs(Class<?> clazz, String name) throws UnsupportedTypeException, IllegalMetadataException {
+	protected String[] generateSQLs(Class<?> clazz, String name) {
 		ClassMetadata metadata = Repository.getInstance().getMetadata(clazz);
 		List<Property> properties = metadata.getProperties();
 		if (properties.size() == 0) {

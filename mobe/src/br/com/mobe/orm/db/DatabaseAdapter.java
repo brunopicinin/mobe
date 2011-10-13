@@ -22,16 +22,12 @@ import java.util.Set;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.util.Log;
-import br.com.mobe.core.exception.IllegalMetadataException;
 import br.com.mobe.core.exception.UnsupportedTypeException;
 import br.com.mobe.core.metadata.ClassMetadata;
 import br.com.mobe.core.metadata.Property;
 import br.com.mobe.core.metadata.Repository;
-import br.com.mobe.orm.exception.DatabaseException;
 
 public class DatabaseAdapter {
 
@@ -50,7 +46,7 @@ public class DatabaseAdapter {
 		this.dbVersion = dbVersion;
 	}
 
-	public void createTables(Set<Class<?>> classes) throws SQLiteException, UnsupportedTypeException, IllegalMetadataException {
+	public void createTables(Set<Class<?>> classes) {
 		DatabaseBuilder builder = new DatabaseBuilder();
 		for (Class<?> clazz : classes) {
 			builder.addTable(clazz);
@@ -59,7 +55,7 @@ public class DatabaseAdapter {
 		database = dbHelper.getWritableDatabase();
 	}
 
-	public void open() throws SQLException {
+	public void open() {
 		dbHelper = new DatabaseHelper(context, dbName, dbVersion);
 		database = dbHelper.getWritableDatabase();
 	}
@@ -211,70 +207,63 @@ public class DatabaseAdapter {
 		}
 	}
 
-	public boolean delete(Object object) throws DatabaseException {
-		String[][] params = getPkQueryParams(object);
-		return database.delete(params[0][0], params[1][0], params[2]) > 0;
-	}
-
-	/**
-	 * Get parameters to execute a query with primary key arguments.
-	 * 
-	 * @param object
-	 * @return An array in the form {{table}, {whereClause}, whereArgs}
-	 * @throws DatabaseException
-	 */
-	private String[][] getPkQueryParams(Object object) throws DatabaseException {
-		Class<?> clazz = object.getClass();
-		String table = DbUtils.getTableName(clazz); // First parameter
-		ClassMetadata metadata = Repository.getInstance().getMetadata(clazz);
-		if (!metadata.hasPrimaryKey()) {
-			throw new DatabaseException("Invalid object. No primary key.");
-		}
-		StringBuilder whereClause = new StringBuilder(); // Second parameter
-		List<String> whereArgs = new ArrayList<String>(); // Third parameter
-		List<Property> properties = metadata.getProperties();
-		for (Property property : properties) {
-			if (property.isPrimaryKey()) {
-				String name = property.getName();
-				try {
-					Field field = clazz.getDeclaredField(name);
-					field.setAccessible(true);
-					Object value = field.get(object);
-					if (value == null) {
-						throw new DatabaseException("Invalid object. Null primary key.");
-					}
-					Class<?> type = value.getClass();
-					if (isBoolean(type) || isByte(type) || isShort(type) || isInt(type) || isLong(type) || isFloat(type) || isDouble(type) || isChar(type) || isString(type)) {
-						whereArgs.add(String.valueOf(value));
-					} else if (isCalendar(type)) {
-						whereArgs.add(String.valueOf(((Calendar) value).getTimeInMillis()));
-					} else if (isDate(type)) {
-						whereArgs.add(String.valueOf(((Date) value).getTime()));
-					}
-					whereClause.append(DbUtils.getColumnName(name)).append("=? AND ");
-				} catch (SecurityException e) {
-					e.printStackTrace();
-				} catch (NoSuchFieldException e) {
-					e.printStackTrace();
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		int length = whereClause.length();
-		whereClause.delete(length - 5, length);
-		String[] p1 = { table };
-		String[] p2 = { whereClause.toString() };
-		String[] p3 = whereArgs.toArray(new String[0]);
-		String[][] res = { p1, p2, p3 };
-		return res;
-	}
-
-	public boolean update(Object object) throws DatabaseException {
-		String[][] params = getPkQueryParams(object);
-		ContentValues values = getContentValues(object);
-		return database.update(params[0][0], values, params[1][0], params[2]) > 0;
-	}
+	// public boolean delete(Object object) {
+	// String[][] params = getPkQueryParams(object);
+	// return database.delete(params[0][0], params[1][0], params[2]) > 0;
+	// }
+	//
+	// private String[][] getPkQueryParams(Object object) {
+	// Class<?> clazz = object.getClass();
+	// String table = DbUtils.getTableName(clazz); // First parameter
+	// ClassMetadata metadata = Repository.getInstance().getMetadata(clazz);
+	// if (!metadata.hasPrimaryKey()) {
+	// throw new DatabaseException("Invalid object. No primary key.");
+	// }
+	// StringBuilder whereClause = new StringBuilder(); // Second parameter
+	// List<String> whereArgs = new ArrayList<String>(); // Third parameter
+	// List<Property> properties = metadata.getProperties();
+	// for (Property property : properties) {
+	// if (property.isPrimaryKey()) {
+	// String name = property.getName();
+	// try {
+	// Field field = clazz.getDeclaredField(name);
+	// field.setAccessible(true);
+	// Object value = field.get(object);
+	// if (value == null) {
+	// throw new DatabaseException("Invalid object. Null primary key.");
+	// }
+	// Class<?> type = value.getClass();
+	// if (isBoolean(type) || isByte(type) || isShort(type) || isInt(type) || isLong(type) || isFloat(type) || isDouble(type) || isChar(type) || isString(type)) {
+	// whereArgs.add(String.valueOf(value));
+	// } else if (isCalendar(type)) {
+	// whereArgs.add(String.valueOf(((Calendar) value).getTimeInMillis()));
+	// } else if (isDate(type)) {
+	// whereArgs.add(String.valueOf(((Date) value).getTime()));
+	// }
+	// whereClause.append(DbUtils.getColumnName(name)).append("=? AND ");
+	// } catch (SecurityException e) {
+	// e.printStackTrace();
+	// } catch (NoSuchFieldException e) {
+	// e.printStackTrace();
+	// } catch (IllegalArgumentException e) {
+	// e.printStackTrace();
+	// } catch (IllegalAccessException e) {
+	// e.printStackTrace();
+	// }
+	// }
+	// }
+	// int length = whereClause.length();
+	// whereClause.delete(length - 5, length);
+	// String[] p1 = { table };
+	// String[] p2 = { whereClause.toString() };
+	// String[] p3 = whereArgs.toArray(new String[0]);
+	// String[][] res = { p1, p2, p3 };
+	// return res;
+	// }
+	//
+	// public boolean update(Object object) {
+	// String[][] params = getPkQueryParams(object);
+	// ContentValues values = getContentValues(object);
+	// return database.update(params[0][0], values, params[1][0], params[2]) > 0;
+	// }
 }

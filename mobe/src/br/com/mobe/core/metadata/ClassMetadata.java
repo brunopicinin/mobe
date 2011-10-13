@@ -29,7 +29,7 @@ public class ClassMetadata {
 		return properties;
 	}
 
-	public void addProperty(Property property) throws IllegalMetadataException {
+	public void addProperty(Property property) {
 		if (property.isPrimaryKey()) {
 			if (primaryKey != null) {
 				throw new IllegalMetadataException(target, "Class has more than one id.");
