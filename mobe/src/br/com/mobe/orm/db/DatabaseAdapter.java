@@ -13,6 +13,7 @@ import static br.com.mobe.core.util.ReflectionUtils.isShort;
 import static br.com.mobe.core.util.ReflectionUtils.isString;
 
 import java.lang.reflect.Field;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -248,6 +249,70 @@ public class DatabaseAdapter {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public <E> E findById(Class<E> clazz, Object id) {
+		ClassMetadata metadata = Repository.getInstance().getMetadata(clazz);
+		Property primaryKey = metadata.getPrimaryKey();
+		if (primaryKey == null) {
+			throw new IllegalMetadataException(clazz, "Impossible to find object without id.");
+		}
+		if (id == null) {
+			throw new InvalidParameterException("Id must not be null.");
+		}
+		Class<?> pkType = primaryKey.getType();
+		Class<?> idType = id.getClass();
+		if (!equivalentType(pkType, idType)) {
+			throw new InvalidParameterException("Id parameter is not of the same type of object id.");
+		}
+		String table = DbUtils.getTableName(clazz);
+		String selection = primaryKey.getName() + "=?";
+		String selectionArg = null;
+		if (isCalendar(idType)) {
+			Calendar cal = (Calendar) id;
+			selectionArg = String.valueOf(cal.getTimeInMillis());
+		} else if (isDate(idType)) {
+			Date date = (Date) id;
+			selectionArg = String.valueOf(date.getTime());
+		} else {
+			selectionArg = String.valueOf(id);
+		}
+		Cursor cursor = database.query(table, null, selection, new String[] { selectionArg }, null, null, null);
+		cursor.moveToFirst();
+		try {
+			E object = clazz.newInstance();
+			populateObject(object, cursor, metadata);
+			return object;
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+			// TODO: pensar em maneira melhor?
+			return null;
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+			// TODO: pensar em maneira melhor?
+			return null;
+		}
+	}
+
+	private boolean equivalentType(Class<?> pkType, Class<?> idType) {
+		if (pkType.equals(idType)) {
+			return true;
+		} else if (isBoolean(pkType) && isBoolean(idType)) {
+			return true;
+		} else if ((isByte(pkType) || isShort(pkType) || isInt(pkType) || isLong(pkType)) && (isByte(idType) || isShort(idType) || isInt(idType) || isLong(idType))) {
+			return true;
+		} else if ((isFloat(pkType) || isDouble(pkType)) && (isFloat(idType)) || isDouble(idType)) {
+			return true;
+		} else if (isChar(pkType) && isChar(idType)) {
+			return true;
+		} else if (isString(pkType) && isString(idType)) {
+			return true;
+		} else if (isCalendar(pkType) && isCalendar(idType)) {
+			return true;
+		} else if (isDate(pkType) && isDate(idType)) {
+			return true;
+		}
+		return false;
 	}
 
 	public boolean delete(Object object) {

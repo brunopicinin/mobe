@@ -73,6 +73,23 @@ public class PersistenceController {
 	}
 
 	/**
+	 * Return a given object based on it's primary key.
+	 * 
+	 * @param clazz
+	 *            The class to consult.
+	 * @param id
+	 *            The id of the object to consult.
+	 * @return The persistent object with the given id.
+	 */
+	public <E> E findById(Class<E> clazz, Object id) {
+		DatabaseAdapter dbAdapter = new DatabaseAdapter(context, name, version);
+		dbAdapter.open();
+		E object = dbAdapter.findById(clazz, id);
+		dbAdapter.close();
+		return object;
+	}
+
+	/**
 	 * Remove an object from the database based on its primary key.
 	 * 
 	 * @param object
@@ -88,7 +105,7 @@ public class PersistenceController {
 	}
 
 	/**
-	 * Update the values of a given object in the database. The primary key values must never be altered, otherwise the object won't be found.
+	 * Update the values of a given object in the database. The primary key value must never be altered, otherwise the object won't be found.
 	 * 
 	 * @param object
 	 *            The object to be updated.

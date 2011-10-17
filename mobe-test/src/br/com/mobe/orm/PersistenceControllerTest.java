@@ -364,6 +364,18 @@ public class PersistenceControllerTest extends AndroidTestCase {
 		assertTrue(list.contains(bean3));
 	}
 
+	public void testFindById() {
+		AutoIncrementIdBean bean1 = new AutoIncrementIdBean();
+		controller.save(bean1);
+		AutoIncrementIdBean bean2 = new AutoIncrementIdBean();
+		controller.save(bean2);
+		AutoIncrementIdBean bean3 = new AutoIncrementIdBean();
+		controller.save(bean3);
+
+		AutoIncrementIdBean persistentBean = controller.findById(AutoIncrementIdBean.class, bean2.getId());
+		assertEquals(bean2, persistentBean);
+	}
+
 	public void testDelete() {
 		AutoIncrementIdBean bean = new AutoIncrementIdBean();
 		controller.save(bean);
