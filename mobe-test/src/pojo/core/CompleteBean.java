@@ -9,6 +9,22 @@ import br.com.mobe.core.annotation.Property;
 @Entity
 public class CompleteBean {
 
+	public static CompleteBean getExample() {
+		CompleteBean bean = new CompleteBean();
+		bean.bol1 = true;
+		bean.byt1 = 2;
+		bean.sho1 = 4;
+		bean.int1 = 8;
+		bean.lon1 = 16l;
+		bean.flo1 = 1.1f;
+		bean.dob1 = 2.2;
+		bean.cha1 = 'w';
+		bean.str1 = "Hello";
+		bean.cal1 = Calendar.getInstance();
+		bean.dat1 = new Date(1999, 5, 20, 10, 11, 12);
+		return bean;
+	}
+
 	@Property
 	private boolean bol1;
 	@Property
@@ -118,6 +134,86 @@ public class CompleteBean {
 
 	public void setDat1(Date dat1) {
 		this.dat1 = dat1;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (bol1 ? 1231 : 1237);
+		result = prime * result + byt1;
+		result = prime * result + ((cal1 == null) ? 0 : cal1.hashCode());
+		result = prime * result + cha1;
+		result = prime * result + ((dat1 == null) ? 0 : dat1.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(dob1);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + Float.floatToIntBits(flo1);
+		result = prime * result + int1;
+		result = prime * result + (int) (lon1 ^ (lon1 >>> 32));
+		result = prime * result + sho1;
+		result = prime * result + ((str1 == null) ? 0 : str1.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		CompleteBean other = (CompleteBean) obj;
+		if (bol1 != other.bol1) {
+			return false;
+		}
+		if (byt1 != other.byt1) {
+			return false;
+		}
+		if (cal1 == null) {
+			if (other.cal1 != null) {
+				return false;
+			}
+		} else if (!cal1.equals(other.cal1)) {
+			return false;
+		}
+		if (cha1 != other.cha1) {
+			return false;
+		}
+		if (dat1 == null) {
+			if (other.dat1 != null) {
+				return false;
+			}
+		} else if (!dat1.equals(other.dat1)) {
+			return false;
+		}
+		if (Double.doubleToLongBits(dob1) != Double.doubleToLongBits(other.dob1)) {
+			return false;
+		}
+		if (Float.floatToIntBits(flo1) != Float.floatToIntBits(other.flo1)) {
+			return false;
+		}
+		if (int1 != other.int1) {
+			return false;
+		}
+		if (lon1 != other.lon1) {
+			return false;
+		}
+		if (sho1 != other.sho1) {
+			return false;
+		}
+		if (str1 == null) {
+			if (other.str1 != null) {
+				return false;
+			}
+		} else if (!str1.equals(other.str1)) {
+			return false;
+		}
+		return true;
 	}
 
 }

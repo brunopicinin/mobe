@@ -72,34 +72,34 @@ public class PersistenceController {
 		return list;
 	}
 
-	// /**
-	// * Remove an object from the database based on its primary key.
-	// *
-	// * @param object
-	// * The object to be removed.
-	// * @return True if the operation was successful. False otherwise.
-	// */
-	// public boolean delete(Object object) {
-	// DatabaseAdapter dbAdapter = new DatabaseAdapter(context, name, version);
-	// dbAdapter.open();
-	// boolean delete = dbAdapter.delete(object);
-	// dbAdapter.close();
-	// return delete;
-	// }
-	//
-	// /**
-	// * Update the values of a given object in the database. The primary key values must never be altered, otherwise the object won't be found.
-	// *
-	// * @param object
-	// * The object to be updated.
-	// * @return True if the operation was successful. False otherwise.
-	// */
-	// public boolean update(Object object) {
-	// DatabaseAdapter dbAdapter = new DatabaseAdapter(context, name, version);
-	// dbAdapter.open();
-	// boolean update = dbAdapter.update(object);
-	// dbAdapter.close();
-	// return update;
-	// }
+	/**
+	 * Remove an object from the database based on its primary key.
+	 * 
+	 * @param object
+	 *            The object to be removed.
+	 * @return True if the operation was successful. False otherwise.
+	 */
+	public boolean delete(Object object) {
+		DatabaseAdapter dbAdapter = new DatabaseAdapter(context, name, version);
+		dbAdapter.open();
+		boolean delete = dbAdapter.delete(object);
+		dbAdapter.close();
+		return delete;
+	}
+
+	/**
+	 * Update the values of a given object in the database. The primary key values must never be altered, otherwise the object won't be found.
+	 * 
+	 * @param object
+	 *            The object to be updated.
+	 * @return True if the operation was successful. False otherwise.
+	 */
+	public boolean update(Object object) {
+		DatabaseAdapter dbAdapter = new DatabaseAdapter(context, name, version);
+		dbAdapter.open();
+		boolean update = dbAdapter.update(object);
+		dbAdapter.close();
+		return update;
+	}
 
 }

@@ -23,11 +23,14 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.util.Log;
+import br.com.mobe.core.exception.IllegalMetadataException;
 import br.com.mobe.core.exception.UnsupportedTypeException;
 import br.com.mobe.core.metadata.ClassMetadata;
 import br.com.mobe.core.metadata.Property;
 import br.com.mobe.core.metadata.Repository;
+import br.com.mobe.orm.exception.IllegalQueryException;
 
 public class DatabaseAdapter {
 
@@ -66,21 +69,55 @@ public class DatabaseAdapter {
 
 	public long save(Object object) {
 		String table = DbUtils.getTableName(object.getClass());
-		ContentValues values = getContentValues(object);
-		return database.insert(table, null, values);
+		ContentValues values = getContentValues(object, false);
+		long rowid = database.insert(table, null, values);
+		updateId(object, rowid);
+		return rowid;
 	}
 
-	private ContentValues getContentValues(Object object) {
+	private void updateId(Object object, long rowid) {
+		Class<? extends Object> clazz = object.getClass();
+		ClassMetadata metadata = Repository.getInstance().getMetadata(clazz);
+		Property primaryKey = metadata.getPrimaryKey();
+		// update only AutoIncrement Id
+		if (primaryKey != null && primaryKey.isAutoIncrement()) {
+			try {
+				Field field = clazz.getDeclaredField(primaryKey.getName());
+				field.setAccessible(true);
+				field.set(object, rowid);
+			} catch (SecurityException e) {
+				e.printStackTrace();
+			} catch (NoSuchFieldException e) {
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private ContentValues getContentValues(Object object, boolean isUpdate) {
 		Class<? extends Object> clazz = object.getClass();
 		ContentValues values = new ContentValues();
 		ClassMetadata metadata = Repository.getInstance().getMetadata(clazz);
 		List<Property> properties = metadata.getProperties();
 		for (Property property : properties) {
+			if (isUpdate && property.isPrimaryKey()) {
+				// update cannot change IDs
+				continue;
+			} else if (!isUpdate && property.isAutoIncrement()) {
+				// save cannot change AutoIncrement
+				continue;
+			}
 			try {
 				String name = property.getName();
 				Field field = clazz.getDeclaredField(name);
 				field.setAccessible(true);
 				Object value = field.get(object);
+				if (property.isNotNull() && value == null) {
+					throw new SQLiteException("Property " + name + " must be not null.");
+				}
 				if (value == null) {
 					values.putNull(name);
 				} else {
@@ -189,12 +226,18 @@ public class DatabaseAdapter {
 					field.set(object, s);
 				} else if (isCalendar(type)) {
 					long l = cursor.getLong(columnIndex);
-					Calendar calendar = Calendar.getInstance();
-					calendar.setTimeInMillis(l);
+					Calendar calendar = null;
+					if (l != 0) {
+						calendar = Calendar.getInstance();
+						calendar.setTimeInMillis(l);
+					}
 					field.set(object, calendar);
 				} else if (isDate(type)) {
 					long l = cursor.getLong(columnIndex);
-					Date date = new Date(l);
+					Date date = null;
+					if (l != 0) {
+						date = new Date(l);
+					}
 					field.set(object, date);
 				}
 			} catch (IllegalAccessException e) {
@@ -207,63 +250,59 @@ public class DatabaseAdapter {
 		}
 	}
 
-	// public boolean delete(Object object) {
-	// String[][] params = getPkQueryParams(object);
-	// return database.delete(params[0][0], params[1][0], params[2]) > 0;
-	// }
-	//
-	// private String[][] getPkQueryParams(Object object) {
-	// Class<?> clazz = object.getClass();
-	// String table = DbUtils.getTableName(clazz); // First parameter
-	// ClassMetadata metadata = Repository.getInstance().getMetadata(clazz);
-	// if (!metadata.hasPrimaryKey()) {
-	// throw new DatabaseException("Invalid object. No primary key.");
-	// }
-	// StringBuilder whereClause = new StringBuilder(); // Second parameter
-	// List<String> whereArgs = new ArrayList<String>(); // Third parameter
-	// List<Property> properties = metadata.getProperties();
-	// for (Property property : properties) {
-	// if (property.isPrimaryKey()) {
-	// String name = property.getName();
-	// try {
-	// Field field = clazz.getDeclaredField(name);
-	// field.setAccessible(true);
-	// Object value = field.get(object);
-	// if (value == null) {
-	// throw new DatabaseException("Invalid object. Null primary key.");
-	// }
-	// Class<?> type = value.getClass();
-	// if (isBoolean(type) || isByte(type) || isShort(type) || isInt(type) || isLong(type) || isFloat(type) || isDouble(type) || isChar(type) || isString(type)) {
-	// whereArgs.add(String.valueOf(value));
-	// } else if (isCalendar(type)) {
-	// whereArgs.add(String.valueOf(((Calendar) value).getTimeInMillis()));
-	// } else if (isDate(type)) {
-	// whereArgs.add(String.valueOf(((Date) value).getTime()));
-	// }
-	// whereClause.append(DbUtils.getColumnName(name)).append("=? AND ");
-	// } catch (SecurityException e) {
-	// e.printStackTrace();
-	// } catch (NoSuchFieldException e) {
-	// e.printStackTrace();
-	// } catch (IllegalArgumentException e) {
-	// e.printStackTrace();
-	// } catch (IllegalAccessException e) {
-	// e.printStackTrace();
-	// }
-	// }
-	// }
-	// int length = whereClause.length();
-	// whereClause.delete(length - 5, length);
-	// String[] p1 = { table };
-	// String[] p2 = { whereClause.toString() };
-	// String[] p3 = whereArgs.toArray(new String[0]);
-	// String[][] res = { p1, p2, p3 };
-	// return res;
-	// }
-	//
-	// public boolean update(Object object) {
-	// String[][] params = getPkQueryParams(object);
-	// ContentValues values = getContentValues(object);
-	// return database.update(params[0][0], values, params[1][0], params[2]) > 0;
-	// }
+	public boolean delete(Object object) {
+		String[] params = getPkQueryParams(object);
+		return database.delete(params[0], params[1], new String[] { params[2] }) > 0;
+	}
+
+	/**
+	 * @param object
+	 * @return {table, whereClause, whereArgs}
+	 */
+	private String[] getPkQueryParams(Object object) {
+		Class<?> clazz = object.getClass();
+		String table = DbUtils.getTableName(clazz); // First parameter
+		ClassMetadata metadata = Repository.getInstance().getMetadata(clazz);
+		Property primaryKey = metadata.getPrimaryKey();
+		if (primaryKey == null) {
+			throw new IllegalMetadataException(clazz, "Invalid object. No primary key.");
+		}
+		String whereClause = null;
+		String whereArgs = null;
+		try {
+			String name = primaryKey.getName();
+			Field field = clazz.getDeclaredField(name);
+			field.setAccessible(true);
+			Object value = field.get(object);
+			if (value == null) {
+				throw new IllegalQueryException("Id must not be null.");
+			}
+
+			whereClause = DbUtils.getColumnName(name) + "=?"; // Second parameter
+			Class<?> type = value.getClass();
+			// Third parameter
+			if (isBoolean(type) || isByte(type) || isShort(type) || isInt(type) || isLong(type) || isFloat(type) || isDouble(type) || isChar(type) || isString(type)) {
+				whereArgs = String.valueOf(value);
+			} else if (isCalendar(type)) {
+				whereArgs = String.valueOf(((Calendar) value).getTimeInMillis());
+			} else if (isDate(type)) {
+				whereArgs = String.valueOf(((Date) value).getTime());
+			}
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return new String[] { table, whereClause, whereArgs };
+	}
+
+	public boolean update(Object object) {
+		String[] params = getPkQueryParams(object);
+		ContentValues values = getContentValues(object, true);
+		return database.update(params[0], values, params[1], new String[] { params[2] }) > 0;
+	}
 }

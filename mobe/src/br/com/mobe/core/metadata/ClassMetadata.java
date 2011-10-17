@@ -29,6 +29,10 @@ public class ClassMetadata {
 		return properties;
 	}
 
+	public Property getPrimaryKey() {
+		return primaryKey;
+	}
+
 	public void addProperty(Property property) {
 		if (property.isPrimaryKey()) {
 			if (primaryKey != null) {
