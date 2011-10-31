@@ -12,8 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import br.com.mobe.view.FormView;
 import br.com.mobe.view.ViewController;
-import br.com.mobe.view.logic.layer.GenerateFormLayer;
-import br.com.mobe.view.logic.layer.PopulateFormLayer;
 
 public class MobeForm extends Activity {
 
@@ -28,17 +26,18 @@ public class MobeForm extends Activity {
 	private void handleIntent(String action) {
 		LinearLayout container = (LinearLayout) findViewById(R.id.container);
 
-		ViewController controller = null;
+		ViewController controller = new ViewController(this);
+		Object bean = new Bean();
+		FormView form = null;
+
 		if (action.equals("generate")) {
-			controller = new ViewController(this, new GenerateFormLayer());
+			form = controller.generateForm(bean);
 		} else if (action.equals("populate")) {
-			controller = new ViewController(this, new GenerateFormLayer(), new PopulateFormLayer());
+			form = controller.generatePopulateForm(bean);
 		} else {
 			return;
 		}
 
-		Object bean = new Bean();
-		FormView form = controller.generateForm(bean);
 		container.addView(form, 0);
 
 		Button printBean = (Button) findViewById(R.id.printBean);
