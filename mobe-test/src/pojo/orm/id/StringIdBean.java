@@ -76,4 +76,64 @@ public class StringIdBean {
 		this.cal1 = cal1;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (bol1 ? 1231 : 1237);
+		result = prime * result + ((cal1 == null) ? 0 : cal1.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(dob1);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + int1;
+		result = prime * result + ((str1 == null) ? 0 : str1.hashCode());
+		result = prime * result + ((strId == null) ? 0 : strId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		StringIdBean other = (StringIdBean) obj;
+		if (bol1 != other.bol1) {
+			return false;
+		}
+		if (cal1 == null) {
+			if (other.cal1 != null) {
+				return false;
+			}
+		} else if (!cal1.equals(other.cal1)) {
+			return false;
+		}
+		if (Double.doubleToLongBits(dob1) != Double.doubleToLongBits(other.dob1)) {
+			return false;
+		}
+		if (int1 != other.int1) {
+			return false;
+		}
+		if (str1 == null) {
+			if (other.str1 != null) {
+				return false;
+			}
+		} else if (!str1.equals(other.str1)) {
+			return false;
+		}
+		if (strId == null) {
+			if (other.strId != null) {
+				return false;
+			}
+		} else if (!strId.equals(other.strId)) {
+			return false;
+		}
+		return true;
+	}
+
 }
