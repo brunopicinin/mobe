@@ -1,18 +1,10 @@
 package br.com.mobe.core.reader;
 
-import static br.com.mobe.core.util.ReflectionUtils.isBoolean;
-import static br.com.mobe.core.util.ReflectionUtils.isByte;
-import static br.com.mobe.core.util.ReflectionUtils.isCalendar;
-import static br.com.mobe.core.util.ReflectionUtils.isChar;
-import static br.com.mobe.core.util.ReflectionUtils.isDate;
-import static br.com.mobe.core.util.ReflectionUtils.isDouble;
-import static br.com.mobe.core.util.ReflectionUtils.isFloat;
-import static br.com.mobe.core.util.ReflectionUtils.isInt;
-import static br.com.mobe.core.util.ReflectionUtils.isLong;
-import static br.com.mobe.core.util.ReflectionUtils.isShort;
-import static br.com.mobe.core.util.ReflectionUtils.isString;
-
 import java.lang.reflect.Field;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import br.com.mobe.core.annotation.Entity;
 import br.com.mobe.core.exception.IllegalMetadataException;
@@ -30,6 +22,36 @@ import br.com.mobe.view.logic.process.TextProcessor;
 import br.com.mobe.view.logic.process.ViewProcessor;
 
 public class AnnotationMetadataReader implements MetadataReader {
+
+	private Map<Class<?>, ViewProcessor> processorMap;
+
+	public AnnotationMetadataReader() {
+		processorMap = new HashMap<Class<?>, ViewProcessor>();
+
+		processorMap.put(boolean.class, new LogicProcessor());
+		processorMap.put(Boolean.class, new LogicProcessor());
+
+		processorMap.put(byte.class, new NumberProcessor());
+		processorMap.put(Byte.class, new NumberProcessor());
+		processorMap.put(short.class, new NumberProcessor());
+		processorMap.put(Short.class, new NumberProcessor());
+		processorMap.put(int.class, new NumberProcessor());
+		processorMap.put(Integer.class, new NumberProcessor());
+		processorMap.put(long.class, new NumberProcessor());
+		processorMap.put(Long.class, new NumberProcessor());
+
+		processorMap.put(float.class, new DecimalProcessor());
+		processorMap.put(Float.class, new DecimalProcessor());
+		processorMap.put(double.class, new DecimalProcessor());
+		processorMap.put(Double.class, new DecimalProcessor());
+
+		processorMap.put(char.class, new TextProcessor());
+		processorMap.put(Character.class, new TextProcessor());
+		processorMap.put(String.class, new TextProcessor());
+
+		processorMap.put(Calendar.class, new DateProcessor());
+		processorMap.put(Date.class, new DateProcessor());
+	}
 
 	@Override
 	public ClassMetadata createMetadata(Class<?> clazz) {
@@ -60,17 +82,21 @@ public class AnnotationMetadataReader implements MetadataReader {
 		return metadata;
 	}
 
+	/**
+	 * Add a new processor for a specific object type.
+	 * 
+	 * @param type
+	 *            The class of the new handled object.
+	 * @param processor
+	 *            The processor responsible for the logic of this type.
+	 */
+	public void addNewProcessor(Class<?> type, ViewProcessor processor) {
+		processorMap.put(type, processor);
+	}
+
 	private ViewProcessor getProcessor(Class<?> type) {
-		if (isBoolean(type)) {
-			return new LogicProcessor();
-		} else if (isByte(type) || isShort(type) || isInt(type) || isLong(type)) {
-			return new NumberProcessor();
-		} else if (isFloat(type) || isDouble(type)) {
-			return new DecimalProcessor();
-		} else if (isChar(type) || isString(type)) {
-			return new TextProcessor();
-		} else if (isCalendar(type) || isDate(type)) {
-			return new DateProcessor();
+		if (processorMap.keySet().contains(type)) {
+			return processorMap.get(type);
 		} else {
 			throw new UnsupportedTypeException(type);
 		}

@@ -3,6 +3,7 @@ package br.com.mobe.core.util;
 import java.util.Calendar;
 import java.util.Date;
 
+@Deprecated
 public class ReflectionUtils {
 
 	public static boolean isBoolean(Class<?> type) {
