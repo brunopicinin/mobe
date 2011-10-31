@@ -1,6 +1,10 @@
 package br.com.mobe.core.metadata;
 
+import br.com.mobe.view.logic.process.ViewProcessor;
+
 public class Property {
+
+	private ViewProcessor viewProcessor;
 
 	// Core
 	private String name;
@@ -13,9 +17,14 @@ public class Property {
 	private boolean notNull = false;
 	private boolean unique = false;
 
-	public Property(String name, Class<?> type) {
+	public Property(String name, Class<?> type, ViewProcessor viewProcessor) {
 		this.name = name;
 		this.type = type;
+		this.viewProcessor = viewProcessor;
+	}
+
+	public ViewProcessor getViewProcessor() {
+		return viewProcessor;
 	}
 
 	public String getName() {
