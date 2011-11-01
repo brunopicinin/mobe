@@ -20,8 +20,12 @@ mobe-test/gen/
 mobe-test-java/bin/
 mobe-test-java/gen/
 
+# lib files
+mobe/lib/
+mobe-test/lib/
+mobe-test-java/lib/
+
 # eclipse project files
 *.classpath
 *.project
 *.settings
-
