@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+
+	<!-- title -->
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content">
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Title" />
+		<EditText
+			android:id="@+id/title_edit"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:inputType="text" />
+	</LinearLayout>
+
+	<!-- importance -->
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content">
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Importance" />
+		<EditText
+			android:id="@+id/importance_edit"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:inputType="numberSigned"
+			android:hint="Example: -125" />
+	</LinearLayout>
+
+	<!-- deadline -->
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content">
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Deadline" />
+		<EditText
+			android:id="@+id/deadline_edit"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:inputType="date"
+			android:hint="Example: 30/10/2000" />
+	</LinearLayout>
+
+	<!-- done -->
+	<LinearLayout
+		android:orientation="horizontal"
+		android:gravity="center_vertical"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content">
+		<CheckBox
+			android:id="@+id/done_edit"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="Done" />
+	</LinearLayout>
+
+	<Button
+		android:id="@+id/confirm_button"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Confirmar" />
+
+</LinearLayout>

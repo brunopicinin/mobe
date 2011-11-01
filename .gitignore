@@ -19,11 +19,17 @@ mobe-test/bin/
 mobe-test/gen/
 mobe-test-java/bin/
 mobe-test-java/gen/
+tarefas-convencional/bin/
+tarefas-convencional/gen/
+tarefas-mobe/bin/
+tarefas-mobe/gen/
 
 # lib files
 mobe/lib/
 mobe-test/lib/
 mobe-test-java/lib/
+tarefas-convencional/lib/
+tarefas-mobe/lib/
 
 # eclipse project files
 *.classpath
