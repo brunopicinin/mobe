@@ -46,7 +46,6 @@ public class PersistenceController {
 	 * @return The rowId of the saved object.
 	 */
 	public long save(Object object) {
-		// TODO Test controllers method arguments. Ex: createTables
 		DatabaseAdapter dbAdapter = new DatabaseAdapter(context, name, version);
 		dbAdapter.open();
 		long rowid = dbAdapter.save(object);

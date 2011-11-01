@@ -285,11 +285,9 @@ public class DatabaseAdapter {
 			return object;
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
-			// TODO: pensar em maneira melhor?
 			return null;
 		} catch (InstantiationException e) {
 			e.printStackTrace();
-			// TODO: pensar em maneira melhor?
 			return null;
 		}
 	}

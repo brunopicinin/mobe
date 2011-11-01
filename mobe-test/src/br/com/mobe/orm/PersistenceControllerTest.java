@@ -457,11 +457,9 @@ public class PersistenceControllerTest extends AndroidTestCase {
 
 	public void testUpdate() {
 		AutoIncrementIdBean bean = new AutoIncrementIdBean();
-		controller.save(bean);
+		long id = controller.save(bean);
 
-		// TODO: substituir por getByPk
-		List<AutoIncrementIdBean> list = controller.list(AutoIncrementIdBean.class);
-		AutoIncrementIdBean savedBean = list.get(0);
+		AutoIncrementIdBean savedBean = controller.findById(AutoIncrementIdBean.class, id);
 		assertEquals(bean, savedBean);
 
 		bean.setInt1(1234);
@@ -469,9 +467,7 @@ public class PersistenceControllerTest extends AndroidTestCase {
 		bean.setStr1("yes");
 		controller.update(bean);
 
-		// TODO: substituir por getByPk
-		list = controller.list(AutoIncrementIdBean.class);
-		savedBean = list.get(0);
+		savedBean = controller.findById(AutoIncrementIdBean.class, id);
 		assertEquals(bean, savedBean);
 	}
 
