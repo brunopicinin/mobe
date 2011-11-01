@@ -1,24 +1,11 @@
 package br.com.mobe.orm.db;
 
-import static br.com.mobe.core.util.ReflectionUtils.isBoolean;
-import static br.com.mobe.core.util.ReflectionUtils.isByte;
-import static br.com.mobe.core.util.ReflectionUtils.isCalendar;
-import static br.com.mobe.core.util.ReflectionUtils.isChar;
-import static br.com.mobe.core.util.ReflectionUtils.isDate;
-import static br.com.mobe.core.util.ReflectionUtils.isDouble;
-import static br.com.mobe.core.util.ReflectionUtils.isFloat;
-import static br.com.mobe.core.util.ReflectionUtils.isInt;
-import static br.com.mobe.core.util.ReflectionUtils.isLong;
-import static br.com.mobe.core.util.ReflectionUtils.isShort;
-import static br.com.mobe.core.util.ReflectionUtils.isString;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import br.com.mobe.core.exception.IllegalMetadataException;
-import br.com.mobe.core.exception.UnsupportedTypeException;
 import br.com.mobe.core.metadata.ClassMetadata;
 import br.com.mobe.core.metadata.Property;
 import br.com.mobe.core.metadata.Repository;
@@ -47,21 +34,8 @@ public class DatabaseBuilder {
 		// SQL create
 		StringBuilder createSQL = new StringBuilder("CREATE TABLE ").append(name).append(" (");
 		for (Property property : properties) {
-			Class<?> type = property.getType();
 			String propName = DbUtils.getColumnName(property.getName());
-			if (isBoolean(type)) {
-				createSQL.append(propName).append(" BOOLEAN "); // NUMERIC affinity (5) -- save as 0 or 1
-			} else if (isByte(type) || isShort(type) || isInt(type) || isLong(type)) {
-				createSQL.append(propName).append(" INTEGER "); // INTEGER affinity (1)
-			} else if (isFloat(type) || isDouble(type)) {
-				createSQL.append(propName).append(" REAL "); // REAL affinity (4)
-			} else if (isChar(type) || isString(type)) {
-				createSQL.append(propName).append(" TEXT "); // TEXT affinity (2)
-			} else if (isCalendar(type) || isDate(type)) {
-				createSQL.append(propName).append(" DATE "); // NUMERIC affinity (5) -- save time in milliseconds
-			} else {
-				throw new UnsupportedTypeException(type);
-			}
+			createSQL.append(propName).append(property.getProcessor().getSQLType());
 			if (property.isNotNull()) {
 				createSQL.append("NOT NULL ");
 			}

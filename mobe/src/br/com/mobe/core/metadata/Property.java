@@ -1,10 +1,10 @@
 package br.com.mobe.core.metadata;
 
-import br.com.mobe.core.processor.ViewProcessor;
+import br.com.mobe.core.processor.Processor;
 
 public class Property {
 
-	private ViewProcessor viewProcessor;
+	private Processor processor;
 
 	// Core
 	private String name;
@@ -17,14 +17,14 @@ public class Property {
 	private boolean notNull = false;
 	private boolean unique = false;
 
-	public Property(String name, Class<?> type, ViewProcessor viewProcessor) {
+	public Property(String name, Class<?> type, Processor processor) {
 		this.name = name;
 		this.type = type;
-		this.viewProcessor = viewProcessor;
+		this.processor = processor;
 	}
 
-	public ViewProcessor getViewProcessor() {
-		return viewProcessor;
+	public Processor getProcessor() {
+		return processor;
 	}
 
 	public String getName() {

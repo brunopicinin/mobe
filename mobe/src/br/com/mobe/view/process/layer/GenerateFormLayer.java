@@ -5,7 +5,7 @@ import java.util.List;
 import android.content.Context;
 import br.com.mobe.core.metadata.ClassMetadata;
 import br.com.mobe.core.metadata.Property;
-import br.com.mobe.core.processor.ViewProcessor;
+import br.com.mobe.core.processor.Processor;
 import br.com.mobe.view.FormView;
 import br.com.mobe.view.widget.FormWidget;
 
@@ -16,7 +16,7 @@ public class GenerateFormLayer implements FormProcessingLayer {
 		FormView form = new FormView(context, metadata.getTarget());
 		List<Property> properties = metadata.getProperties();
 		for (Property property : properties) {
-			ViewProcessor processor = property.getViewProcessor();
+			Processor processor = property.getProcessor();
 			FormWidget widget = processor.createWidget(context, property.getName());
 			form.addView(widget);
 		}

@@ -6,7 +6,7 @@ import android.content.Context;
 import android.util.Log;
 import br.com.mobe.view.widget.FormWidget;
 
-public abstract class ViewProcessor {
+public abstract class Processor {
 
 	private static final String TAG = "ViewProcessor";
 
@@ -34,6 +34,8 @@ public abstract class ViewProcessor {
 		}
 		widget.populate(value);
 	}
+
+	public abstract String getSQLType();
 
 	protected String capitalize(String name) {
 		StringBuilder sb = new StringBuilder();

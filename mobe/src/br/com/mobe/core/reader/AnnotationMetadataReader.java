@@ -16,17 +16,17 @@ import br.com.mobe.core.processor.DecimalProcessor;
 import br.com.mobe.core.processor.LogicProcessor;
 import br.com.mobe.core.processor.NumberProcessor;
 import br.com.mobe.core.processor.TextProcessor;
-import br.com.mobe.core.processor.ViewProcessor;
+import br.com.mobe.core.processor.Processor;
 import br.com.mobe.orm.annotation.Id;
 import br.com.mobe.orm.annotation.NotNull;
 import br.com.mobe.orm.annotation.Unique;
 
 public class AnnotationMetadataReader implements MetadataReader {
 
-	private Map<Class<?>, ViewProcessor> processorMap;
+	private Map<Class<?>, Processor> processorMap;
 
 	public AnnotationMetadataReader() {
-		processorMap = new HashMap<Class<?>, ViewProcessor>();
+		processorMap = new HashMap<Class<?>, Processor>();
 
 		processorMap.put(boolean.class, new LogicProcessor());
 		processorMap.put(Boolean.class, new LogicProcessor());
@@ -64,7 +64,7 @@ public class AnnotationMetadataReader implements MetadataReader {
 				field.setAccessible(true);
 				String name = field.getName();
 				Class<?> type = field.getType();
-				ViewProcessor processor = getProcessor(type);
+				Processor processor = getProcessor(type);
 				Property property = new Property(name, type, processor);
 				boolean idPresent = field.isAnnotationPresent(Id.class);
 				property.setPrimaryKey(idPresent);
@@ -90,11 +90,11 @@ public class AnnotationMetadataReader implements MetadataReader {
 	 * @param processor
 	 *            The processor responsible for the logic of this type.
 	 */
-	public void addNewProcessor(Class<?> type, ViewProcessor processor) {
+	public void addNewProcessor(Class<?> type, Processor processor) {
 		processorMap.put(type, processor);
 	}
 
-	private ViewProcessor getProcessor(Class<?> type) {
+	private Processor getProcessor(Class<?> type) {
 		if (processorMap.keySet().contains(type)) {
 			return processorMap.get(type);
 		} else {
