@@ -1,13 +1,13 @@
-package br.com.mobe.view.logic.layer;
+package br.com.mobe.view.process.layer;
 
 import java.util.List;
 
 import android.content.Context;
 import br.com.mobe.core.metadata.ClassMetadata;
 import br.com.mobe.core.metadata.Property;
+import br.com.mobe.core.processor.ViewProcessor;
 import br.com.mobe.view.FormView;
-import br.com.mobe.view.logic.process.ViewProcessor;
-import br.com.mobe.view.widget.form.FormWidget;
+import br.com.mobe.view.widget.FormWidget;
 
 public class PopulateFormLayer implements FormProcessingLayer {
 

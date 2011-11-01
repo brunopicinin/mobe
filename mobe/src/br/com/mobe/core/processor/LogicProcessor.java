@@ -1,8 +1,8 @@
-package br.com.mobe.view.logic.process;
+package br.com.mobe.core.processor;
 
 import android.content.Context;
-import br.com.mobe.view.widget.form.FormLogic;
-import br.com.mobe.view.widget.form.FormWidget;
+import br.com.mobe.view.widget.FormLogic;
+import br.com.mobe.view.widget.FormWidget;
 
 public class LogicProcessor extends ViewProcessor {
 

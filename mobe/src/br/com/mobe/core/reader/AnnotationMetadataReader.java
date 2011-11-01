@@ -11,15 +11,15 @@ import br.com.mobe.core.exception.IllegalMetadataException;
 import br.com.mobe.core.exception.UnsupportedTypeException;
 import br.com.mobe.core.metadata.ClassMetadata;
 import br.com.mobe.core.metadata.Property;
+import br.com.mobe.core.processor.DateProcessor;
+import br.com.mobe.core.processor.DecimalProcessor;
+import br.com.mobe.core.processor.LogicProcessor;
+import br.com.mobe.core.processor.NumberProcessor;
+import br.com.mobe.core.processor.TextProcessor;
+import br.com.mobe.core.processor.ViewProcessor;
 import br.com.mobe.orm.annotation.Id;
 import br.com.mobe.orm.annotation.NotNull;
 import br.com.mobe.orm.annotation.Unique;
-import br.com.mobe.view.logic.process.DateProcessor;
-import br.com.mobe.view.logic.process.DecimalProcessor;
-import br.com.mobe.view.logic.process.LogicProcessor;
-import br.com.mobe.view.logic.process.NumberProcessor;
-import br.com.mobe.view.logic.process.TextProcessor;
-import br.com.mobe.view.logic.process.ViewProcessor;
 
 public class AnnotationMetadataReader implements MetadataReader {
 

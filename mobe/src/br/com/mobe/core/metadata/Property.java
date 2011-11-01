@@ -1,6 +1,6 @@
 package br.com.mobe.core.metadata;
 
-import br.com.mobe.view.logic.process.ViewProcessor;
+import br.com.mobe.core.processor.ViewProcessor;
 
 public class Property {
 

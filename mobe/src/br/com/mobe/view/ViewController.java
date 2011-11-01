@@ -4,8 +4,8 @@ import android.content.Context;
 import br.com.mobe.core.exception.IllegalMetadataException;
 import br.com.mobe.core.metadata.ClassMetadata;
 import br.com.mobe.core.metadata.Repository;
-import br.com.mobe.view.logic.layer.GenerateFormLayer;
-import br.com.mobe.view.logic.layer.PopulateFormLayer;
+import br.com.mobe.view.process.layer.GenerateFormLayer;
+import br.com.mobe.view.process.layer.PopulateFormLayer;
 
 public class ViewController {
 

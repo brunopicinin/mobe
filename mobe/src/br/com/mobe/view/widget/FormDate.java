@@ -1,4 +1,4 @@
-package br.com.mobe.view.widget.form;
+package br.com.mobe.view.widget;
 
 import java.util.Calendar;
 import java.util.Date;

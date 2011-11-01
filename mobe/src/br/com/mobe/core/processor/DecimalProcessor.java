@@ -1,8 +1,8 @@
-package br.com.mobe.view.logic.process;
+package br.com.mobe.core.processor;
 
 import android.content.Context;
-import br.com.mobe.view.widget.form.FormDecimal;
-import br.com.mobe.view.widget.form.FormWidget;
+import br.com.mobe.view.widget.FormDecimal;
+import br.com.mobe.view.widget.FormWidget;
 
 public class DecimalProcessor extends ViewProcessor {
 

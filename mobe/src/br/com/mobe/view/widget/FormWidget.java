@@ -1,4 +1,4 @@
-package br.com.mobe.view.widget.form;
+package br.com.mobe.view.widget;
 
 import static android.view.ViewGroup.LayoutParams.FILL_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;

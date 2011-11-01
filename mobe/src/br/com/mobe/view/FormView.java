@@ -12,7 +12,7 @@ import java.util.Map;
 import android.content.Context;
 import android.util.Log;
 import android.widget.LinearLayout;
-import br.com.mobe.view.widget.form.FormWidget;
+import br.com.mobe.view.widget.FormWidget;
 
 public class FormView extends LinearLayout implements Serializable {
 

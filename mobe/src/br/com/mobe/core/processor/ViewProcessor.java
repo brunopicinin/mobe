@@ -1,10 +1,10 @@
-package br.com.mobe.view.logic.process;
+package br.com.mobe.core.processor;
 
 import java.lang.reflect.Field;
 
 import android.content.Context;
 import android.util.Log;
-import br.com.mobe.view.widget.form.FormWidget;
+import br.com.mobe.view.widget.FormWidget;
 
 public abstract class ViewProcessor {
 

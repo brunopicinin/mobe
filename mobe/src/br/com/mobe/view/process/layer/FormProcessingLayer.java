@@ -1,4 +1,4 @@
-package br.com.mobe.view.logic.layer;
+package br.com.mobe.view.process.layer;
 
 import android.content.Context;
 import br.com.mobe.core.metadata.ClassMetadata;

@@ -1,4 +1,4 @@
-package br.com.mobe.view.widget.form;
+package br.com.mobe.view.widget;
 
 import android.content.Context;
 import android.text.InputType;
