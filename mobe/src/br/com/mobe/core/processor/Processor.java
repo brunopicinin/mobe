@@ -8,7 +8,7 @@ import br.com.mobe.view.widget.FormWidget;
 
 public abstract class Processor {
 
-	private static final String TAG = "ViewProcessor";
+	private static final String TAG = "Processor";
 
 	public abstract FormWidget createWidget(Context context, String name);
 

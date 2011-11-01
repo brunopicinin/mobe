@@ -4,7 +4,7 @@ import android.content.Context;
 import br.com.mobe.view.widget.FormLogic;
 import br.com.mobe.view.widget.FormWidget;
 
-public class LogicProcessor extends Processor {
+public class BooleanProcessor extends Processor {
 
 	@Override
 	public FormWidget createWidget(Context context, String name) {

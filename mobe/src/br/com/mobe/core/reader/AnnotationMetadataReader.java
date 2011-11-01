@@ -11,12 +11,18 @@ import br.com.mobe.core.exception.IllegalMetadataException;
 import br.com.mobe.core.exception.UnsupportedTypeException;
 import br.com.mobe.core.metadata.ClassMetadata;
 import br.com.mobe.core.metadata.Property;
-import br.com.mobe.core.processor.DateProcessor;
-import br.com.mobe.core.processor.DecimalProcessor;
-import br.com.mobe.core.processor.LogicProcessor;
-import br.com.mobe.core.processor.NumberProcessor;
-import br.com.mobe.core.processor.TextProcessor;
+import br.com.mobe.core.processor.BooleanProcessor;
 import br.com.mobe.core.processor.Processor;
+import br.com.mobe.core.processor.primitive.ByteProcessor;
+import br.com.mobe.core.processor.primitive.CalendarProcessor;
+import br.com.mobe.core.processor.primitive.CharProcessor;
+import br.com.mobe.core.processor.primitive.DateProcessor;
+import br.com.mobe.core.processor.primitive.DoubleProcessor;
+import br.com.mobe.core.processor.primitive.FloatProcessor;
+import br.com.mobe.core.processor.primitive.IntProcessor;
+import br.com.mobe.core.processor.primitive.LongProcessor;
+import br.com.mobe.core.processor.primitive.ShortProcessor;
+import br.com.mobe.core.processor.primitive.StringProcessor;
 import br.com.mobe.orm.annotation.Id;
 import br.com.mobe.orm.annotation.NotNull;
 import br.com.mobe.orm.annotation.Unique;
@@ -28,28 +34,33 @@ public class AnnotationMetadataReader implements MetadataReader {
 	public AnnotationMetadataReader() {
 		processorMap = new HashMap<Class<?>, Processor>();
 
-		processorMap.put(boolean.class, new LogicProcessor());
-		processorMap.put(Boolean.class, new LogicProcessor());
+		// BooleanProcessor
+		processorMap.put(boolean.class, new BooleanProcessor());
+		processorMap.put(Boolean.class, new BooleanProcessor());
 
-		processorMap.put(byte.class, new NumberProcessor());
-		processorMap.put(Byte.class, new NumberProcessor());
-		processorMap.put(short.class, new NumberProcessor());
-		processorMap.put(Short.class, new NumberProcessor());
-		processorMap.put(int.class, new NumberProcessor());
-		processorMap.put(Integer.class, new NumberProcessor());
-		processorMap.put(long.class, new NumberProcessor());
-		processorMap.put(Long.class, new NumberProcessor());
+		// NumberProcessor
+		processorMap.put(byte.class, new ByteProcessor());
+		processorMap.put(Byte.class, new ByteProcessor());
+		processorMap.put(short.class, new ShortProcessor());
+		processorMap.put(Short.class, new ShortProcessor());
+		processorMap.put(int.class, new IntProcessor());
+		processorMap.put(Integer.class, new IntProcessor());
+		processorMap.put(long.class, new LongProcessor());
+		processorMap.put(Long.class, new LongProcessor());
 
-		processorMap.put(float.class, new DecimalProcessor());
-		processorMap.put(Float.class, new DecimalProcessor());
-		processorMap.put(double.class, new DecimalProcessor());
-		processorMap.put(Double.class, new DecimalProcessor());
+		// DecimalProcessor
+		processorMap.put(float.class, new FloatProcessor());
+		processorMap.put(Float.class, new FloatProcessor());
+		processorMap.put(double.class, new DoubleProcessor());
+		processorMap.put(Double.class, new DoubleProcessor());
 
-		processorMap.put(char.class, new TextProcessor());
-		processorMap.put(Character.class, new TextProcessor());
-		processorMap.put(String.class, new TextProcessor());
+		// TextProcessor
+		processorMap.put(char.class, new CharProcessor());
+		processorMap.put(Character.class, new CharProcessor());
+		processorMap.put(String.class, new StringProcessor());
 
-		processorMap.put(Calendar.class, new DateProcessor());
+		// TimeProcessor
+		processorMap.put(Calendar.class, new CalendarProcessor());
 		processorMap.put(Date.class, new DateProcessor());
 	}
 
