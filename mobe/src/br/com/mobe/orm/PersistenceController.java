@@ -12,8 +12,7 @@ public class PersistenceController {
 
 	private Context context;
 
-	// temp
-	public static final String name = "mobe.db";
+	public static final String name = "mobeorm.db";
 	public static final int version = 1;
 
 	public PersistenceController(Context context) {
