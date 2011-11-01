@@ -4,7 +4,7 @@ import android.content.Context;
 import br.com.mobe.view.widget.FormDate;
 import br.com.mobe.view.widget.FormWidget;
 
-public class TimeProcessor extends Processor {
+public abstract class TimeProcessor extends Processor {
 
 	@Override
 	public FormWidget createWidget(Context context, String name) {

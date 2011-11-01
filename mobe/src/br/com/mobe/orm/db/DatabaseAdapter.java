@@ -15,8 +15,6 @@ import static br.com.mobe.core.util.ReflectionUtils.isString;
 import java.lang.reflect.Field;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -27,7 +25,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 import br.com.mobe.core.exception.IllegalMetadataException;
-import br.com.mobe.core.exception.UnsupportedTypeException;
 import br.com.mobe.core.metadata.ClassMetadata;
 import br.com.mobe.core.metadata.Property;
 import br.com.mobe.core.metadata.Repository;
@@ -122,31 +119,7 @@ public class DatabaseAdapter {
 				if (value == null) {
 					values.putNull(name);
 				} else {
-					Class<?> type = value.getClass();
-					if (isBoolean(type)) {
-						values.put(name, (Boolean) value);
-					} else if (isByte(type)) {
-						values.put(name, (Byte) value);
-					} else if (isShort(type)) {
-						values.put(name, (Short) value);
-					} else if (isInt(type)) {
-						values.put(name, (Integer) value);
-					} else if (isLong(type)) {
-						values.put(name, (Long) value);
-					} else if (isFloat(type)) {
-						values.put(name, (Float) value);
-					} else if (isDouble(type)) {
-						values.put(name, (Double) value);
-					} else if (isChar(type) || isString(type)) {
-						values.put(name, String.valueOf(value));
-					} else if (isCalendar(type)) {
-						values.put(name, ((Calendar) value).getTimeInMillis());
-					} else if (isDate(type)) {
-						values.put(name, ((Date) value).getTime());
-					} else {
-						UnsupportedTypeException ex = new UnsupportedTypeException(type);
-						Log.e(TAG, "Class changed since table was created.", ex);
-					}
+					property.getProcessor().putIn(values, name, value);
 				}
 			} catch (SecurityException e) {
 				e.printStackTrace();
@@ -189,58 +162,13 @@ public class DatabaseAdapter {
 		List<Property> properties = metadata.getProperties();
 		for (Property property : properties) {
 			try {
-				Class<?> type = property.getType();
-
 				String propertyName = property.getName();
 				String colName = DbUtils.getColumnName(propertyName);
 				int columnIndex = cursor.getColumnIndexOrThrow(colName);
 
 				Field field = object.getClass().getDeclaredField(propertyName);
 				field.setAccessible(true);
-
-				if (isBoolean(type)) {
-					int i = cursor.getInt(columnIndex);
-					field.set(object, i != 0);
-				} else if (isByte(type)) {
-					byte b = (byte) cursor.getInt(columnIndex);
-					field.set(object, b);
-				} else if (isShort(type)) {
-					short s = cursor.getShort(columnIndex);
-					field.set(object, s);
-				} else if (isInt(type)) {
-					int i = cursor.getInt(columnIndex);
-					field.set(object, i);
-				} else if (isLong(type)) {
-					long l = cursor.getLong(columnIndex);
-					field.set(object, l);
-				} else if (isFloat(type)) {
-					float f = cursor.getFloat(columnIndex);
-					field.set(object, f);
-				} else if (isDouble(type)) {
-					double d = cursor.getDouble(columnIndex);
-					field.set(object, d);
-				} else if (isChar(type)) {
-					char c = cursor.getString(columnIndex).charAt(0);
-					field.set(object, c);
-				} else if (isString(type)) {
-					String s = cursor.getString(columnIndex);
-					field.set(object, s);
-				} else if (isCalendar(type)) {
-					long l = cursor.getLong(columnIndex);
-					Calendar calendar = null;
-					if (l != 0) {
-						calendar = Calendar.getInstance();
-						calendar.setTimeInMillis(l);
-					}
-					field.set(object, calendar);
-				} else if (isDate(type)) {
-					long l = cursor.getLong(columnIndex);
-					Date date = null;
-					if (l != 0) {
-						date = new Date(l);
-					}
-					field.set(object, date);
-				}
+				field.set(object, property.getProcessor().getFrom(cursor, columnIndex));
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
 			} catch (SecurityException e) {
@@ -267,16 +195,7 @@ public class DatabaseAdapter {
 		}
 		String table = DbUtils.getTableName(clazz);
 		String selection = primaryKey.getName() + "=?";
-		String selectionArg = null;
-		if (isCalendar(idType)) {
-			Calendar cal = (Calendar) id;
-			selectionArg = String.valueOf(cal.getTimeInMillis());
-		} else if (isDate(idType)) {
-			Date date = (Date) id;
-			selectionArg = String.valueOf(date.getTime());
-		} else {
-			selectionArg = String.valueOf(id);
-		}
+		String selectionArg = primaryKey.getProcessor().valueToString(id);
 		Cursor cursor = database.query(table, null, selection, new String[] { selectionArg }, null, null, null);
 		cursor.moveToFirst();
 		try {
@@ -340,17 +259,8 @@ public class DatabaseAdapter {
 			if (value == null) {
 				throw new IllegalQueryException("Id must not be null.");
 			}
-
 			whereClause = DbUtils.getColumnName(name) + "=?"; // Second parameter
-			Class<?> type = value.getClass();
-			// Third parameter
-			if (isBoolean(type) || isByte(type) || isShort(type) || isInt(type) || isLong(type) || isFloat(type) || isDouble(type) || isChar(type) || isString(type)) {
-				whereArgs = String.valueOf(value);
-			} else if (isCalendar(type)) {
-				whereArgs = String.valueOf(((Calendar) value).getTimeInMillis());
-			} else if (isDate(type)) {
-				whereArgs = String.valueOf(((Date) value).getTime());
-			}
+			whereArgs = primaryKey.getProcessor().valueToString(value); // Third parameter
 		} catch (SecurityException e) {
 			e.printStackTrace();
 		} catch (NoSuchFieldException e) {

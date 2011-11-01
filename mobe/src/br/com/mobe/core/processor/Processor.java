@@ -2,13 +2,19 @@ package br.com.mobe.core.processor;
 
 import java.lang.reflect.Field;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.util.Log;
 import br.com.mobe.view.widget.FormWidget;
 
 public abstract class Processor {
 
 	private static final String TAG = "Processor";
+
+	/*
+	 * View processing.
+	 */
 
 	public abstract FormWidget createWidget(Context context, String name);
 
@@ -35,8 +41,6 @@ public abstract class Processor {
 		widget.populate(value);
 	}
 
-	public abstract String getSQLType();
-
 	protected String capitalize(String name) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(Character.toUpperCase(name.charAt(0))); // first letter capitalized
@@ -49,6 +53,20 @@ public abstract class Processor {
 			sb.append(c);
 		}
 		return sb.toString();
+	}
+
+	/*
+	 * Database processing.
+	 */
+
+	public abstract String getSQLType();
+
+	public abstract void putIn(ContentValues values, String key, Object value);
+
+	public abstract Object getFrom(Cursor cursor, int columnIndex);
+
+	public String valueToString(Object value) {
+		return String.valueOf(value);
 	}
 
 }

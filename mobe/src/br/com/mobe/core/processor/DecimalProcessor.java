@@ -4,7 +4,7 @@ import android.content.Context;
 import br.com.mobe.view.widget.FormDecimal;
 import br.com.mobe.view.widget.FormWidget;
 
-public class DecimalProcessor extends Processor {
+public abstract class DecimalProcessor extends Processor {
 
 	@Override
 	public FormWidget createWidget(Context context, String name) {
