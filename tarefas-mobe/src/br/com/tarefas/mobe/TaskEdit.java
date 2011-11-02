@@ -75,6 +75,7 @@ public class TaskEdit extends Activity {
 				rowid = id;
 			}
 		} else {
+			task.setId(rowid);
 			persistenceController.update(task);
 		}
 	}

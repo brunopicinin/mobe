@@ -5,12 +5,14 @@ import java.util.Calendar;
 import br.com.mobe.core.annotation.Entity;
 import br.com.mobe.core.annotation.Property;
 import br.com.mobe.orm.annotation.Id;
+import br.com.mobe.view.annotation.Hidden;
 
 @Entity
 public class Task {
 
 	@Property
 	@Id(autoIncrement = true)
+	@Hidden
 	private Long id;
 
 	@Property
