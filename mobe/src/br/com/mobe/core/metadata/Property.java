@@ -10,6 +10,9 @@ public class Property {
 	private String name;
 	private Class<?> type;
 
+	// View
+	private boolean isHidden;
+
 	// ORM
 	private boolean isPrimaryKey = false;
 	private boolean autoIncrement;
@@ -33,6 +36,14 @@ public class Property {
 
 	public Class<?> getType() {
 		return type;
+	}
+
+	public boolean isHidden() {
+		return isHidden;
+	}
+
+	public void setHidden(boolean isHidden) {
+		this.isHidden = isHidden;
 	}
 
 	public boolean isPrimaryKey() {

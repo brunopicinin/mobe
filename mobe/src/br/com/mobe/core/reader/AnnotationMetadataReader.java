@@ -26,6 +26,7 @@ import br.com.mobe.core.processor.primitive.StringProcessor;
 import br.com.mobe.orm.annotation.Id;
 import br.com.mobe.orm.annotation.NotNull;
 import br.com.mobe.orm.annotation.Unique;
+import br.com.mobe.view.annotation.Hidden;
 
 public class AnnotationMetadataReader implements MetadataReader {
 
@@ -87,6 +88,7 @@ public class AnnotationMetadataReader implements MetadataReader {
 					property.setNotNull(field.isAnnotationPresent(NotNull.class));
 				}
 				property.setUnique(field.isAnnotationPresent(Unique.class));
+				property.setHidden(field.isAnnotationPresent(Hidden.class));
 				metadata.addProperty(property);
 			}
 		}

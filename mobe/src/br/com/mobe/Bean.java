@@ -6,9 +6,17 @@ import java.util.Calendar;
 
 import br.com.mobe.core.annotation.Entity;
 import br.com.mobe.core.annotation.Property;
+import br.com.mobe.orm.annotation.Id;
+import br.com.mobe.view.annotation.Hidden;
 
 @Entity
+@SuppressWarnings("unused")
 public class Bean {
+
+	@Property
+	@Id(autoIncrement = true)
+	@Hidden
+	private long id;
 
 	@Property
 	private boolean importAlbum = true;

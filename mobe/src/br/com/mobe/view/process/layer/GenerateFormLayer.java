@@ -16,9 +16,11 @@ public class GenerateFormLayer implements FormProcessingLayer {
 		FormView form = new FormView(context, metadata.getTarget());
 		List<Property> properties = metadata.getProperties();
 		for (Property property : properties) {
-			Processor processor = property.getProcessor();
-			FormWidget widget = processor.createWidget(context, property.getName());
-			form.addView(widget);
+			if (!property.isHidden()) {
+				Processor processor = property.getProcessor();
+				FormWidget widget = processor.createWidget(context, property.getName());
+				form.addView(widget);
+			}
 		}
 		return form;
 	}
