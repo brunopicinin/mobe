@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">Tarefas Convencional</string>
     <string name="edit_task">Editar Tarefa</string>
+    <string name="benchmark">Benchmark</string>
 </resources>

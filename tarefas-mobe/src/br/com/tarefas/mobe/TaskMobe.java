@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Debug;
 import android.preference.PreferenceManager;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -21,10 +22,12 @@ import br.com.mobe.orm.PersistenceController;
 public class TaskMobe extends ListActivity {
 
 	private static final int ACTIVITY_CREATE = 0;
-	private static final int ACTIVITY_EDIT = 0;
+	private static final int ACTIVITY_EDIT = 1;
+	private static final int ACTIVITY_BENCHMARK = 2;
 
 	private static final int INSERT_ID = Menu.FIRST;
 	private static final int DELETE_ID = Menu.FIRST + 1;
+	private static final int BENCHMARK_ID = Menu.FIRST + 2;
 
 	public static final String KEY_ROWID = "id";
 
@@ -33,11 +36,18 @@ public class TaskMobe extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Debug.startMethodTracing("mobe");
 		setContentView(R.layout.tasks_list);
 		persistenceController = new PersistenceController(this);
 		fistTime();
 		fillData();
 		registerForContextMenu(getListView());
+	}
+
+	@Override
+	protected void onDestroy() {
+		Debug.stopMethodTracing();
+		super.onDestroy();
 	}
 
 	private void fistTime() {
@@ -74,6 +84,7 @@ public class TaskMobe extends ListActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		menu.add(0, INSERT_ID, 0, "Criar Tarefa");
+		menu.add(0, BENCHMARK_ID, 0, "Benchmark");
 		return true;
 	}
 
@@ -83,6 +94,9 @@ public class TaskMobe extends ListActivity {
 		case INSERT_ID:
 			createTask();
 			break;
+		case BENCHMARK_ID:
+			benchmark();
+			break;
 		}
 		return super.onMenuItemSelected(featureId, item);
 	}
@@ -90,6 +104,11 @@ public class TaskMobe extends ListActivity {
 	private void createTask() {
 		Intent intent = new Intent(this, TaskEdit.class);
 		startActivityForResult(intent, ACTIVITY_CREATE);
+	}
+
+	private void benchmark() {
+		Intent intent = new Intent(this, BenchmarkMobe.class);
+		startActivityForResult(intent, ACTIVITY_BENCHMARK);
 	}
 
 	@Override

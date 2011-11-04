@@ -27,6 +27,16 @@ public class Task {
 	@Property
 	private boolean done;
 
+	public Task() {
+	}
+
+	public Task(String title, int importance, Calendar deadline, boolean done) {
+		this.title = title;
+		this.importance = importance;
+		this.deadline = deadline;
+		this.done = done;
+	}
+
 	public Long getId() {
 		return id;
 	}

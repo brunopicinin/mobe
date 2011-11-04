@@ -19,8 +19,13 @@
 		</activity>
 
 		<activity
-			android:name="br.com.tarefas.mobe.TaskEdit"
+			android:name=".TaskEdit"
 			android:label="@string/edit_task"></activity>
 
+		<activity
+			android:name=".BenchmarkMobe"
+			android:label="@string/benchmark"></activity>
 	</application>
+
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 </manifest>

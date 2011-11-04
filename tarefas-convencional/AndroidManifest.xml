@@ -22,5 +22,10 @@
 			android:name=".TaskEdit"
 			android:label="@string/edit_task"></activity>
 
+		<activity
+			android:name=".BenchmarkConvencional"
+			android:label="@string/benchmark"></activity>
 	</application>
+
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 </manifest>

@@ -16,10 +16,12 @@ import android.widget.SimpleCursorAdapter;
 public class TaskConvencional extends ListActivity {
 
 	private static final int ACTIVITY_CREATE = 0;
-	private static final int ACTIVITY_EDIT = 0;
+	private static final int ACTIVITY_EDIT = 1;
+	private static final int ACTIVITY_BENCHMARK = 2;
 
 	private static final int INSERT_ID = Menu.FIRST;
 	private static final int DELETE_ID = Menu.FIRST + 1;
+	private static final int BENCHMARK_ID = Menu.FIRST + 2;
 
 	private TasksDbAdapter dbAdapter;
 
@@ -48,6 +50,7 @@ public class TaskConvencional extends ListActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		menu.add(0, INSERT_ID, 0, "Criar Tarefa");
+		menu.add(0, BENCHMARK_ID, 0, "Benchmark");
 		return true;
 	}
 
@@ -57,6 +60,9 @@ public class TaskConvencional extends ListActivity {
 		case INSERT_ID:
 			createTask();
 			break;
+		case BENCHMARK_ID:
+			benchmark();
+			break;
 		}
 		return super.onMenuItemSelected(featureId, item);
 	}
@@ -64,6 +70,11 @@ public class TaskConvencional extends ListActivity {
 	private void createTask() {
 		Intent intent = new Intent(this, TaskEdit.class);
 		startActivityForResult(intent, ACTIVITY_CREATE);
+	}
+
+	private void benchmark() {
+		Intent intent = new Intent(this, BenchmarkConvencional.class);
+		startActivityForResult(intent, ACTIVITY_BENCHMARK);
 	}
 
 	@Override
