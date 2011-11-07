@@ -5,10 +5,13 @@ import java.util.Calendar;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Debug;
+import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
 public class BenchmarkConvencional extends Activity {
+
+	private static final String TAG = "BenchmarkConvencional";
 
 	private static final int TOTAL_TIMES = 50;
 
@@ -17,6 +20,14 @@ public class BenchmarkConvencional extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.benchmark);
 
+		// timeBenchmark();
+		memoryBenchmark();
+
+		// setResult(RESULT_OK);
+		// finish();
+	}
+
+	private void timeBenchmark() {
 		// start benchmark
 		Debug.startMethodTracing("convencional");
 
@@ -47,9 +58,50 @@ public class BenchmarkConvencional extends Activity {
 
 		// finish benchmark
 		Debug.stopMethodTracing();
+	}
 
-		setResult(RESULT_OK);
-		finish();
+	private void memoryBenchmark() {
+		deleteDatabase("tasksdb");
+		// createTenTasks();
+		createHundredTasks();
+
+		Debug.startAllocCounting();
+		printMemoryInfo("Before");
+
+		// benchmarkGenerateForm();
+		// benchmarkGeneratePopulateForm();
+		// benchmarkCreateTable();
+		// benchmarkSave();
+		// benchmarkList();
+		// benchmarkFindById();
+		// benchmarkUpdate();
+		benchmarkDelete(5);
+
+		printMemoryInfo("After");
+		Debug.stopAllocCounting();
+	}
+
+	private void printMemoryInfo(String state) {
+		// int globalAllocCount = Debug.getGlobalAllocCount();
+		int globalAllocSize = Debug.getGlobalAllocSize();
+		int globalFreedCount = Debug.getGlobalFreedCount();
+		// int globalFreedSize = Debug.getGlobalFreedSize();
+		int globalGcInvocationCount = Debug.getGlobalGcInvocationCount();
+		// int threadAllocCount = Debug.getThreadAllocCount();
+		// int threadAllocSize = Debug.getThreadAllocSize();
+		// int threadGcInvocationCount = Debug.getThreadGcInvocationCount();
+
+		StringBuilder msg = new StringBuilder("[").append(state).append("] ");
+		// msg.append("globalAllocCount=").append(globalAllocCount).append(", ");
+		msg.append("AllocSize=").append(globalAllocSize).append(", ");
+		msg.append("FreedCount=").append(globalFreedCount).append(", ");
+		// msg.append("globalFreedSize=").append(globalFreedSize).append(", ");
+		msg.append("GcCount=").append(globalGcInvocationCount).append(", ");
+		// msg.append("threadAllocCount=").append(threadAllocCount).append(", ");
+		// msg.append("threadAllocSize=").append(threadAllocSize).append(", ");
+		// msg.append("threadGcInvocationCount=").append(threadGcInvocationCount).append(", ");
+
+		Log.d(TAG, msg.toString());
 	}
 
 	private void createTenTasks() {
